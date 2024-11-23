@@ -59,6 +59,7 @@ type RegisterDomainRequest struct {
 	HistoryArchivalUri               string                             `protobuf:"bytes,11,opt,name=history_archival_uri,json=historyArchivalUri,proto3" json:"history_archival_uri,omitempty"`
 	VisibilityArchivalStatus         ArchivalStatus                     `protobuf:"varint,12,opt,name=visibility_archival_status,json=visibilityArchivalStatus,proto3,enum=uber.cadence.api.v1.ArchivalStatus" json:"visibility_archival_status,omitempty"`
 	VisibilityArchivalUri            string                             `protobuf:"bytes,13,opt,name=visibility_archival_uri,json=visibilityArchivalUri,proto3" json:"visibility_archival_uri,omitempty"`
+	DomainID                         string                             `protobuf:"bytes,14,opt,name=domain_id,json=domainId,proto3" json:"domain_id,omitempty"`
 	XXX_NoUnkeyedLiteral             struct{}                           `json:"-"`
 	XXX_unrecognized                 []byte                             `json:"-"`
 	XXX_sizecache                    int32                              `json:"-"`

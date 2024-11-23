@@ -1095,6 +1095,7 @@ struct RegisterDomainRequest {
   140: optional string historyArchivalURI
   150: optional ArchivalStatus visibilityArchivalStatus
   160: optional string visibilityArchivalURI
+  170: optional string domainId
 }
 
 struct ListDomainsRequest {
