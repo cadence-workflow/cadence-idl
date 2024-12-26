@@ -237,12 +237,18 @@ func NewFxDomainAPIYARPCProcedures() interface{} {
 				Server:      params.Server,
 				AnyResolver: params.AnyResolver,
 			}),
-			ReflectionMeta: reflection.ServerMeta{
-				ServiceName:     "uber.cadence.api.v1.DomainAPI",
-				FileDescriptors: yarpcFileDescriptorClosure2e37d15268893114,
-			},
+			ReflectionMeta: DomainAPIReflectionMeta,
 		}
 	}
+}
+
+// DomainAPIReflectionMeta is the reflection server metadata
+// required for using the gRPC reflection protocol with YARPC.
+//
+// See https://github.com/grpc/grpc/blob/master/doc/server-reflection.md.
+var DomainAPIReflectionMeta = reflection.ServerMeta{
+	ServiceName:     "uber.cadence.api.v1.DomainAPI",
+	FileDescriptors: yarpcFileDescriptorClosure2e37d15268893114,
 }
 
 type _DomainAPIYARPCCaller struct {

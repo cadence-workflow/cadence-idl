@@ -57,12 +57,25 @@ message TaskListPartitionMetadata {
   string owner_host_name = 2;
 }
 
+message IsolationGroupMetrics {
+  // The rate at which tasks with the given isolation group are being added to this partition
+  double new_tasks_per_second = 1;
+  // The number of "active" pollers with the given isolation group that the partition is aware of.
+  // Pollers typically will reach many partitions
+  int64 poller_count = 2;
+}
+
 message TaskListStatus {
   int64 backlog_count_hint = 1;
   int64 read_level = 2;
   int64 ack_level = 3;
+  // The rate at which tasks may be dispatched according to poller configuration
   double rate_per_second = 4;
   TaskIDBlock task_id_block = 5;
+  // Mapping of isolation groups to metrics about that group within this partition
+  map<string, IsolationGroupMetrics> isolation_group_metrics = 6;
+  // The rate at which tasks are being added to this partition
+  double new_tasks_per_second = 7;
 }
 
 message TaskIDBlock {
@@ -81,8 +94,18 @@ message StickyExecutionAttributes {
   google.protobuf.Duration schedule_to_start_timeout = 2;
 }
 
+message TaskListPartition {
+  // The isolation groups that this partition is assigned.
+  // Null/empty indicates that the partition should accept all isolation groups.
+  repeated string isolation_groups = 1;
+}
+
 message TaskListPartitionConfig {
   int64 version = 1;
-  int32 num_read_partitions = 2;
-  int32 num_write_partitions = 3;
+  int32 num_read_partitions = 2 [deprecated = true];
+  int32 num_write_partitions = 3 [deprecated = true];
+  // Mapping of TaskList PartitionIDs to metadata for reading tasks
+  map<int32, TaskListPartition> read_partitions = 4;
+  // Mapping of TaskList PartitionIDs to metadata for writing tasks
+  map<int32, TaskListPartition> write_partitions = 5;
 }

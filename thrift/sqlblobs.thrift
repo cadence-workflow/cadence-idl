@@ -231,10 +231,16 @@ struct TaskInfo {
   17: optional map<string, string> partitionConfig
 }
 
+struct TaskListPartition {
+    10: optional list<string> isolationGroups
+}
+
 struct TaskListPartitionConfig {
   10: optional i64 (js.type = "Long") version
   12: optional i32 numReadPartitions
   14: optional i32 numWritePartitions
+  16: optional map<i32, TaskListPartition> readPartitions
+  18: optional map<i32, TaskListPartition> writePartitions
 }
 
 struct TaskListInfo {

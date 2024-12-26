@@ -259,22 +259,84 @@ func (m *TaskListPartitionMetadata) GetOwnerHostName() string {
 	return ""
 }
 
+type IsolationGroupMetrics struct {
+	// The rate at which tasks with the given isolation group are being added to this partition
+	NewTasksPerSecond float64 `protobuf:"fixed64,1,opt,name=new_tasks_per_second,json=newTasksPerSecond,proto3" json:"new_tasks_per_second,omitempty"`
+	// The number of "active" pollers with the given isolation group that the partition is aware of.
+	// Pollers typically will reach many partitions
+	PollerCount          int64    `protobuf:"varint,2,opt,name=poller_count,json=pollerCount,proto3" json:"poller_count,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *IsolationGroupMetrics) Reset()         { *m = IsolationGroupMetrics{} }
+func (m *IsolationGroupMetrics) String() string { return proto.CompactTextString(m) }
+func (*IsolationGroupMetrics) ProtoMessage()    {}
+func (*IsolationGroupMetrics) Descriptor() ([]byte, []int) {
+	return fileDescriptor_216fa006947e00a0, []int{3}
+}
+func (m *IsolationGroupMetrics) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *IsolationGroupMetrics) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_IsolationGroupMetrics.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *IsolationGroupMetrics) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_IsolationGroupMetrics.Merge(m, src)
+}
+func (m *IsolationGroupMetrics) XXX_Size() int {
+	return m.Size()
+}
+func (m *IsolationGroupMetrics) XXX_DiscardUnknown() {
+	xxx_messageInfo_IsolationGroupMetrics.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_IsolationGroupMetrics proto.InternalMessageInfo
+
+func (m *IsolationGroupMetrics) GetNewTasksPerSecond() float64 {
+	if m != nil {
+		return m.NewTasksPerSecond
+	}
+	return 0
+}
+
+func (m *IsolationGroupMetrics) GetPollerCount() int64 {
+	if m != nil {
+		return m.PollerCount
+	}
+	return 0
+}
+
 type TaskListStatus struct {
-	BacklogCountHint     int64        `protobuf:"varint,1,opt,name=backlog_count_hint,json=backlogCountHint,proto3" json:"backlog_count_hint,omitempty"`
-	ReadLevel            int64        `protobuf:"varint,2,opt,name=read_level,json=readLevel,proto3" json:"read_level,omitempty"`
-	AckLevel             int64        `protobuf:"varint,3,opt,name=ack_level,json=ackLevel,proto3" json:"ack_level,omitempty"`
-	RatePerSecond        float64      `protobuf:"fixed64,4,opt,name=rate_per_second,json=ratePerSecond,proto3" json:"rate_per_second,omitempty"`
-	TaskIdBlock          *TaskIDBlock `protobuf:"bytes,5,opt,name=task_id_block,json=taskIdBlock,proto3" json:"task_id_block,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
+	BacklogCountHint int64 `protobuf:"varint,1,opt,name=backlog_count_hint,json=backlogCountHint,proto3" json:"backlog_count_hint,omitempty"`
+	ReadLevel        int64 `protobuf:"varint,2,opt,name=read_level,json=readLevel,proto3" json:"read_level,omitempty"`
+	AckLevel         int64 `protobuf:"varint,3,opt,name=ack_level,json=ackLevel,proto3" json:"ack_level,omitempty"`
+	// The rate at which tasks may be dispatched according to poller configuration
+	RatePerSecond         float64                           `protobuf:"fixed64,4,opt,name=rate_per_second,json=ratePerSecond,proto3" json:"rate_per_second,omitempty"`
+	TaskIdBlock           *TaskIDBlock                      `protobuf:"bytes,5,opt,name=task_id_block,json=taskIdBlock,proto3" json:"task_id_block,omitempty"`
+	IsolationGroupMetrics map[string]*IsolationGroupMetrics `protobuf:"bytes,6,rep,name=isolation_group_metrics,json=isolationGroupMetrics,proto3" json:"isolation_group_metrics,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	// The rate at which tasks are being added to this partition
+	NewTasksPerSecond    float64  `protobuf:"fixed64,7,opt,name=new_tasks_per_second,json=newTasksPerSecond,proto3" json:"new_tasks_per_second,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *TaskListStatus) Reset()         { *m = TaskListStatus{} }
 func (m *TaskListStatus) String() string { return proto.CompactTextString(m) }
 func (*TaskListStatus) ProtoMessage()    {}
 func (*TaskListStatus) Descriptor() ([]byte, []int) {
-	return fileDescriptor_216fa006947e00a0, []int{3}
+	return fileDescriptor_216fa006947e00a0, []int{4}
 }
 func (m *TaskListStatus) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -338,6 +400,20 @@ func (m *TaskListStatus) GetTaskIdBlock() *TaskIDBlock {
 	return nil
 }
 
+func (m *TaskListStatus) GetIsolationGroupMetrics() map[string]*IsolationGroupMetrics {
+	if m != nil {
+		return m.IsolationGroupMetrics
+	}
+	return nil
+}
+
+func (m *TaskListStatus) GetNewTasksPerSecond() float64 {
+	if m != nil {
+		return m.NewTasksPerSecond
+	}
+	return 0
+}
+
 type TaskIDBlock struct {
 	StartId              int64    `protobuf:"varint,1,opt,name=start_id,json=startId,proto3" json:"start_id,omitempty"`
 	EndId                int64    `protobuf:"varint,2,opt,name=end_id,json=endId,proto3" json:"end_id,omitempty"`
@@ -350,7 +426,7 @@ func (m *TaskIDBlock) Reset()         { *m = TaskIDBlock{} }
 func (m *TaskIDBlock) String() string { return proto.CompactTextString(m) }
 func (*TaskIDBlock) ProtoMessage()    {}
 func (*TaskIDBlock) Descriptor() ([]byte, []int) {
-	return fileDescriptor_216fa006947e00a0, []int{4}
+	return fileDescriptor_216fa006947e00a0, []int{5}
 }
 func (m *TaskIDBlock) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -406,7 +482,7 @@ func (m *PollerInfo) Reset()         { *m = PollerInfo{} }
 func (m *PollerInfo) String() string { return proto.CompactTextString(m) }
 func (*PollerInfo) ProtoMessage()    {}
 func (*PollerInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_216fa006947e00a0, []int{5}
+	return fileDescriptor_216fa006947e00a0, []int{6}
 }
 func (m *PollerInfo) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -468,7 +544,7 @@ func (m *StickyExecutionAttributes) Reset()         { *m = StickyExecutionAttrib
 func (m *StickyExecutionAttributes) String() string { return proto.CompactTextString(m) }
 func (*StickyExecutionAttributes) ProtoMessage()    {}
 func (*StickyExecutionAttributes) Descriptor() ([]byte, []int) {
-	return fileDescriptor_216fa006947e00a0, []int{6}
+	return fileDescriptor_216fa006947e00a0, []int{7}
 }
 func (m *StickyExecutionAttributes) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -511,20 +587,69 @@ func (m *StickyExecutionAttributes) GetScheduleToStartTimeout() *types.Duration 
 	return nil
 }
 
-type TaskListPartitionConfig struct {
-	Version              int64    `protobuf:"varint,1,opt,name=version,proto3" json:"version,omitempty"`
-	NumReadPartitions    int32    `protobuf:"varint,2,opt,name=num_read_partitions,json=numReadPartitions,proto3" json:"num_read_partitions,omitempty"`
-	NumWritePartitions   int32    `protobuf:"varint,3,opt,name=num_write_partitions,json=numWritePartitions,proto3" json:"num_write_partitions,omitempty"`
+type TaskListPartition struct {
+	IsolationGroups      []string `protobuf:"bytes,1,rep,name=isolation_groups,json=isolationGroups,proto3" json:"isolation_groups,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *TaskListPartition) Reset()         { *m = TaskListPartition{} }
+func (m *TaskListPartition) String() string { return proto.CompactTextString(m) }
+func (*TaskListPartition) ProtoMessage()    {}
+func (*TaskListPartition) Descriptor() ([]byte, []int) {
+	return fileDescriptor_216fa006947e00a0, []int{8}
+}
+func (m *TaskListPartition) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *TaskListPartition) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_TaskListPartition.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *TaskListPartition) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TaskListPartition.Merge(m, src)
+}
+func (m *TaskListPartition) XXX_Size() int {
+	return m.Size()
+}
+func (m *TaskListPartition) XXX_DiscardUnknown() {
+	xxx_messageInfo_TaskListPartition.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_TaskListPartition proto.InternalMessageInfo
+
+func (m *TaskListPartition) GetIsolationGroups() []string {
+	if m != nil {
+		return m.IsolationGroups
+	}
+	return nil
+}
+
+type TaskListPartitionConfig struct {
+	Version              int64                        `protobuf:"varint,1,opt,name=version,proto3" json:"version,omitempty"`
+	NumReadPartitions    int32                        `protobuf:"varint,2,opt,name=num_read_partitions,json=numReadPartitions,proto3" json:"num_read_partitions,omitempty"`    // Deprecated: Do not use.
+	NumWritePartitions   int32                        `protobuf:"varint,3,opt,name=num_write_partitions,json=numWritePartitions,proto3" json:"num_write_partitions,omitempty"` // Deprecated: Do not use.
+	ReadPartitions       map[int32]*TaskListPartition `protobuf:"bytes,4,rep,name=read_partitions,json=readPartitions,proto3" json:"read_partitions,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	WritePartitions      map[int32]*TaskListPartition `protobuf:"bytes,5,rep,name=write_partitions,json=writePartitions,proto3" json:"write_partitions,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	XXX_NoUnkeyedLiteral struct{}                     `json:"-"`
+	XXX_unrecognized     []byte                       `json:"-"`
+	XXX_sizecache        int32                        `json:"-"`
 }
 
 func (m *TaskListPartitionConfig) Reset()         { *m = TaskListPartitionConfig{} }
 func (m *TaskListPartitionConfig) String() string { return proto.CompactTextString(m) }
 func (*TaskListPartitionConfig) ProtoMessage()    {}
 func (*TaskListPartitionConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_216fa006947e00a0, []int{7}
+	return fileDescriptor_216fa006947e00a0, []int{9}
 }
 func (m *TaskListPartitionConfig) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -560,6 +685,7 @@ func (m *TaskListPartitionConfig) GetVersion() int64 {
 	return 0
 }
 
+// Deprecated: Do not use.
 func (m *TaskListPartitionConfig) GetNumReadPartitions() int32 {
 	if m != nil {
 		return m.NumReadPartitions
@@ -567,11 +693,26 @@ func (m *TaskListPartitionConfig) GetNumReadPartitions() int32 {
 	return 0
 }
 
+// Deprecated: Do not use.
 func (m *TaskListPartitionConfig) GetNumWritePartitions() int32 {
 	if m != nil {
 		return m.NumWritePartitions
 	}
 	return 0
+}
+
+func (m *TaskListPartitionConfig) GetReadPartitions() map[int32]*TaskListPartition {
+	if m != nil {
+		return m.ReadPartitions
+	}
+	return nil
+}
+
+func (m *TaskListPartitionConfig) GetWritePartitions() map[int32]*TaskListPartition {
+	if m != nil {
+		return m.WritePartitions
+	}
+	return nil
 }
 
 func init() {
@@ -580,11 +721,16 @@ func init() {
 	proto.RegisterType((*TaskList)(nil), "uber.cadence.api.v1.TaskList")
 	proto.RegisterType((*TaskListMetadata)(nil), "uber.cadence.api.v1.TaskListMetadata")
 	proto.RegisterType((*TaskListPartitionMetadata)(nil), "uber.cadence.api.v1.TaskListPartitionMetadata")
+	proto.RegisterType((*IsolationGroupMetrics)(nil), "uber.cadence.api.v1.IsolationGroupMetrics")
 	proto.RegisterType((*TaskListStatus)(nil), "uber.cadence.api.v1.TaskListStatus")
+	proto.RegisterMapType((map[string]*IsolationGroupMetrics)(nil), "uber.cadence.api.v1.TaskListStatus.IsolationGroupMetricsEntry")
 	proto.RegisterType((*TaskIDBlock)(nil), "uber.cadence.api.v1.TaskIDBlock")
 	proto.RegisterType((*PollerInfo)(nil), "uber.cadence.api.v1.PollerInfo")
 	proto.RegisterType((*StickyExecutionAttributes)(nil), "uber.cadence.api.v1.StickyExecutionAttributes")
+	proto.RegisterType((*TaskListPartition)(nil), "uber.cadence.api.v1.TaskListPartition")
 	proto.RegisterType((*TaskListPartitionConfig)(nil), "uber.cadence.api.v1.TaskListPartitionConfig")
+	proto.RegisterMapType((map[int32]*TaskListPartition)(nil), "uber.cadence.api.v1.TaskListPartitionConfig.ReadPartitionsEntry")
+	proto.RegisterMapType((map[int32]*TaskListPartition)(nil), "uber.cadence.api.v1.TaskListPartitionConfig.WritePartitionsEntry")
 }
 
 func init() {
@@ -592,59 +738,73 @@ func init() {
 }
 
 var fileDescriptor_216fa006947e00a0 = []byte{
-	// 833 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x54, 0xdd, 0x52, 0xe3, 0x36,
-	0x14, 0xae, 0x09, 0xec, 0x82, 0x28, 0xac, 0x57, 0xfb, 0x03, 0xc9, 0x76, 0x29, 0xf5, 0xc5, 0x0e,
-	0xb3, 0xd3, 0x3a, 0x85, 0x4e, 0xaf, 0x7a, 0xd1, 0x09, 0x09, 0xd3, 0xf5, 0x10, 0xb2, 0x19, 0xc7,
-	0xd0, 0xa1, 0x37, 0xaa, 0x62, 0x89, 0xa0, 0xb1, 0x2d, 0x79, 0x24, 0x39, 0xc0, 0x83, 0xb4, 0x0f,
-	0xd3, 0x27, 0xe8, 0x65, 0x1f, 0xa1, 0xc3, 0x55, 0x1f, 0xa3, 0x23, 0xd9, 0x0e, 0x29, 0x49, 0xf7,
-	0x4e, 0x3a, 0xdf, 0xf9, 0xce, 0xef, 0x27, 0x01, 0xaf, 0x18, 0x53, 0xd9, 0x8e, 0x31, 0xa1, 0x3c,
-	0xa6, 0x6d, 0x9c, 0xb3, 0xf6, 0xf4, 0xb0, 0xad, 0xb1, 0x4a, 0x52, 0xa6, 0xb4, 0x9f, 0x4b, 0xa1,
-	0x05, 0x7c, 0x61, 0x7c, 0xfc, 0xca, 0xc7, 0xc7, 0x39, 0xf3, 0xa7, 0x87, 0xad, 0xbd, 0x89, 0x10,
-	0x93, 0x94, 0xb6, 0xad, 0xcb, 0xb8, 0xb8, 0x6a, 0x93, 0x42, 0x62, 0xcd, 0x04, 0x2f, 0x49, 0xad,
-	0x2f, 0x1f, 0xe3, 0x9a, 0x65, 0x54, 0x69, 0x9c, 0xe5, 0x95, 0xc3, 0x42, 0x80, 0x1b, 0x89, 0xf3,
-	0x9c, 0x4a, 0x55, 0xe2, 0xde, 0x39, 0x58, 0x8f, 0xb0, 0x4a, 0xfa, 0x4c, 0x69, 0x08, 0xc1, 0x2a,
-	0xc7, 0x19, 0xdd, 0x75, 0xf6, 0x9d, 0x83, 0x8d, 0xd0, 0x9e, 0xe1, 0xf7, 0x60, 0x35, 0x61, 0x9c,
-	0xec, 0xae, 0xec, 0x3b, 0x07, 0xdb, 0x47, 0x5f, 0xf9, 0x4b, 0x8a, 0xf4, 0xeb, 0x00, 0xa7, 0x8c,
-	0x93, 0xd0, 0xba, 0x7b, 0x18, 0xb8, 0xb5, 0xf5, 0x8c, 0x6a, 0x4c, 0xb0, 0xc6, 0xf0, 0x0c, 0xbc,
-	0xcc, 0xf0, 0x2d, 0x32, 0x6d, 0x2b, 0x94, 0x53, 0x89, 0x14, 0x8d, 0x05, 0x27, 0x36, 0xdd, 0xe6,
-	0xd1, 0x17, 0x7e, 0x59, 0xa9, 0x5f, 0x57, 0xea, 0xf7, 0x44, 0x31, 0x4e, 0xe9, 0x05, 0x4e, 0x0b,
-	0x1a, 0x3e, 0xcf, 0xf0, 0xad, 0x09, 0xa8, 0x86, 0x54, 0x8e, 0x2c, 0xcd, 0x3b, 0x07, 0xcd, 0x3a,
-	0xc5, 0x10, 0x4b, 0xcd, 0xcc, 0x54, 0x66, 0xb9, 0x5c, 0xd0, 0x48, 0xe8, 0x5d, 0xd5, 0x89, 0x39,
-	0xc2, 0x77, 0xe0, 0x99, 0xb8, 0xe1, 0x54, 0xa2, 0x6b, 0xa1, 0x34, 0xb2, 0x7d, 0xae, 0x58, 0x74,
-	0xcb, 0x9a, 0x3f, 0x08, 0xa5, 0x07, 0x38, 0xa3, 0xde, 0x3f, 0x0e, 0xd8, 0xae, 0xe3, 0x8e, 0x34,
-	0xd6, 0x85, 0x82, 0x5f, 0x03, 0x38, 0xc6, 0x71, 0x92, 0x8a, 0x09, 0x8a, 0x45, 0xc1, 0x35, 0xba,
-	0x66, 0x5c, 0xdb, 0xd8, 0x8d, 0xd0, 0xad, 0x90, 0xae, 0x01, 0x3e, 0x30, 0xae, 0xe1, 0x5b, 0x00,
-	0x24, 0xc5, 0x04, 0xa5, 0x74, 0x4a, 0x53, 0x9b, 0xa3, 0x11, 0x6e, 0x18, 0x4b, 0xdf, 0x18, 0xe0,
-	0x1b, 0xb0, 0x81, 0xe3, 0xa4, 0x42, 0x1b, 0x16, 0x5d, 0xc7, 0x71, 0x52, 0x82, 0xef, 0xc0, 0x33,
-	0x89, 0x35, 0x9d, 0x9f, 0xce, 0xea, 0xbe, 0x73, 0xe0, 0x84, 0x5b, 0xc6, 0x3c, 0xeb, 0x1d, 0xf6,
-	0xc0, 0x96, 0x19, 0x23, 0x62, 0x04, 0x8d, 0x53, 0x11, 0x27, 0xbb, 0x6b, 0x76, 0x86, 0xfb, 0xff,
-	0xbb, 0x9e, 0xa0, 0x77, 0x6c, 0xfc, 0xc2, 0x4d, 0x43, 0x0b, 0x88, 0xbd, 0x78, 0x3f, 0x82, 0xcd,
-	0x39, 0x0c, 0x36, 0xc1, 0xba, 0xd2, 0x58, 0x6a, 0xc4, 0x48, 0xd5, 0xdc, 0x53, 0x7b, 0x0f, 0x08,
-	0x7c, 0x05, 0x9e, 0x50, 0x4e, 0x0c, 0x50, 0xf6, 0xb3, 0x46, 0x39, 0x09, 0x88, 0xf7, 0xbb, 0x03,
-	0xc0, 0x50, 0xa4, 0x29, 0x95, 0x01, 0xbf, 0x12, 0xb0, 0x07, 0xdc, 0x14, 0x2b, 0x8d, 0x70, 0x1c,
-	0x53, 0xa5, 0x90, 0x91, 0x62, 0xb5, 0xdc, 0xd6, 0xc2, 0x72, 0xa3, 0x5a, 0xa7, 0xe1, 0xb6, 0xe1,
-	0x74, 0x2c, 0xc5, 0x18, 0x61, 0x0b, 0xac, 0x33, 0x42, 0xb9, 0x66, 0xfa, 0xae, 0xda, 0xd0, 0xec,
-	0xbe, 0x6c, 0x3e, 0x8d, 0x25, 0xf3, 0xf1, 0xfe, 0x70, 0x40, 0x73, 0xa4, 0x59, 0x9c, 0xdc, 0x9d,
-	0xdc, 0xd2, 0xb8, 0x30, 0xd2, 0xe8, 0x68, 0x2d, 0xd9, 0xb8, 0xd0, 0x54, 0xc1, 0x9f, 0x80, 0x7b,
-	0x23, 0x64, 0x42, 0xa5, 0xd5, 0x22, 0x32, 0x6f, 0xb0, 0xaa, 0xf3, 0xed, 0x27, 0xf5, 0x1d, 0x6e,
-	0x97, 0xb4, 0xd9, 0x83, 0x89, 0x40, 0x53, 0xc5, 0xd7, 0x94, 0x14, 0x29, 0x45, 0x5a, 0xa0, 0x72,
-	0x7a, 0xa6, 0x6d, 0x51, 0x68, 0x5b, 0xfb, 0xe6, 0x51, 0x73, 0x51, 0xd6, 0xd5, 0x0b, 0x0e, 0x5f,
-	0xd7, 0xdc, 0x48, 0x8c, 0x0c, 0x33, 0x2a, 0x89, 0xde, 0x6f, 0x0e, 0xd8, 0x59, 0x50, 0x76, 0x57,
-	0xf0, 0x2b, 0x36, 0x81, 0xbb, 0xe0, 0xe9, 0x94, 0x4a, 0xc5, 0x04, 0xaf, 0x57, 0x54, 0x5d, 0xa1,
-	0x0f, 0x5e, 0xf0, 0x22, 0x43, 0x56, 0x7a, 0x79, 0xcd, 0x52, 0xb6, 0x8a, 0xb5, 0xf0, 0x39, 0x2f,
-	0xb2, 0x90, 0x62, 0x32, 0x0b, 0xa7, 0xe0, 0xb7, 0xe0, 0xa5, 0xf1, 0xbf, 0x91, 0xcc, 0xcc, 0xf3,
-	0x81, 0xd0, 0xb0, 0x04, 0xc8, 0x8b, 0xec, 0x67, 0x03, 0x3d, 0x30, 0xde, 0xff, 0x0a, 0x3e, 0x9f,
-	0x7f, 0xe9, 0xb0, 0x05, 0x5e, 0x47, 0x9d, 0xd1, 0x29, 0xea, 0x07, 0xa3, 0x08, 0x9d, 0x06, 0x83,
-	0x1e, 0x0a, 0x06, 0x17, 0x9d, 0x7e, 0xd0, 0x73, 0x3f, 0x83, 0x4d, 0xf0, 0xea, 0x11, 0x36, 0xf8,
-	0x18, 0x9e, 0x75, 0xfa, 0xae, 0xb3, 0x04, 0x1a, 0x45, 0x41, 0xf7, 0xf4, 0xd2, 0x5d, 0x79, 0x4f,
-	0x1e, 0x32, 0x44, 0x77, 0x39, 0xfd, 0x6f, 0x86, 0xe8, 0x72, 0x78, 0x32, 0x97, 0xe1, 0x0d, 0xd8,
-	0x79, 0x84, 0xf5, 0x4e, 0xba, 0xc1, 0x28, 0xf8, 0x38, 0x70, 0x9d, 0x25, 0x60, 0xa7, 0x1b, 0x05,
-	0x17, 0x41, 0x74, 0xe9, 0xae, 0x1c, 0xb3, 0x3f, 0xef, 0xf7, 0x9c, 0xbf, 0xee, 0xf7, 0x9c, 0xbf,
-	0xef, 0xf7, 0x1c, 0xb0, 0x13, 0x8b, 0x6c, 0xd9, 0xd6, 0x8f, 0xb7, 0x66, 0x3b, 0x30, 0x9b, 0x1b,
-	0x3a, 0xbf, 0x1c, 0x4e, 0x98, 0xbe, 0x2e, 0xc6, 0x7e, 0x2c, 0xb2, 0xf6, 0xfc, 0x7f, 0xfe, 0x0d,
-	0x23, 0x69, 0x7b, 0x22, 0xca, 0x2f, 0xb6, 0xfa, 0xdc, 0x7f, 0xc0, 0x39, 0x9b, 0x1e, 0x8e, 0x9f,
-	0x58, 0xdb, 0x77, 0xff, 0x06, 0x00, 0x00, 0xff, 0xff, 0xe2, 0x25, 0x04, 0x87, 0x00, 0x06, 0x00,
+	// 1057 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x56, 0xdd, 0x4e, 0xe3, 0x46,
+	0x14, 0xae, 0xf3, 0xb3, 0x0b, 0x27, 0x0b, 0x78, 0x67, 0x61, 0x49, 0xb2, 0x5d, 0xca, 0xe6, 0x02,
+	0x51, 0xd4, 0x3a, 0x82, 0xb6, 0x52, 0xd5, 0x56, 0xdb, 0x0d, 0x04, 0xed, 0x5a, 0xfc, 0x2c, 0x72,
+	0xbc, 0x54, 0xf4, 0xc6, 0x9d, 0xd8, 0x43, 0x98, 0xc6, 0xf6, 0x58, 0x9e, 0x71, 0x02, 0x4f, 0xd0,
+	0x37, 0xe8, 0xc3, 0xf4, 0x09, 0x7a, 0x53, 0xa9, 0x8f, 0x50, 0xf1, 0x24, 0xd5, 0x8c, 0x9d, 0x90,
+	0x1f, 0x83, 0xba, 0x17, 0xbd, 0xcb, 0x9c, 0x33, 0xdf, 0x7c, 0xe7, 0x7c, 0xe7, 0x27, 0x86, 0x46,
+	0xd2, 0x25, 0x71, 0xd3, 0xc5, 0x1e, 0x09, 0x5d, 0xd2, 0xc4, 0x11, 0x6d, 0x0e, 0x76, 0x9b, 0x02,
+	0xf3, 0xbe, 0x4f, 0xb9, 0x30, 0xa2, 0x98, 0x09, 0x86, 0x9e, 0xc9, 0x3b, 0x46, 0x76, 0xc7, 0xc0,
+	0x11, 0x35, 0x06, 0xbb, 0xf5, 0x8d, 0x1e, 0x63, 0x3d, 0x9f, 0x34, 0xd5, 0x95, 0x6e, 0x72, 0xd9,
+	0xf4, 0x92, 0x18, 0x0b, 0xca, 0xc2, 0x14, 0x54, 0xff, 0x6c, 0xd6, 0x2f, 0x68, 0x40, 0xb8, 0xc0,
+	0x41, 0x94, 0x5d, 0x98, 0x7b, 0x60, 0x18, 0xe3, 0x28, 0x22, 0x31, 0x4f, 0xfd, 0x8d, 0x0f, 0xb0,
+	0x60, 0x63, 0xde, 0x3f, 0xa6, 0x5c, 0x20, 0x04, 0xa5, 0x10, 0x07, 0xa4, 0xaa, 0x6d, 0x6a, 0xdb,
+	0x8b, 0x96, 0xfa, 0x8d, 0xbe, 0x81, 0x52, 0x9f, 0x86, 0x5e, 0xb5, 0xb0, 0xa9, 0x6d, 0x2f, 0xef,
+	0xbd, 0x32, 0x72, 0x82, 0x34, 0x46, 0x0f, 0x1c, 0xd1, 0xd0, 0xb3, 0xd4, 0xf5, 0x06, 0x06, 0x7d,
+	0x64, 0x3d, 0x21, 0x02, 0x7b, 0x58, 0x60, 0x74, 0x02, 0xab, 0x01, 0xbe, 0x76, 0x64, 0xda, 0xdc,
+	0x89, 0x48, 0xec, 0x70, 0xe2, 0xb2, 0xd0, 0x53, 0x74, 0x95, 0xbd, 0x4f, 0x8d, 0x34, 0x52, 0x63,
+	0x14, 0xa9, 0xd1, 0x66, 0x49, 0xd7, 0x27, 0xe7, 0xd8, 0x4f, 0x88, 0xf5, 0x34, 0xc0, 0xd7, 0xf2,
+	0x41, 0x7e, 0x46, 0xe2, 0x8e, 0x82, 0x35, 0x3e, 0x40, 0x6d, 0x44, 0x71, 0x86, 0x63, 0x41, 0xa5,
+	0x2a, 0x63, 0x2e, 0x1d, 0x8a, 0x7d, 0x72, 0x93, 0x65, 0x22, 0x7f, 0xa2, 0x2d, 0x58, 0x61, 0xc3,
+	0x90, 0xc4, 0xce, 0x15, 0xe3, 0xc2, 0x51, 0x79, 0x16, 0x94, 0x77, 0x49, 0x99, 0xdf, 0x31, 0x2e,
+	0x4e, 0x71, 0x40, 0x1a, 0x7d, 0x58, 0x33, 0x39, 0xf3, 0x95, 0xc8, 0x6f, 0x63, 0x96, 0x44, 0x27,
+	0x44, 0xc4, 0xd4, 0xe5, 0xa8, 0x09, 0xab, 0x21, 0x19, 0xe6, 0x87, 0xaf, 0x59, 0x4f, 0x43, 0x32,
+	0x9c, 0x0e, 0x10, 0xbd, 0x82, 0x27, 0x11, 0xf3, 0x7d, 0x12, 0x3b, 0x2e, 0x4b, 0x42, 0xa1, 0xe8,
+	0x8a, 0x56, 0x25, 0xb5, 0x1d, 0x48, 0x53, 0xe3, 0xb7, 0x12, 0x2c, 0x8f, 0x92, 0xe8, 0x08, 0x2c,
+	0x12, 0x8e, 0xbe, 0x00, 0xd4, 0xc5, 0x6e, 0xdf, 0x67, 0xbd, 0x14, 0xe6, 0x5c, 0xd1, 0x50, 0x28,
+	0x92, 0xa2, 0xa5, 0x67, 0x1e, 0x05, 0x7e, 0x47, 0x43, 0x81, 0x5e, 0x02, 0xc4, 0x04, 0x7b, 0x8e,
+	0x4f, 0x06, 0xc4, 0xcf, 0x18, 0x16, 0xa5, 0xe5, 0x58, 0x1a, 0xd0, 0x0b, 0x58, 0xc4, 0x6e, 0x3f,
+	0xf3, 0x16, 0x95, 0x77, 0x01, 0xbb, 0xfd, 0xd4, 0xb9, 0x05, 0x2b, 0x31, 0x16, 0x64, 0x32, 0x97,
+	0x92, 0xca, 0x65, 0x49, 0x9a, 0xef, 0xf2, 0x68, 0xc3, 0x92, 0x4c, 0xda, 0xa1, 0x9e, 0xd3, 0xf5,
+	0x99, 0xdb, 0xaf, 0x96, 0x55, 0xc1, 0x36, 0xef, 0xed, 0x05, 0xb3, 0xbd, 0x2f, 0xef, 0x59, 0x15,
+	0x09, 0x33, 0x3d, 0x75, 0x40, 0x03, 0x58, 0xa7, 0x23, 0x5d, 0x9d, 0x9e, 0x14, 0xd6, 0x09, 0x52,
+	0x65, 0xab, 0x8f, 0x36, 0x8b, 0xdb, 0x95, 0xbd, 0xd7, 0x0f, 0xf6, 0x56, 0xaa, 0x8e, 0x91, 0x5b,
+	0x9a, 0xc3, 0x50, 0xc4, 0x37, 0xd6, 0x1a, 0xfd, 0xa8, 0xb2, 0x3d, 0xbe, 0xa7, 0x6c, 0x75, 0x01,
+	0xf5, 0xfb, 0x59, 0x72, 0x1a, 0xeb, 0x0d, 0x94, 0x07, 0xb2, 0x47, 0x95, 0xfa, 0x95, 0xbd, 0x9d,
+	0xdc, 0x34, 0x72, 0x5f, 0xb4, 0x52, 0xe0, 0x77, 0x85, 0x6f, 0xb5, 0xc6, 0x8f, 0x50, 0x99, 0x90,
+	0x0e, 0xd5, 0x60, 0x81, 0x0b, 0x1c, 0x0b, 0x87, 0x7a, 0x59, 0xed, 0x1f, 0xab, 0xb3, 0xe9, 0xa1,
+	0x35, 0x78, 0x44, 0x42, 0x4f, 0x3a, 0xd2, 0x72, 0x97, 0x49, 0xe8, 0x99, 0x5e, 0xe3, 0x77, 0x0d,
+	0xe0, 0x4c, 0xb5, 0x96, 0x19, 0x5e, 0x32, 0xd4, 0x06, 0xdd, 0xc7, 0x5c, 0x38, 0xd8, 0x75, 0x09,
+	0xe7, 0x8e, 0x5c, 0x0b, 0xd9, 0xa0, 0xd5, 0xe7, 0x06, 0xcd, 0x1e, 0xed, 0x0c, 0x6b, 0x59, 0x62,
+	0x5a, 0x0a, 0x22, 0x8d, 0xa8, 0x0e, 0x0b, 0xd4, 0x23, 0xa1, 0xa0, 0xe2, 0x26, 0x9b, 0x96, 0xf1,
+	0x39, 0xaf, 0x7d, 0x8a, 0x39, 0xed, 0xd3, 0xf8, 0x43, 0x83, 0x5a, 0x47, 0x50, 0xb7, 0x7f, 0x73,
+	0x78, 0x4d, 0xdc, 0x44, 0x8a, 0xd0, 0x12, 0x22, 0xa6, 0xdd, 0x44, 0x10, 0x8e, 0xde, 0x82, 0x3e,
+	0x64, 0x71, 0x9f, 0xc4, 0xaa, 0x42, 0x8e, 0xdc, 0x87, 0x59, 0x9c, 0x2f, 0x1f, 0xec, 0x07, 0x6b,
+	0x39, 0x85, 0x8d, 0x97, 0x97, 0x0d, 0x35, 0xee, 0x5e, 0x11, 0x2f, 0xf1, 0x89, 0x23, 0x98, 0x93,
+	0xaa, 0x27, 0xd3, 0x66, 0x89, 0xc8, 0x4a, 0x53, 0x9b, 0x5f, 0x31, 0xd9, 0x36, 0xb5, 0x9e, 0x8f,
+	0xb0, 0x36, 0xeb, 0x48, 0xa4, 0x9d, 0x02, 0x1b, 0xaf, 0xe1, 0xe9, 0xdc, 0x92, 0x41, 0x9f, 0x83,
+	0x3e, 0xd3, 0xca, 0xbc, 0xaa, 0x6d, 0x16, 0xb7, 0x17, 0xad, 0x95, 0xe9, 0x1e, 0xe4, 0x8d, 0xbf,
+	0x4a, 0xb0, 0x3e, 0xf7, 0xc0, 0x01, 0x0b, 0x2f, 0x69, 0x0f, 0x55, 0xe1, 0xf1, 0x80, 0xc4, 0x9c,
+	0xb2, 0x70, 0x54, 0xe2, 0xec, 0x88, 0xf6, 0xe0, 0x59, 0x98, 0x04, 0x8e, 0x9a, 0xec, 0x68, 0x84,
+	0xe2, 0x2a, 0x8b, 0xf2, 0x7e, 0xa1, 0x2a, 0xdb, 0x36, 0x09, 0x2c, 0x82, 0xbd, 0xf1, 0x93, 0x1c,
+	0x7d, 0x0d, 0xab, 0x12, 0x33, 0x8c, 0xa9, 0xac, 0xc9, 0x1d, 0xa8, 0x38, 0x06, 0xa1, 0x30, 0x09,
+	0x7e, 0x92, 0xee, 0x09, 0x14, 0x85, 0x95, 0x59, 0x96, 0x92, 0x9a, 0xc6, 0x37, 0x0f, 0xaa, 0x3f,
+	0x93, 0x8a, 0x31, 0x1d, 0x4b, 0x3a, 0x8f, 0xcb, 0xf1, 0x74, 0x80, 0x3e, 0xe8, 0x73, 0xc1, 0x95,
+	0x15, 0x57, 0xeb, 0xa3, 0xb8, 0x66, 0x52, 0x48, 0xc9, 0x56, 0x86, 0xd3, 0xd6, 0x3a, 0x85, 0x67,
+	0x39, 0x41, 0x4d, 0x8e, 0x6f, 0x39, 0x1d, 0xdf, 0x1f, 0xa6, 0xc7, 0x77, 0xeb, 0xbf, 0xc5, 0x32,
+	0x31, 0xba, 0xf5, 0x5f, 0x61, 0x35, 0x2f, 0xa6, 0xff, 0x83, 0x6b, 0xe7, 0x17, 0x78, 0x32, 0xf9,
+	0x6f, 0x8b, 0xea, 0xf0, 0xdc, 0x6e, 0x75, 0x8e, 0x9c, 0x63, 0xb3, 0x63, 0x3b, 0x47, 0xe6, 0x69,
+	0xdb, 0x31, 0x4f, 0xcf, 0x5b, 0xc7, 0x66, 0x5b, 0xff, 0x04, 0xd5, 0x60, 0x6d, 0xc6, 0x77, 0xfa,
+	0xde, 0x3a, 0x69, 0x1d, 0xeb, 0x5a, 0x8e, 0xab, 0x63, 0x9b, 0x07, 0x47, 0x17, 0x7a, 0x61, 0xc7,
+	0xbb, 0x63, 0xb0, 0x6f, 0x22, 0x32, 0xcd, 0x60, 0x5f, 0x9c, 0x1d, 0x4e, 0x30, 0xbc, 0x80, 0xf5,
+	0x19, 0x5f, 0xfb, 0xf0, 0xc0, 0xec, 0x98, 0xef, 0x4f, 0x75, 0x2d, 0xc7, 0xd9, 0x3a, 0xb0, 0xcd,
+	0x73, 0xd3, 0xbe, 0xd0, 0x0b, 0xfb, 0xf4, 0xcf, 0xdb, 0x0d, 0xed, 0xef, 0xdb, 0x0d, 0xed, 0x9f,
+	0xdb, 0x0d, 0x0d, 0xd6, 0x5d, 0x16, 0xe4, 0x69, 0xb1, 0xbf, 0x34, 0x16, 0x43, 0x4e, 0xec, 0x99,
+	0xf6, 0xf3, 0x6e, 0x8f, 0x8a, 0xab, 0xa4, 0x6b, 0xb8, 0x2c, 0x68, 0x4e, 0x7e, 0x53, 0x7d, 0x49,
+	0x3d, 0xbf, 0xd9, 0x63, 0xe9, 0x67, 0x4e, 0xf6, 0x81, 0xf5, 0x3d, 0x8e, 0xe8, 0x60, 0xb7, 0xfb,
+	0x48, 0xd9, 0xbe, 0xfa, 0x37, 0x00, 0x00, 0xff, 0xff, 0xf3, 0xc8, 0x47, 0x6b, 0x84, 0x09, 0x00,
 	0x00,
 }
 
@@ -767,6 +927,44 @@ func (m *TaskListPartitionMetadata) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
+func (m *IsolationGroupMetrics) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *IsolationGroupMetrics) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *IsolationGroupMetrics) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.PollerCount != 0 {
+		i = encodeVarintTasklist(dAtA, i, uint64(m.PollerCount))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.NewTasksPerSecond != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.NewTasksPerSecond))))
+		i--
+		dAtA[i] = 0x9
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *TaskListStatus) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -790,6 +988,38 @@ func (m *TaskListStatus) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.XXX_unrecognized != nil {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.NewTasksPerSecond != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.NewTasksPerSecond))))
+		i--
+		dAtA[i] = 0x39
+	}
+	if len(m.IsolationGroupMetrics) > 0 {
+		for k := range m.IsolationGroupMetrics {
+			v := m.IsolationGroupMetrics[k]
+			baseI := i
+			if v != nil {
+				{
+					size, err := v.MarshalToSizedBuffer(dAtA[:i])
+					if err != nil {
+						return 0, err
+					}
+					i -= size
+					i = encodeVarintTasklist(dAtA, i, uint64(size))
+				}
+				i--
+				dAtA[i] = 0x12
+			}
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintTasklist(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintTasklist(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x32
+		}
 	}
 	if m.TaskIdBlock != nil {
 		{
@@ -967,6 +1197,42 @@ func (m *StickyExecutionAttributes) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
+func (m *TaskListPartition) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TaskListPartition) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *TaskListPartition) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.IsolationGroups) > 0 {
+		for iNdEx := len(m.IsolationGroups) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.IsolationGroups[iNdEx])
+			copy(dAtA[i:], m.IsolationGroups[iNdEx])
+			i = encodeVarintTasklist(dAtA, i, uint64(len(m.IsolationGroups[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *TaskListPartitionConfig) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -990,6 +1256,54 @@ func (m *TaskListPartitionConfig) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	if m.XXX_unrecognized != nil {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.WritePartitions) > 0 {
+		for k := range m.WritePartitions {
+			v := m.WritePartitions[k]
+			baseI := i
+			if v != nil {
+				{
+					size, err := v.MarshalToSizedBuffer(dAtA[:i])
+					if err != nil {
+						return 0, err
+					}
+					i -= size
+					i = encodeVarintTasklist(dAtA, i, uint64(size))
+				}
+				i--
+				dAtA[i] = 0x12
+			}
+			i = encodeVarintTasklist(dAtA, i, uint64(k))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarintTasklist(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x2a
+		}
+	}
+	if len(m.ReadPartitions) > 0 {
+		for k := range m.ReadPartitions {
+			v := m.ReadPartitions[k]
+			baseI := i
+			if v != nil {
+				{
+					size, err := v.MarshalToSizedBuffer(dAtA[:i])
+					if err != nil {
+						return 0, err
+					}
+					i -= size
+					i = encodeVarintTasklist(dAtA, i, uint64(size))
+				}
+				i--
+				dAtA[i] = 0x12
+			}
+			i = encodeVarintTasklist(dAtA, i, uint64(k))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarintTasklist(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x22
+		}
 	}
 	if m.NumWritePartitions != 0 {
 		i = encodeVarintTasklist(dAtA, i, uint64(m.NumWritePartitions))
@@ -1075,6 +1389,24 @@ func (m *TaskListPartitionMetadata) Size() (n int) {
 	return n
 }
 
+func (m *IsolationGroupMetrics) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.NewTasksPerSecond != 0 {
+		n += 9
+	}
+	if m.PollerCount != 0 {
+		n += 1 + sovTasklist(uint64(m.PollerCount))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
 func (m *TaskListStatus) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1096,6 +1428,22 @@ func (m *TaskListStatus) Size() (n int) {
 	if m.TaskIdBlock != nil {
 		l = m.TaskIdBlock.Size()
 		n += 1 + l + sovTasklist(uint64(l))
+	}
+	if len(m.IsolationGroupMetrics) > 0 {
+		for k, v := range m.IsolationGroupMetrics {
+			_ = k
+			_ = v
+			l = 0
+			if v != nil {
+				l = v.Size()
+				l += 1 + sovTasklist(uint64(l))
+			}
+			mapEntrySize := 1 + len(k) + sovTasklist(uint64(len(k))) + l
+			n += mapEntrySize + 1 + sovTasklist(uint64(mapEntrySize))
+		}
+	}
+	if m.NewTasksPerSecond != 0 {
+		n += 9
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -1164,6 +1512,24 @@ func (m *StickyExecutionAttributes) Size() (n int) {
 	return n
 }
 
+func (m *TaskListPartition) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.IsolationGroups) > 0 {
+		for _, s := range m.IsolationGroups {
+			l = len(s)
+			n += 1 + l + sovTasklist(uint64(l))
+		}
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
 func (m *TaskListPartitionConfig) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1178,6 +1544,32 @@ func (m *TaskListPartitionConfig) Size() (n int) {
 	}
 	if m.NumWritePartitions != 0 {
 		n += 1 + sovTasklist(uint64(m.NumWritePartitions))
+	}
+	if len(m.ReadPartitions) > 0 {
+		for k, v := range m.ReadPartitions {
+			_ = k
+			_ = v
+			l = 0
+			if v != nil {
+				l = v.Size()
+				l += 1 + sovTasklist(uint64(l))
+			}
+			mapEntrySize := 1 + sovTasklist(uint64(k)) + l
+			n += mapEntrySize + 1 + sovTasklist(uint64(mapEntrySize))
+		}
+	}
+	if len(m.WritePartitions) > 0 {
+		for k, v := range m.WritePartitions {
+			_ = k
+			_ = v
+			l = 0
+			if v != nil {
+				l = v.Size()
+				l += 1 + sovTasklist(uint64(l))
+			}
+			mapEntrySize := 1 + sovTasklist(uint64(k)) + l
+			n += mapEntrySize + 1 + sovTasklist(uint64(mapEntrySize))
+		}
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -1495,6 +1887,87 @@ func (m *TaskListPartitionMetadata) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *IsolationGroupMetrics) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTasklist
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: IsolationGroupMetrics: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: IsolationGroupMetrics: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NewTasksPerSecond", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.NewTasksPerSecond = float64(math.Float64frombits(v))
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PollerCount", wireType)
+			}
+			m.PollerCount = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTasklist
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.PollerCount |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTasklist(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTasklist
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *TaskListStatus) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1628,6 +2101,146 @@ func (m *TaskListStatus) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsolationGroupMetrics", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTasklist
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTasklist
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTasklist
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.IsolationGroupMetrics == nil {
+				m.IsolationGroupMetrics = make(map[string]*IsolationGroupMetrics)
+			}
+			var mapkey string
+			var mapvalue *IsolationGroupMetrics
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowTasklist
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowTasklist
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthTasklist
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey < 0 {
+						return ErrInvalidLengthTasklist
+					}
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var mapmsglen int
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowTasklist
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						mapmsglen |= int(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					if mapmsglen < 0 {
+						return ErrInvalidLengthTasklist
+					}
+					postmsgIndex := iNdEx + mapmsglen
+					if postmsgIndex < 0 {
+						return ErrInvalidLengthTasklist
+					}
+					if postmsgIndex > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = &IsolationGroupMetrics{}
+					if err := mapvalue.Unmarshal(dAtA[iNdEx:postmsgIndex]); err != nil {
+						return err
+					}
+					iNdEx = postmsgIndex
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipTasklist(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthTasklist
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.IsolationGroupMetrics[mapkey] = mapvalue
+			iNdEx = postIndex
+		case 7:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NewTasksPerSecond", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.NewTasksPerSecond = float64(math.Float64frombits(v))
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTasklist(dAtA[iNdEx:])
@@ -1992,6 +2605,89 @@ func (m *StickyExecutionAttributes) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *TaskListPartition) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTasklist
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TaskListPartition: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TaskListPartition: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsolationGroups", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTasklist
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTasklist
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTasklist
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.IsolationGroups = append(m.IsolationGroups, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTasklist(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTasklist
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *TaskListPartitionConfig) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -2078,6 +2774,236 @@ func (m *TaskListPartitionConfig) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ReadPartitions", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTasklist
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTasklist
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTasklist
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.ReadPartitions == nil {
+				m.ReadPartitions = make(map[int32]*TaskListPartition)
+			}
+			var mapkey int32
+			var mapvalue *TaskListPartition
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowTasklist
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowTasklist
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						mapkey |= int32(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+				} else if fieldNum == 2 {
+					var mapmsglen int
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowTasklist
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						mapmsglen |= int(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					if mapmsglen < 0 {
+						return ErrInvalidLengthTasklist
+					}
+					postmsgIndex := iNdEx + mapmsglen
+					if postmsgIndex < 0 {
+						return ErrInvalidLengthTasklist
+					}
+					if postmsgIndex > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = &TaskListPartition{}
+					if err := mapvalue.Unmarshal(dAtA[iNdEx:postmsgIndex]); err != nil {
+						return err
+					}
+					iNdEx = postmsgIndex
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipTasklist(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthTasklist
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.ReadPartitions[mapkey] = mapvalue
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WritePartitions", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTasklist
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTasklist
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTasklist
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.WritePartitions == nil {
+				m.WritePartitions = make(map[int32]*TaskListPartition)
+			}
+			var mapkey int32
+			var mapvalue *TaskListPartition
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowTasklist
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowTasklist
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						mapkey |= int32(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+				} else if fieldNum == 2 {
+					var mapmsglen int
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowTasklist
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						mapmsglen |= int(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					if mapmsglen < 0 {
+						return ErrInvalidLengthTasklist
+					}
+					postmsgIndex := iNdEx + mapmsglen
+					if postmsgIndex < 0 {
+						return ErrInvalidLengthTasklist
+					}
+					if postmsgIndex > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = &TaskListPartition{}
+					if err := mapvalue.Unmarshal(dAtA[iNdEx:postmsgIndex]); err != nil {
+						return err
+					}
+					iNdEx = postmsgIndex
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipTasklist(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
+						return ErrInvalidLengthTasklist
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.WritePartitions[mapkey] = mapvalue
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTasklist(dAtA[iNdEx:])

@@ -1635,12 +1635,19 @@ struct ListTaskListPartitionsResponse {
   20: optional list<TaskListPartitionMetadata> decisionTaskListPartitions
 }
 
+struct IsolationGroupMetrics {
+  10: optional double newTasksPerSecond
+  20: optional i64 (js.type = "Long") pollerCount
+}
+
 struct TaskListStatus {
   10: optional i64 (js.type = "Long") backlogCountHint
   20: optional i64 (js.type = "Long") readLevel
   30: optional i64 (js.type = "Long") ackLevel
   35: optional double ratePerSecond
   40: optional TaskIDBlock taskIDBlock
+  50: optional map<string, IsolationGroupMetrics> isolationGroupMetrics
+  60: optional double newTasksPerSecond
 }
 
 struct TaskIDBlock {
