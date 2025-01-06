@@ -87,7 +87,7 @@ message SyncActivityTaskAttributes {
 }
 
 message HistoryTaskV2Attributes {
-  int64 task_id = 1;
+  int64 task_id = 1 [deprecated = true];
   string domain_id = 2;
   api.v1.WorkflowExecution workflow_execution = 3;
   repeated VersionHistoryItem version_history_items = 4;
