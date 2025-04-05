@@ -1359,6 +1359,7 @@ struct GetWorkflowExecutionHistoryRequest {
   50: optional bool waitForNewEvent
   60: optional HistoryEventFilterType HistoryEventFilterType
   70: optional bool skipArchival
+  80: optional QueryConsistencyLevel queryConsistencyLevel
 }
 
 struct GetWorkflowExecutionHistoryResponse {
@@ -1553,6 +1554,7 @@ struct WorkflowQueryResult {
 struct DescribeWorkflowExecutionRequest {
   10: optional string domain
   20: optional WorkflowExecution execution
+  30: optional QueryConsistencyLevel queryConsistencyLevel
 }
 
 struct PendingActivityInfo {

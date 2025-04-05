@@ -322,8 +322,9 @@ type TaskListStatus struct {
 	ReadLevel        int64 `protobuf:"varint,2,opt,name=read_level,json=readLevel,proto3" json:"read_level,omitempty"`
 	AckLevel         int64 `protobuf:"varint,3,opt,name=ack_level,json=ackLevel,proto3" json:"ack_level,omitempty"`
 	// The rate at which tasks may be dispatched according to poller configuration
-	RatePerSecond         float64                           `protobuf:"fixed64,4,opt,name=rate_per_second,json=ratePerSecond,proto3" json:"rate_per_second,omitempty"`
-	TaskIdBlock           *TaskIDBlock                      `protobuf:"bytes,5,opt,name=task_id_block,json=taskIdBlock,proto3" json:"task_id_block,omitempty"`
+	RatePerSecond float64      `protobuf:"fixed64,4,opt,name=rate_per_second,json=ratePerSecond,proto3" json:"rate_per_second,omitempty"`
+	TaskIdBlock   *TaskIDBlock `protobuf:"bytes,5,opt,name=task_id_block,json=taskIdBlock,proto3" json:"task_id_block,omitempty"`
+	// Mapping of isolation groups to metrics about that group within this partition
 	IsolationGroupMetrics map[string]*IsolationGroupMetrics `protobuf:"bytes,6,rep,name=isolation_group_metrics,json=isolationGroupMetrics,proto3" json:"isolation_group_metrics,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// The rate at which tasks are being added to this partition
 	NewTasksPerSecond    float64  `protobuf:"fixed64,7,opt,name=new_tasks_per_second,json=newTasksPerSecond,proto3" json:"new_tasks_per_second,omitempty"`
@@ -588,6 +589,8 @@ func (m *StickyExecutionAttributes) GetScheduleToStartTimeout() *types.Duration 
 }
 
 type TaskListPartition struct {
+	// The isolation groups that this partition is assigned.
+	// Null/empty indicates that the partition should accept all isolation groups.
 	IsolationGroups      []string `protobuf:"bytes,1,rep,name=isolation_groups,json=isolationGroups,proto3" json:"isolation_groups,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -635,10 +638,12 @@ func (m *TaskListPartition) GetIsolationGroups() []string {
 }
 
 type TaskListPartitionConfig struct {
-	Version              int64                        `protobuf:"varint,1,opt,name=version,proto3" json:"version,omitempty"`
-	NumReadPartitions    int32                        `protobuf:"varint,2,opt,name=num_read_partitions,json=numReadPartitions,proto3" json:"num_read_partitions,omitempty"`    // Deprecated: Do not use.
-	NumWritePartitions   int32                        `protobuf:"varint,3,opt,name=num_write_partitions,json=numWritePartitions,proto3" json:"num_write_partitions,omitempty"` // Deprecated: Do not use.
-	ReadPartitions       map[int32]*TaskListPartition `protobuf:"bytes,4,rep,name=read_partitions,json=readPartitions,proto3" json:"read_partitions,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Version            int64 `protobuf:"varint,1,opt,name=version,proto3" json:"version,omitempty"`
+	NumReadPartitions  int32 `protobuf:"varint,2,opt,name=num_read_partitions,json=numReadPartitions,proto3" json:"num_read_partitions,omitempty"`    // Deprecated: Do not use.
+	NumWritePartitions int32 `protobuf:"varint,3,opt,name=num_write_partitions,json=numWritePartitions,proto3" json:"num_write_partitions,omitempty"` // Deprecated: Do not use.
+	// Mapping of TaskList PartitionIDs to metadata for reading tasks
+	ReadPartitions map[int32]*TaskListPartition `protobuf:"bytes,4,rep,name=read_partitions,json=readPartitions,proto3" json:"read_partitions,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	// Mapping of TaskList PartitionIDs to metadata for writing tasks
 	WritePartitions      map[int32]*TaskListPartition `protobuf:"bytes,5,rep,name=write_partitions,json=writePartitions,proto3" json:"write_partitions,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}                     `json:"-"`
 	XXX_unrecognized     []byte                       `json:"-"`

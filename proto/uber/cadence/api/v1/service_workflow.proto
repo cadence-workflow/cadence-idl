@@ -229,6 +229,8 @@ message TerminateWorkflowExecutionResponse {
 message DescribeWorkflowExecutionRequest {
   string domain = 1;
   WorkflowExecution workflow_execution = 2;
+  // QueryConsistencyLevel is used to override the default cluster configured read-pattern for this query.
+  QueryConsistencyLevel query_consistency_level = 3;
 }
 
 message DescribeWorkflowExecutionResponse {
@@ -244,6 +246,7 @@ message QueryWorkflowRequest {
   WorkflowExecution workflow_execution = 2;
   WorkflowQuery query = 3;
   QueryRejectCondition query_reject_condition = 4;
+  // QueryConsistencyLevel is used to override the default cluster configured read-pattern for this query.
   QueryConsistencyLevel query_consistency_level = 5;
 }
 
@@ -299,6 +302,8 @@ message GetWorkflowExecutionHistoryRequest {
   bool wait_for_new_event = 5;
   EventFilterType history_event_filter_type = 6;
   bool skip_archival = 7;
+  // QueryConsistencyLevel is used to override the default cluster configured read-pattern for this query.
+  QueryConsistencyLevel query_consistency_level = 8;
 }
 
 message GetWorkflowExecutionHistoryResponse {

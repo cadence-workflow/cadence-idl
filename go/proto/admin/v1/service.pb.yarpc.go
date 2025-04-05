@@ -597,18 +597,12 @@ func NewFxAdminAPIYARPCProcedures() interface{} {
 				Server:      params.Server,
 				AnyResolver: params.AnyResolver,
 			}),
-			ReflectionMeta: AdminAPIReflectionMeta,
+			ReflectionMeta: reflection.ServerMeta{
+				ServiceName:     "uber.cadence.admin.v1.AdminAPI",
+				FileDescriptors: yarpcFileDescriptorClosurec6fc96d64a8b67fd,
+			},
 		}
 	}
-}
-
-// AdminAPIReflectionMeta is the reflection server metadata
-// required for using the gRPC reflection protocol with YARPC.
-//
-// See https://github.com/grpc/grpc/blob/master/doc/server-reflection.md.
-var AdminAPIReflectionMeta = reflection.ServerMeta{
-	ServiceName:     "uber.cadence.admin.v1.AdminAPI",
-	FileDescriptors: yarpcFileDescriptorClosurec6fc96d64a8b67fd,
 }
 
 type _AdminAPIYARPCCaller struct {
