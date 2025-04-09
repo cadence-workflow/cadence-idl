@@ -2034,3 +2034,49 @@ struct AutoConfigHint {
   10: optional bool enableAutoConfig
   20: optional i64 pollerWaitTimeInMs
 }
+
+enum PredicateType {
+  UNIVERSAL
+  EMPTY
+  DOMAIN_ID
+}
+
+struct Predicate {
+  10: optional PredicateType predicateType
+  20: optional UniversalPredicateAttributes universalPredicateAttributes
+  30: optional EmptyPredicateAttributes emptyPredicateAttributes
+  40: optional DomainIDPredicateAttributes domainIDPredicateAttributes
+}
+
+
+struct UniversalPredicateAttributes {}
+
+struct EmptyPredicateAttributes {}
+
+struct DomainIDPredicateAttributes {
+  10: optional list<string> domainIDs
+  20: optional bool isExclusive
+}
+
+struct QueueState {
+  10: optional map<int64, VirtualQueueState> virtualQueueStates
+}
+
+struct VirtualQueueState {
+  10: optional list<VirtualSliceState> virtualSliceStates
+}
+
+struct VirtualSliceState {
+  10: optional Predicate predicate
+  20: optional TaskRange taskRange
+}
+
+struct TaskRange {
+  10: optional TaskKey inclusiveMin
+  20: optional TaskKey exclusiveMax
+}
+
+struct TaskKey {
+  10: optional i64 scheduledTimeNano
+  20: optional i64 taskID
+}
