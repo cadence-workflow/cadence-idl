@@ -42,6 +42,7 @@ struct ShardInfo {
   56: optional string timerProcessingQueueStatesEncoding
   60: optional binary crossClusterProcessingQueueStates
   61: optional string crossClusterProcessingQueueStatesEncoding
+  64: optional map<i32, shared.QueueState> queueStates
 }
 
 struct DomainInfo {

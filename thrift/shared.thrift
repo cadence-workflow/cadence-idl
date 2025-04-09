@@ -2034,3 +2034,26 @@ struct AutoConfigHint {
   10: optional bool enableAutoConfig
   20: optional i64 pollerWaitTimeInMs
 }
+
+struct QueueState {
+  10: optional map<i64, VirtualQueueState> virtualQueueStates
+  20: optional TaskKey exclusiveMaxReadLevel
+}
+
+struct VirtualQueueState {
+  10: optional list<VirtualSliceState> virtualSliceStates
+}
+
+struct VirtualSliceState {
+  10: optional TaskRange taskRange
+}
+
+struct TaskRange {
+  10: optional TaskKey inclusiveMin
+  20: optional TaskKey exclusiveMax
+}
+
+struct TaskKey {
+  10: optional i64 scheduledTimeNano
+  20: optional i64 taskID
+}
