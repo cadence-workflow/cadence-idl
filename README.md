@@ -7,4 +7,4 @@ Cadence IDL repo, shared by:
 
 ## License
 
-MIT License, please see [LICENSE](https://github.com/uber/cadence-idl/blob/master/LICENSE) for details.
+Apache 2.0 License, please see [LICENSE](https://github.com/uber/cadence-idl/blob/master/LICENSE) for details.
