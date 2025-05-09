@@ -51,6 +51,13 @@ service DomainAPI {
   // it cannot be used to start new workflow executions.  Existing workflow executions will continue to run on
   // deprecated domains.
   rpc DeprecateDomain(DeprecateDomainRequest) returns (DeprecateDomainResponse);
+
+  // DeleteDomain permanently removes a domain record. This operation:
+  // - Requires domain to be in DEPRECATED status
+  // - Cannot be performed on domains with running workflows
+  // - Is irreversible and removes all domain data
+  // - Requires proper permissions and security token
+  rpc DeleteDomain(DeleteDomainRequest) returns (DeleteDomainResponse);
 }
 
 message RegisterDomainRequest {
@@ -103,6 +110,14 @@ message DeprecateDomainRequest {
 }
 
 message DeprecateDomainResponse {
+}
+
+message DeleteDomainRequest {
+  string security_token = 1;
+  string name = 2;
+}
+
+message DeleteDomainResponse {
 }
 
 message DescribeDomainRequest {
