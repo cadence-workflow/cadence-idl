@@ -1144,6 +1144,11 @@ struct DeprecateDomainRequest {
  20: optional string securityToken
 }
 
+struct DeleteDomainRequest {
+ 10: optional string name
+ 20: optional string securityToken
+}
+
 struct StartWorkflowExecutionRequest {
   10: optional string domain
   20: optional string workflowId

@@ -99,6 +99,21 @@ service WorkflowService {
     )
 
   /**
+  * DeleteDomain permanently removes a domain record. This operation:
+  * - Requires domain to be in DEPRECATED status
+  * - Cannot be performed on domains with running workflows
+  * - Is irreversible and removes all domain data
+  * - Requires proper permissions and security token
+  **/
+  void DeleteDomain(1: shared.DeleteDomainRequest deleteRequest)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.ServiceBusyError serviceBusyError,
+      3: shared.ClientVersionNotSupportedError clientVersionNotSupportedError,
+      4: shared.AccessDeniedError accessDeniedError,
+    )
+
+  /**
   * RestartWorkflowExecution restarts a previous workflow
   * If the workflow is currently running it will terminate and restart
   **/
