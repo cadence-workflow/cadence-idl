@@ -50,6 +50,8 @@ exception EntityNotExistsError {
   1: required string message
   2: optional string currentCluster
   3: optional string activeCluster
+  // activeClusters is a list of active clusters for active-active domain
+  4: required list<string> activeClusters
 }
 
 exception ServiceBusyError {
@@ -70,6 +72,8 @@ exception DomainNotActiveError {
   2: required string domainName
   3: required string currentCluster
   4: required string activeCluster
+  // activeClusters is a list of active clusters for active-active domain
+  5: required list<string> activeClusters
 }
 
 exception LimitExceededError {
@@ -1075,8 +1079,25 @@ struct ClusterReplicationConfiguration {
 }
 
 struct DomainReplicationConfiguration {
+ // activeClusterName is the name of the active cluster for active-passive domain
  10: optional string activeClusterName
+
+ //  clusters is list of all active and passive clusters of domain
  20: optional list<ClusterReplicationConfiguration> clusters
+
+ // activeClusters contains active cluster(s) information for active-active domain
+ 30: optional ActiveClusters activeClusters
+}
+
+struct ActiveClusters {
+  // activeClusters is a map of region name to active cluster info for active-active domain
+  10: optional map<string, ActiveClusterInfo> activeClustersByRegion
+}
+
+// ActiveClusterInfo contains the configuration of active-active domain's active cluster/region
+struct ActiveClusterInfo {
+  10: optional string activeClusterName
+  20: optional i64 (js.type = "Long") failoverVersion
 }
 
 struct RegisterDomainRequest {
@@ -1087,6 +1108,8 @@ struct RegisterDomainRequest {
   50: optional bool emitMetric = true
   60: optional list<ClusterReplicationConfiguration> clusters
   70: optional string activeClusterName
+  // activeClusters is a map of region name to active cluster name for active-active domain
+  75: optional map<string, string> activeClustersByRegion
   // A key-value map for any customized purpose
   80: optional map<string,string> data
   90: optional string securityToken

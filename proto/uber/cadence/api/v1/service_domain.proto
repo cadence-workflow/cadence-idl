@@ -74,6 +74,7 @@ message RegisterDomainRequest {
   string history_archival_uri = 11;
   ArchivalStatus visibility_archival_status = 12;
   string visibility_archival_uri = 13;
+  ActiveClusters active_clusters = 14;
 }
 
 message RegisterDomainResponse {
@@ -98,6 +99,7 @@ message UpdateDomainRequest {
   repeated ClusterReplicationConfiguration clusters = 21;
   string delete_bad_binary = 22;
   google.protobuf.Duration failover_timeout = 23;
+  ActiveClusters active_clusters = 24;
 }
 
 message UpdateDomainResponse {
