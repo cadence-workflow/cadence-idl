@@ -43,7 +43,7 @@ struct DomainTaskAttributes {
   10: optional string id
   20: optional shared.DomainInfo info
   30: optional shared.DomainConfiguration config
-  40: optional shared.DomainReplicationConfiguration replicationConf ig
+  40: optional shared.DomainReplicationConfiguration replicationConfig
   50: optional i64 (js.type = "Long") configVersion
   60: optional i64 (js.type = "Long") failoverVersion
   70: optional i64 (js.type = "Long") previousFailoverVersion
