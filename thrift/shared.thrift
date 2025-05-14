@@ -1090,11 +1090,11 @@ struct DomainReplicationConfiguration {
 }
 
 struct ActiveClusters {
-  // activeClusters is a map of region name to active cluster info for active-active domain
+  // activeClustersByRegion is a map of region name to active cluster info for active-active domain
   10: optional map<string, ActiveClusterInfo> activeClustersByRegion
 }
 
-// ActiveClusterInfo contains the configuration of active-active domain's active cluster/region
+// ActiveClusterInfo contains the configuration of active-active domain's active cluster & failover version for a specific region
 struct ActiveClusterInfo {
   10: optional string activeClusterName
   20: optional i64 (js.type = "Long") failoverVersion
