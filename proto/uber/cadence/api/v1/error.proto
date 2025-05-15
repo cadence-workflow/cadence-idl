@@ -35,6 +35,7 @@ message WorkflowExecutionAlreadyStartedError {
 message EntityNotExistsError {
   string current_cluster = 1;
   string active_cluster = 2;
+  repeated string active_clusters = 3;
 }
 
 message WorkflowExecutionAlreadyCompletedError {
@@ -43,7 +44,7 @@ message WorkflowExecutionAlreadyCompletedError {
 message DomainNotActiveError {
   string domain = 1;
   string current_cluster = 2;
-  string active_cluster = 3;
+  repeated string active_clusters = 3;
 }
 
 message ClientVersionNotSupportedError {

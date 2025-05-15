@@ -74,7 +74,7 @@ message RegisterDomainRequest {
   string history_archival_uri = 11;
   ArchivalStatus visibility_archival_status = 12;
   string visibility_archival_uri = 13;
-  ActiveClusters active_clusters = 14;
+  map<string, string> active_clusters_by_region = 14;
 }
 
 message RegisterDomainResponse {
