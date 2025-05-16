@@ -44,7 +44,8 @@ message WorkflowExecutionAlreadyCompletedError {
 message DomainNotActiveError {
   string domain = 1;
   string current_cluster = 2;
-  repeated string active_clusters = 3;
+  string active_cluster = 3;
+  repeated string active_clusters = 4;
 }
 
 message ClientVersionNotSupportedError {
