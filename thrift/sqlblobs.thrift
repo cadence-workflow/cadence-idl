@@ -59,7 +59,6 @@ struct DomainInfo {
   30: optional i64 (js.type = "Long") failoverNotificationVersion
   32: optional i64 (js.type = "Long") failoverVersion
   34: optional string activeClusterName
-  35: optional shared.ActiveClusters activeClusters
   36: optional list<string> clusters
   38: optional map<string, string> data
   39: optional binary badBinaries
@@ -75,6 +74,8 @@ struct DomainInfo {
   58: optional string isolationGroupsConfigurationEncoding
   60: optional binary asyncWorkflowConfiguration
   62: optional string asyncWorkflowConfigurationEncoding
+  64: optional binary activeClustersConfiguration
+  66: optional string activeClustersConfigurationEncoding
 }
 
 struct HistoryTreeInfo {
