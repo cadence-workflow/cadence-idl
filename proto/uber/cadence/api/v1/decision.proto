@@ -120,6 +120,7 @@ message ContinueAsNewWorkflowExecutionDecisionAttributes {
   SearchAttributes search_attributes = 14;
   google.protobuf.Duration jitter_start = 15;
   CronOverlapPolicy cron_overlap_policy = 16;
+  ActiveClusterSelectionPolicy active_cluster_selection_policy = 17;
 }
 
 message StartChildWorkflowExecutionDecisionAttributes {
@@ -139,6 +140,7 @@ message StartChildWorkflowExecutionDecisionAttributes {
   Memo memo = 14;
   SearchAttributes search_attributes = 15;
   CronOverlapPolicy cron_overlap_policy = 16;
+  ActiveClusterSelectionPolicy active_cluster_selection_policy = 17;
 }
 
 message SignalExternalWorkflowExecutionDecisionAttributes {

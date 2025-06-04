@@ -142,6 +142,7 @@ message StartWorkflowExecutionRequest {
   google.protobuf.Duration jitter_start = 17;
   google.protobuf.Timestamp first_run_at = 18;
   CronOverlapPolicy cron_overlap_policy = 19;
+  ActiveClusterSelectionPolicy active_cluster_selection_policy = 20;
 }
 
 message StartWorkflowExecutionResponse {

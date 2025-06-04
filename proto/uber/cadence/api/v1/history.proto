@@ -117,6 +117,7 @@ message WorkflowExecutionStartedEventAttributes {
   map<string, string> partition_config = 24;
   string request_id = 25;
   CronOverlapPolicy cron_overlap_policy = 26;
+  ActiveClusterSelectionPolicy active_cluster_selection_policy = 27;
 }
 
 message WorkflowExecutionCompletedEventAttributes {
@@ -395,6 +396,7 @@ message StartChildWorkflowExecutionInitiatedEventAttributes {
   google.protobuf.Duration jitter_start = 19;
   google.protobuf.Timestamp first_run_at = 20;
   CronOverlapPolicy cron_overlap_policy = 21;
+  ActiveClusterSelectionPolicy active_cluster_selection_policy = 22;
 }
 
 message StartChildWorkflowExecutionFailedEventAttributes {

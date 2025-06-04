@@ -531,6 +531,7 @@ struct ContinueAsNewWorkflowExecutionDecisionAttributes {
   150: optional SearchAttributes searchAttributes
   160: optional i32 jitterStartSeconds
   170: optional CronOverlapPolicy cronOverlapPolicy
+  180: optional ActiveClusterSelectionPolicy activeClusterSelectionPolicy
 }
 
 struct StartChildWorkflowExecutionDecisionAttributes {
@@ -551,6 +552,7 @@ struct StartChildWorkflowExecutionDecisionAttributes {
   140: optional Memo memo
   150: optional SearchAttributes searchAttributes
   160: optional CronOverlapPolicy cronOverlapPolicy
+  170: optional ActiveClusterSelectionPolicy activeClusterSelectionPolicy
 }
 
 struct Decision {
@@ -601,6 +603,7 @@ struct WorkflowExecutionStartedEventAttributes {
   150: optional map<string, string> partitionConfig
   160: optional string requestId
   170: optional CronOverlapPolicy cronOverlapPolicy
+  180: optional ActiveClusterSelectionPolicy activeClusterSelectionPolicy
 }
 
 struct ResetPoints{
@@ -906,6 +909,7 @@ struct StartChildWorkflowExecutionInitiatedEventAttributes {
   180: optional i32 jitterStartSeconds
   190: optional i64 (js.type = "Long") firstRunAtTimestamp
   200: optional CronOverlapPolicy cronOverlapPolicy
+  210: optional ActiveClusterSelectionPolicy activeClusterSelectionPolicy
 }
 
 struct StartChildWorkflowExecutionFailedEventAttributes {
@@ -1205,6 +1209,7 @@ struct StartWorkflowExecutionRequest {
   170: optional i32 jitterStartSeconds
   180: optional i64 (js.type = "Long") firstRunAtTimestamp
   190: optional CronOverlapPolicy cronOverlapPolicy
+  200: optional ActiveClusterSelectionPolicy activeClusterSelectionPolicy
 }
 
 struct StartWorkflowExecutionResponse {
@@ -1443,6 +1448,7 @@ struct SignalWithStartWorkflowExecutionRequest {
   190: optional i32 jitterStartSeconds
   200: optional i64 (js.type = "Long") firstRunAtTimestamp
   210: optional CronOverlapPolicy cronOverlapPolicy
+  220: optional ActiveClusterSelectionPolicy activeClusterSelectionPolicy
 }
 
 struct SignalWithStartWorkflowExecutionAsyncRequest {
@@ -2100,4 +2106,23 @@ struct TaskRange {
 struct TaskKey {
   10: optional i64 scheduledTimeNano
   20: optional i64 taskID
+}
+
+struct ActiveClusterSelectionPolicy {
+  10: optional ActiveClusterSelectionStrategy strategy
+
+  // sticky_region is the region sticky if strategy is ACTIVE_CLUSTER_SELECTION_STRATEGY_REGION_STICKY
+  // This is the default strategy for active-active domains and region would be set to receiver cluster's region if not specified.
+  20: optional string stickyRegion
+
+  // external_entity_type/external_entity_key is the type/key of the external entity if strategy is ACTIVE_CLUSTER_SELECTION_STRATEGY_EXTERNAL_ENTITY
+  // external entity type must be one of the supported types in active cluster manager. Custom ones can be added by implementing the corresponding interface.
+  30: optional string externalEntityType
+  40: optional string externalEntityKey
+}
+
+enum ActiveClusterSelectionStrategy {
+  ACTIVE_CLUSTER_SELECTION_STRATEGY_INVALID = 0;
+  ACTIVE_CLUSTER_SELECTION_STRATEGY_REGION_STICKY = 1;
+  ACTIVE_CLUSTER_SELECTION_STRATEGY_EXTERNAL_ENTITY = 2;
 }

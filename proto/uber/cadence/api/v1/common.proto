@@ -135,3 +135,22 @@ message AsyncWorkflowConfiguration {
   // queue_config is the configuration for the queue if predefined_queue_name is not used
   DataBlob queue_config = 4;
 }
+
+enum ActiveClusterSelectionStrategy {
+  ACTIVE_CLUSTER_SELECTION_STRATEGY_INVALID = 0;
+  ACTIVE_CLUSTER_SELECTION_STRATEGY_REGION_STICKY = 1;
+  ACTIVE_CLUSTER_SELECTION_STRATEGY_EXTERNAL_ENTITY = 2;
+}
+
+message ActiveClusterSelectionPolicy {
+  ActiveClusterSelectionStrategy strategy = 1;
+
+  // sticky_region is the region sticky if strategy is ACTIVE_CLUSTER_SELECTION_STRATEGY_REGION_STICKY
+  // This is the default strategy for active-active domains and region would be set to receiver cluster's region if not specified.
+  string sticky_region = 2;
+
+  // external_entity_type/external_entity_key is the type/key of the external entity if strategy is ACTIVE_CLUSTER_SELECTION_STRATEGY_EXTERNAL_ENTITY
+  // external entity type must be one of the supported types in active cluster manager. Custom ones can be added by implementing the corresponding interface.
+  string external_entity_type = 3;
+  string external_entity_key = 4;
+}

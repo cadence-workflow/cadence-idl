@@ -149,6 +149,7 @@ struct WorkflowExecutionInfo {
   130: optional binary checksum
   132: optional string checksumEncoding
   134: optional shared.CronOverlapPolicy cronOverlapPolicy
+  136: optional shared.ActiveClusterSelectionPolicy activeClusterSelectionPolicy
 }
 
 struct ActivityInfo {
