@@ -2122,7 +2122,7 @@ struct ActiveClusterSelectionPolicy {
 }
 
 enum ActiveClusterSelectionStrategy {
-  ACTIVE_CLUSTER_SELECTION_STRATEGY_INVALID = 0;
-  ACTIVE_CLUSTER_SELECTION_STRATEGY_REGION_STICKY = 1;
-  ACTIVE_CLUSTER_SELECTION_STRATEGY_EXTERNAL_ENTITY = 2;
+  Invalid,
+  RegionSticky,
+  ExternalEntity,
 }
