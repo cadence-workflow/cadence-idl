@@ -317,6 +317,7 @@ enum HistoryEventFilterType {
 enum TaskListKind {
   NORMAL,
   STICKY,
+  EPHEMERAL,
 }
 
 enum ArchivalStatus {
@@ -417,6 +418,7 @@ struct WorkflowExecutionInfo {
   101: optional SearchAttributes searchAttributes
   110: optional ResetPoints autoResetPoints
   120: optional string taskList
+  121: optional TaskList taskListInfo
   130: optional bool isCron
   140: optional i64 (js.type = "Long") updateTime
   150: optional map<string, string> partitionConfig
@@ -1651,6 +1653,8 @@ struct DescribeTaskListRequest {
 struct DescribeTaskListResponse {
   10: optional list<PollerInfo> pollers
   20: optional TaskListStatus taskListStatus
+  // The TaskList being described
+  30: optional TaskList taskList
 }
 
 struct GetTaskListsByDomainRequest {

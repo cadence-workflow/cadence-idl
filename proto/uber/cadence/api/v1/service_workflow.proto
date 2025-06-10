@@ -267,6 +267,8 @@ message DescribeTaskListResponse {
   repeated PollerInfo pollers = 1;
   TaskListStatus task_list_status = 2;
   TaskListPartitionConfig partition_config = 3;
+  // The TaskList being described
+  TaskList task_list = 4;
 }
 
 message GetTaskListsByDomainRequest {

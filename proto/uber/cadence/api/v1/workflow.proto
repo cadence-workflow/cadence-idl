@@ -45,10 +45,12 @@ message WorkflowExecutionInfo {
   SearchAttributes search_attributes = 10;
   ResetPoints auto_reset_points = 11;
   string task_list = 12;
+  TaskList task_list_info = 17;
   bool is_cron = 13;
   google.protobuf.Timestamp update_time = 14;
   map<string, string> partition_config = 15;
   CronOverlapPolicy cron_overlap_policy = 16;
+  // Next id: 18
 }
 
 message WorkflowExecutionConfiguration {

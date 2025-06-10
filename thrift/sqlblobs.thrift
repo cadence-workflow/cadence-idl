@@ -93,6 +93,7 @@ struct WorkflowExecutionInfo {
   20: optional binary completionEvent
   22: optional string completionEventEncoding
   24: optional string taskList
+  25: optional shared.TaskListKind taskListKind
   26: optional string workflowTypeName
   28: optional i32 workflowTimeoutSeconds
   30: optional i32 decisionTaskTimeoutSeconds
