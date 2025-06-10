@@ -50,7 +50,7 @@ message WorkflowExecutionInfo {
   google.protobuf.Timestamp update_time = 14;
   map<string, string> partition_config = 15;
   CronOverlapPolicy cron_overlap_policy = 16;
-  // Next id: 18
+  ActiveClusterSelectionPolicy active_cluster_selection_policy = 18;
 }
 
 message WorkflowExecutionConfiguration {
