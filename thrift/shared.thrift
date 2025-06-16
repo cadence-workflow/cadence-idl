@@ -423,6 +423,7 @@ struct WorkflowExecutionInfo {
   140: optional i64 (js.type = "Long") updateTime
   150: optional map<string, string> partitionConfig
   160: optional CronOverlapPolicy cronOverlapPolicy
+  170: optional ActiveClusterSelectionPolicy activeClusterSelectionPolicy
 }
 
 struct WorkflowExecutionConfiguration {
