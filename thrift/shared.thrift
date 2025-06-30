@@ -1701,6 +1701,7 @@ struct TaskListStatus {
   40: optional TaskIDBlock taskIDBlock
   50: optional map<string, IsolationGroupMetrics> isolationGroupMetrics
   60: optional double newTasksPerSecond
+  70: optional bool empty
 }
 
 struct TaskIDBlock {

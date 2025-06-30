@@ -77,6 +77,8 @@ message TaskListStatus {
   map<string, IsolationGroupMetrics> isolation_group_metrics = 6;
   // The rate at which tasks are being added to this partition
   double new_tasks_per_second = 7;
+  // Whether the TaskList has any remaining Tasks
+  bool empty = 8;
 }
 
 message TaskIDBlock {
