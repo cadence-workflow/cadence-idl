@@ -51,7 +51,7 @@ exception EntityNotExistsError {
   2: optional string currentCluster
   3: optional string activeCluster
   // activeClusters is a list of active clusters for active-active domain
-  4: optional list<string> activeClusters
+  4: required list<string> activeClusters
 }
 
 exception ServiceBusyError {
