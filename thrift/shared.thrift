@@ -2098,6 +2098,7 @@ struct VirtualQueueState {
 
 struct VirtualSliceState {
   10: optional TaskRange taskRange
+  20: optional Predicate predicate
 }
 
 struct TaskRange {
@@ -2126,4 +2127,44 @@ struct ActiveClusterSelectionPolicy {
 enum ActiveClusterSelectionStrategy {
   REGION_STICKY,
   EXTERNAL_ENTITY,
+}
+
+enum PredicateType {
+  Universal,
+  Empty,
+  And,
+  Or,
+  Not,
+  DomainID,
+}
+
+struct UniversalPredicateAttributes {}
+
+struct EmptyPredicateAttributes {}
+
+struct AndPredicateAttributes {
+  10: optional list<Predicate> predicates
+}
+
+struct OrPredicateAttributes {
+  10: optional list<Predicate> predicates
+}
+
+struct NotPredicateAttributes {
+  10: optional Predicate predicate
+}
+
+struct DomainIDPredicateAttributes {
+  10: optional list<string> domainIDs
+  20: optional bool isExclusive
+}
+
+struct Predicate {
+  10: optional PredicateType predicateType
+  20: optional UniversalPredicateAttributes universalPredicateAttributes
+  30: optional EmptyPredicateAttributes emptyPredicateAttributes
+  40: optional AndPredicateAttributes andPredicateAttributes
+  50: optional OrPredicateAttributes orPredicateAttributes
+  60: optional NotPredicateAttributes notPredicateAttributes
+  70: optional DomainIDPredicateAttributes domainIDPredicateAttributes
 }
