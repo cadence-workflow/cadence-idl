@@ -47,7 +47,7 @@ proto-lint: $(PROTO_FILES) $(BIN)/$(BUF_VERSION_BIN)
 # https://www.grpc.io/docs/languages/go/quickstart/
 # protoc-gen-gogofast (yarpc) are versioned via tools.go + go.mod (built above) and will be rebuilt as needed.
 # changing PROTOC_VERSION will automatically download and use the specified version
-PROTOC_VERSION = 29.5
+PROTOC_VERSION = 29.1
 # Normalize architecture names for protobuf releases
 PROTOC_ARCH = $(subst arm64,aarch_64,$(subst aarch64,aarch_64,$(ARCH)))
 PROTOC_URL = https://github.com/protocolbuffers/protobuf/releases/download/v$(PROTOC_VERSION)/protoc-$(PROTOC_VERSION)-$(subst Darwin,osx,$(OS))-$(PROTOC_ARCH).zip
