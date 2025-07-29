@@ -89,7 +89,23 @@ proto-go: $(PROTO_FILES) $(BIN)/$(PROTOC_VERSION_BIN) $(BIN)/protoc-gen-gogofast
 	@mv $(PROTO_GO_OUT)/uber/cadence/* $(PROTO_GO_OUT)
 	@rm -r $(PROTO_GO_OUT)/uber
 
-all: proto-lint proto-go
+PROTO_PYTHON_OUT := python/proto
+proto-python: $(PROTO_FILES) $(BIN)/$(PROTOC_VERSION_BIN)
+	@mkdir -p $(PROTO_PYTHON_OUT)
+	@echo "protoc python..."
+	@$(foreach PROTO_DIR,$(PROTO_DIRS),$(EMULATE_X86) $(BIN)/$(PROTOC_VERSION_BIN) \
+		-I=$(PROTO_ROOT) \
+		-I=$(PROTOC_UNZIP_DIR)/include \
+		--python_out=$(PROTO_PYTHON_OUT) \
+		--pyi_out=$(PROTO_PYTHON_OUT) \
+		$$(find $(PROTO_DIR) -name '*.proto');\
+	)
+	@rm -rf $(PROTO_PYTHON_OUT)/api
+	@rm -rf $(PROTO_PYTHON_OUT)/admin
+	@mv $(PROTO_PYTHON_OUT)/uber/cadence/* $(PROTO_PYTHON_OUT)
+	@rm -rf $(PROTO_PYTHON_OUT)/uber
+
+all: proto-lint proto-go proto-python
 
 # generally not necessary unless we change library versions, but this DOES impact codegen
 # formatting because it inherits that from the version of Go used to build tools.
