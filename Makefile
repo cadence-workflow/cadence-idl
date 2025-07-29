@@ -48,7 +48,9 @@ proto-lint: $(PROTO_FILES) $(BIN)/$(BUF_VERSION_BIN)
 # protoc-gen-gogofast (yarpc) are versioned via tools.go + go.mod (built above) and will be rebuilt as needed.
 # changing PROTOC_VERSION will automatically download and use the specified version
 PROTOC_VERSION = 29.5
-PROTOC_URL = https://github.com/protocolbuffers/protobuf/releases/download/v$(PROTOC_VERSION)/protoc-$(PROTOC_VERSION)-$(subst Darwin,osx,$(OS))-$(subst arm64,aarch_64,$(ARCH)).zip
+# Normalize architecture names for protobuf releases
+PROTOC_ARCH = $(subst arm64,aarch_64,$(subst aarch64,aarch_64,$(ARCH)))
+PROTOC_URL = https://github.com/protocolbuffers/protobuf/releases/download/v$(PROTOC_VERSION)/protoc-$(PROTOC_VERSION)-$(subst Darwin,osx,$(OS))-$(PROTOC_ARCH).zip
 # the zip contains an /include folder that we need to use to learn the well-known types
 PROTOC_UNZIP_DIR = $(BIN)/protoc-$(PROTOC_VERSION)-zip
 # use PROTOC_VERSION_BIN as a bin prerequisite, not "protoc", so the correct version will be used.
