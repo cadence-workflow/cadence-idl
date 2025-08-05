@@ -174,6 +174,7 @@ struct ActivityInfo {
   44: optional i32 timerTaskStatus
   46: optional i32 attempt
   48: optional string taskList
+  49: optional shared.TaskListKind taskListKind
   50: optional string startedIdentity
   52: optional bool hasRetryPolicy
   54: optional i32 retryInitialIntervalSeconds
