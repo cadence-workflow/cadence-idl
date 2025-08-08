@@ -287,6 +287,8 @@ message WorkflowExecutionContinuedAsNewEventAttributes {
   Header header = 12;
   Memo memo = 13;
   SearchAttributes search_attributes = 14;
+  CronOverlapPolicy cron_overlap_policy = 15;
+  ActiveClusterSelectionPolicy active_cluster_selection_policy = 16;
 }
 
 message WorkflowExecutionCancelRequestedEventAttributes {

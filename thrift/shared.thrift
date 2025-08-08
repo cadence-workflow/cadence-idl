@@ -657,6 +657,8 @@ struct WorkflowExecutionContinuedAsNewEventAttributes {
   130: optional Header header
   140: optional Memo memo
   150: optional SearchAttributes searchAttributes
+  160: optional CronOverlapPolicy cronOverlapPolicy
+  170: optional ActiveClusterSelectionPolicy activeClusterSelectionPolicy
 }
 
 struct DecisionTaskScheduledEventAttributes {
