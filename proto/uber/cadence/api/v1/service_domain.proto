@@ -47,6 +47,9 @@ service DomainAPI {
   // UpdateDomain is used to update the information and configuration for a registered domain.
   rpc UpdateDomain(UpdateDomainRequest) returns (UpdateDomainResponse);
 
+  // UpdateDomain is used to update the information and configuration for a registered domain.
+  rpc UpdateDomainReplicationConfig(UpdateDomainReplicationConfigRequest) returns (UpdateDomainReplicationConfigResponse);
+
   // DeprecateDomain us used to update status of a registered domain to DEPRECATED.  Once the domain is deprecated
   // it cannot be used to start new workflow executions.  Existing workflow executions will continue to run on
   // deprecated domains.
@@ -103,6 +106,19 @@ message UpdateDomainRequest {
 }
 
 message UpdateDomainResponse {
+  Domain domain = 1;
+}
+
+message UpdateDomainReplicationConfigRequest {
+  string name = 1;
+
+  string active_cluster_name = 10;
+  repeated ClusterReplicationConfiguration clusters = 11;
+  google.protobuf.Duration failover_timeout = 12;
+  ActiveClusters active_clusters = 13;
+}
+
+message UpdateDomainReplicationConfigResponse {
   Domain domain = 1;
 }
 

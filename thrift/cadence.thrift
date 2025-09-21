@@ -84,6 +84,19 @@ service WorkflowService {
       )
 
   /**
+  * UpdateDomainReplicationConfig is used to update the replication configuration for a registered domain.
+  **/
+  shared.UpdateDomainReplicationConfigResponse UpdateDomainReplicationConfig(1: shared.UpdateDomainReplicationConfigRequest updateRequest)
+      throws (
+        1: shared.BadRequestError badRequestError,
+        3: shared.EntityNotExistsError entityNotExistError,
+        4: shared.ServiceBusyError serviceBusyError,
+        5: shared.DomainNotActiveError domainNotActiveError,
+        6: shared.ClientVersionNotSupportedError clientVersionNotSupportedError,
+        7: shared.AccessDeniedError accessDeniedError,
+      )
+
+  /**
   * DeprecateDomain us used to update status of a registered domain to DEPRECATED.  Once the domain is deprecated
   * it cannot be used to start new workflow executions.  Existing workflow executions will continue to run on
   * deprecated domains.

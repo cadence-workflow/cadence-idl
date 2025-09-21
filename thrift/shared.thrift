@@ -1181,6 +1181,22 @@ struct UpdateDomainResponse {
   50: optional bool isGlobalDomain
 }
 
+struct UpdateDomainReplicationConfigRequest {
+ 10: optional string name
+ 20: optional string activeClusterName
+ 30: optional list<ClusterReplicationConfiguration> clusters
+ 40: optional ActiveClusters activeClusters
+ 50: optional i32 failoverTimeoutInSeconds
+}
+
+struct UpdateDomainReplicationConfigResponse {
+  10: optional DomainInfo domainInfo
+  20: optional DomainConfiguration configuration
+  30: optional DomainReplicationConfiguration replicationConfiguration
+  40: optional i64 (js.type = "Long") failoverVersion
+  50: optional bool isGlobalDomain
+}
+
 struct DeprecateDomainRequest {
  10: optional string name
  20: optional string securityToken
