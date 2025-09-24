@@ -1183,7 +1183,7 @@ struct UpdateDomainResponse {
 
 struct FailoverDomainRequest {
  10: optional string name
- 20: optional string activeClusterName
+ 20: optional ActiveClusters activeClusters
 }
 
 struct FailoverDomainResponse {

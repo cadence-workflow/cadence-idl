@@ -111,7 +111,7 @@ message UpdateDomainResponse {
 
 message FailoverDomainRequest {
   string name = 1;
-  string active_cluster_name = 10;
+  ActiveClusters active_clusters = 10;
 }
 
 message FailoverDomainResponse {
