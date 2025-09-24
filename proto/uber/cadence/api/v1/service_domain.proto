@@ -113,7 +113,6 @@ message UpdateDomainReplicationConfigRequest {
   string name = 1;
 
   string active_cluster_name = 10;
-  repeated ClusterReplicationConfiguration clusters = 11;
   google.protobuf.Duration failover_timeout = 12;
   ActiveClusters active_clusters = 13;
 }

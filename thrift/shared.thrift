@@ -1184,9 +1184,8 @@ struct UpdateDomainResponse {
 struct UpdateDomainReplicationConfigRequest {
  10: optional string name
  20: optional string activeClusterName
- 30: optional list<ClusterReplicationConfiguration> clusters
- 40: optional ActiveClusters activeClusters
- 50: optional i32 failoverTimeoutInSeconds
+ 30: optional ActiveClusters activeClusters
+ 40: optional i32 failoverTimeoutInSeconds
 }
 
 struct UpdateDomainReplicationConfigResponse {
