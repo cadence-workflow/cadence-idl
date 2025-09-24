@@ -84,9 +84,9 @@ service WorkflowService {
       )
 
   /**
-  * UpdateDomainReplicationConfig is used to update the replication configuration for a registered domain.
+  * FailoverDomain is used to failover a registered domain to different cluster.
   **/
-  shared.UpdateDomainReplicationConfigResponse UpdateDomainReplicationConfig(1: shared.UpdateDomainReplicationConfigRequest updateRequest)
+  shared.FailoverDomainResponse FailoverDomain(1: shared.FailoverDomainRequest failoverRequest)
       throws (
         1: shared.BadRequestError badRequestError,
         3: shared.EntityNotExistsError entityNotExistError,

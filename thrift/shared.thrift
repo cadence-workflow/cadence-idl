@@ -1181,14 +1181,12 @@ struct UpdateDomainResponse {
   50: optional bool isGlobalDomain
 }
 
-struct UpdateDomainReplicationConfigRequest {
+struct FailoverDomainRequest {
  10: optional string name
  20: optional string activeClusterName
- 30: optional ActiveClusters activeClusters
- 40: optional i32 failoverTimeoutInSeconds
 }
 
-struct UpdateDomainReplicationConfigResponse {
+struct FailoverDomainResponse {
   10: optional DomainInfo domainInfo
   20: optional DomainConfiguration configuration
   30: optional DomainReplicationConfiguration replicationConfiguration
