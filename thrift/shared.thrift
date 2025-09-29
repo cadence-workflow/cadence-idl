@@ -1182,8 +1182,8 @@ struct UpdateDomainResponse {
 }
 
 struct FailoverDomainRequest {
- 10: optional string name
- 20: optional ActiveClusters activeClusters
+ 10: optional string domainName
+ 20: optional string domainActiveClusterName
 }
 
 struct FailoverDomainResponse {
