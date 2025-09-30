@@ -50,8 +50,9 @@ exception EntityNotExistsError {
   1: required string message
   2: optional string currentCluster
   3: optional string activeCluster
+  4: required list<string> activeClusters // todo(david.porter) remove as its disused
   // activeClusters is a list of active clusters for active-active domain
-  4: required list<string> activeClusters
+  5: required ActiveClusters activeClusters
 }
 
 exception ServiceBusyError {
@@ -72,8 +73,10 @@ exception DomainNotActiveError {
   2: required string domainName
   3: required string currentCluster
   4: required string activeCluster
+  5: required list<string> activeClusters // todo (david.porter) remove this field as it's disused
+
   // activeClusters is a list of active clusters for active-active domain
-  5: required list<string> activeClusters
+  6: required ActiveClusters activeClusters
 }
 
 exception LimitExceededError {
@@ -1108,17 +1111,23 @@ struct DomainReplicationConfiguration {
  30: optional ActiveClusters activeClusters
 }
 
+// ClusterAttributeScope is a mapping of the cluster atribute to the scope's
+// current stae and failover version, indicating how recently the change was made
 struct ClusterAttributeScope {
   10: optional map<string, ActiveClusterInfo> clusterAttributes;
 }
 
+// activeClustersByClusterAttribute is a map of whatever subdivision of the domain chosen
+// to active cluster info for active-active domains. The key refers to the type of
+// cluster attribute and the value refers to its cluster mappings
 struct ActiveClusters {
-  // activeClustersByClusterAttribute is a map of whatever subdivision of the domain chosen
-  // to active cluster info for active-active domains
-  10: optional map<string, ClusterAttributeScope> activeClustersByClusterAttribute
+  // todo (david.porter) remove this as it's no longer used
+  10: optional map<string, ActiveClusterInfo> activeClustersByRegion
+  11: optional map<string, ClusterAttributeScope> activeClustersByClusterAttribute
 }
 
-// ActiveClusterInfo contains the configuration of active-active domain's active cluster & failover version for a specific region
+// ActiveClusterInfo contains the configuration of active-active domain's active
+// cluster & failover version for a specific region
 struct ActiveClusterInfo {
   10: optional string activeClusterName
   20: optional i64 (js.type = "Long") failoverVersion
@@ -1132,8 +1141,10 @@ struct RegisterDomainRequest {
   50: optional bool emitMetric = true
   60: optional list<ClusterReplicationConfiguration> clusters
   70: optional string activeClusterName
+  // todo (david.porter) remove this field as it's not going to be used
+  75: optional map<string, string> activeClustersByRegion
   // activeClusters is a map of cluster-attribute name to active cluster name for active-active domain
-  75: optional map<string, string> activeClustersByClusterAttribute
+  76: optional ActiveClusters activeClusters
   // A key-value map for any customized purpose
   80: optional map<string,string> data
   90: optional string securityToken
@@ -2131,13 +2142,31 @@ struct TaskKey {
   20: optional i64 taskID
 }
 
+// ActiveClusterSelectionPolicy is for active-active domains, it serves as a means to select
+// the active cluster, by specifying the attribute by which to divide the workflows
+// in that domain.
 struct ActiveClusterSelectionPolicy {
   1: optional ClusterAttribute clusterAttribute
+
+  10: optional ActiveClusterSelectionStrategy strategy // todo (david.porter) remove these as they're not used anymore
+  20: optional string stickyRegion                     // todo (david.porter) remove these as they're not used anymore
+  30: optional string externalEntityType               // todo (david.porter) remove these as they're not used anymore
+  40: optional string externalEntityKey                // todo (david.porter) remove these as they're not used anymore
 }
 
+// ClusterAttribute is used for subdividing workflows in a domain into their active
+// and passive clusters. Examples of this might be 'region' and 'cluster1' as
+// respective region and scope fields.
 struct ClusterAttribute {
   1: optional string scope
   2: optional string name
+}
+
+// todo (david.porter) Remove this, as it's no longer needed
+// with the active/active configuration we have
+enum ActiveClusterSelectionStrategy {
+  REGION_STICKY,
+  EXTERNAL_ENTITY,
 }
 
 enum PredicateType {

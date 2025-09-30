@@ -89,16 +89,22 @@ enum ArchivalStatus {
   ARCHIVAL_STATUS_ENABLED = 2;
 }
 
+// ActiveClusters contains the configuration of active-active domain's active clusters/regions
 message ActiveClusters {
+  map<string, ActiveClusterInfo> region_to_cluster = 1; // todo (david.porter) to remove as this is no longer used
   map<string, ClusterAttributeScope> active_clusters_by_cluster_attribute = 2;
 }
 
-// ActiveClusters contains the configuration of active-active domain's active clusters/regions
+// ClusterAttributeScope refers to the domain's record of what cluster attributes
+// are allocated to which clusters, indexed by the cluster attribute key (for example region, city)
+// and given a failover identifier to keep track of the most recent updates
 message ClusterAttributeScope {
   map<string, ActiveClusterInfo> cluster_attributes = 1;
 }
 
-// ActiveCluster contains the configuration of active-active domain's active cluster/region
+// ActiveClusterInfo contains information about the cluster that's active for
+// the given cluster-attribute and the failover version, indicating how recent
+// the change was for this attribute
 message ActiveClusterInfo {
   string active_cluster_name = 1;
   int64 failover_version = 2;
