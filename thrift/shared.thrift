@@ -1108,9 +1108,14 @@ struct DomainReplicationConfiguration {
  30: optional ActiveClusters activeClusters
 }
 
+struct ClusterAttributeScope {
+  10: optional map<string, ActiveClusterInfo> clusterAttributes;
+}
+
 struct ActiveClusters {
-  // activeClustersByRegion is a map of region name to active cluster info for active-active domain
-  10: optional map<string, ActiveClusterInfo> activeClustersByRegion
+  // activeClustersByClusterAttribute is a map of whatever subdivision of the domain chosen
+  // to active cluster info for active-active domains
+  10: optional map<string, ClusterAttributeScope> activeClustersByClusterAttribute
 }
 
 // ActiveClusterInfo contains the configuration of active-active domain's active cluster & failover version for a specific region
@@ -1127,8 +1132,8 @@ struct RegisterDomainRequest {
   50: optional bool emitMetric = true
   60: optional list<ClusterReplicationConfiguration> clusters
   70: optional string activeClusterName
-  // activeClusters is a map of region name to active cluster name for active-active domain
-  75: optional map<string, string> activeClustersByRegion
+  // activeClusters is a map of cluster-attribute name to active cluster name for active-active domain
+  75: optional map<string, string> activeClustersByClusterAttribute
   // A key-value map for any customized purpose
   80: optional map<string,string> data
   90: optional string securityToken
@@ -2127,21 +2132,12 @@ struct TaskKey {
 }
 
 struct ActiveClusterSelectionPolicy {
-  10: optional ActiveClusterSelectionStrategy strategy
-
-  // sticky_region is the region sticky if strategy is ACTIVE_CLUSTER_SELECTION_STRATEGY_REGION_STICKY
-  // This is the default strategy for active-active domains and region would be set to receiver cluster's region if not specified.
-  20: optional string stickyRegion
-
-  // external_entity_type/external_entity_key is the type/key of the external entity if strategy is ACTIVE_CLUSTER_SELECTION_STRATEGY_EXTERNAL_ENTITY
-  // external entity type must be one of the supported types in active cluster manager. Custom ones can be added by implementing the corresponding interface.
-  30: optional string externalEntityType
-  40: optional string externalEntityKey
+  1: optional ClusterAttribute clusterAttribute
 }
 
-enum ActiveClusterSelectionStrategy {
-  REGION_STICKY,
-  EXTERNAL_ENTITY,
+struct ClusterAttribute {
+  1: optional string scope
+  2: optional string name
 }
 
 enum PredicateType {
