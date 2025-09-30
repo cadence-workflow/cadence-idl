@@ -83,6 +83,7 @@ func (IsolationGroupState) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_0ff151d4a308b356, []int{1}
 }
 
+// todo (david.porter) to remove as this is no longer used
 type ActiveClusterSelectionStrategy int32
 
 const (
@@ -1054,6 +1055,19 @@ func (*ActiveClusterSelectionPolicy) XXX_OneofWrappers() []interface{} {
 
 // ClusterAttribute refers to a means of dividing the workflows in an active/active domain
 // for example, where they are started or some secondary attribute they're associated with
+// for example, in a start workflow request:
+//
+//	StartWorkflowRequest{
+//	  ActiveClusterSelectionPolicy: {
+//	    ClusterAttribute: {
+//	         Scope: "location",
+//	         Name: "Lisbon"
+//	     }
+//	  }
+//	}
+//
+// this means that this workflow will follow the failover pattern of Lisbon, as it's defined
+// in the domain.
 type ClusterAttribute struct {
 	Scope                string   `protobuf:"bytes,1,opt,name=scope,proto3" json:"scope,omitempty"`
 	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
@@ -1109,7 +1123,7 @@ func (m *ClusterAttribute) GetName() string {
 	return ""
 }
 
-// todo (david.porter) to remove
+// todo (david.porter) to remove as this is no longer used
 type ActiveClusterStickyRegionConfig struct {
 	StickyRegion         string   `protobuf:"bytes,1,opt,name=sticky_region,json=stickyRegion,proto3" json:"sticky_region,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -1157,7 +1171,7 @@ func (m *ActiveClusterStickyRegionConfig) GetStickyRegion() string {
 	return ""
 }
 
-// todo (david.porter) to remove
+// todo (david.porter) to remove as this is no longer used
 type ActiveClusterExternalEntityConfig struct {
 	ExternalEntityType   string   `protobuf:"bytes,1,opt,name=external_entity_type,json=externalEntityType,proto3" json:"external_entity_type,omitempty"`
 	ExternalEntityKey    string   `protobuf:"bytes,2,opt,name=external_entity_key,json=externalEntityKey,proto3" json:"external_entity_key,omitempty"`

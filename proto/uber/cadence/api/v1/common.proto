@@ -136,6 +136,7 @@ message AsyncWorkflowConfiguration {
   DataBlob queue_config = 4;
 }
 
+// todo (david.porter) to remove as this is no longer used
 enum ActiveClusterSelectionStrategy {
   ACTIVE_CLUSTER_SELECTION_STRATEGY_INVALID = 0;
   ACTIVE_CLUSTER_SELECTION_STRATEGY_REGION_STICKY = 1;
@@ -160,17 +161,30 @@ message ActiveClusterSelectionPolicy {
 
 // ClusterAttribute refers to a means of dividing the workflows in an active/active domain
 // for example, where they are started or some secondary attribute they're associated with
+// for example, in a start workflow request:
+// 
+//   StartWorkflowRequest{
+//     ActiveClusterSelectionPolicy: {
+//       ClusterAttribute: {
+//            Scope: "location",
+//            Name: "Lisbon"
+//        }
+//     }
+//   }
+// 
+// this means that this workflow will follow the failover pattern of Lisbon, as it's defined
+// in the domain.
 message ClusterAttribute {
   string scope = 1;
   string name = 2;
 }
 
-// todo (david.porter) to remove
+// todo (david.porter) to remove as this is no longer used
 message ActiveClusterStickyRegionConfig {
   string sticky_region = 1;
 }
 
-// todo (david.porter) to remove
+// todo (david.porter) to remove as this is no longer used
 message ActiveClusterExternalEntityConfig {
   string external_entity_type = 1;
   string external_entity_key = 2;

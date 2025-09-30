@@ -1119,10 +1119,24 @@ struct ClusterAttributeScope {
 
 // activeClustersByClusterAttribute is a map of whatever subdivision of the domain chosen
 // to active cluster info for active-active domains. The key refers to the type of
-// cluster attribute and the value refers to its cluster mappings
+// cluster attribute and the value refers to its cluster mappings.
+// 
+// For example, a request to update the domain for two locations
+// 
+// UpdateDomainRequest{
+//    ReplicationConfiguration: {
+//       ActiveClusters: {
+//           ActiveClustersByClusterAttribute: {
+//             "location": ClusterAttributeScope{
+//                   "Tokyo": {ActiveClusterInfo: "cluster0, FailoverVersion: 123}, 
+//                   "Morocco": {ActiveClusterInfo: "cluster1", FailoverVersion: 100}, 
+//             }
+//          }
+//       }
+//    }
+//  }
 struct ActiveClusters {
-  // todo (david.porter) remove this as it's no longer used
-  10: optional map<string, ActiveClusterInfo> activeClustersByRegion
+  10: optional map<string, ActiveClusterInfo> activeClustersByRegion // todo (david.porter) remove this as it's no longer used
   11: optional map<string, ClusterAttributeScope> activeClustersByClusterAttribute
 }
 
@@ -2157,6 +2171,21 @@ struct ActiveClusterSelectionPolicy {
 // ClusterAttribute is used for subdividing workflows in a domain into their active
 // and passive clusters. Examples of this might be 'region' and 'cluster1' as
 // respective region and scope fields.
+// 
+// for example, a workflow may specify this in it's start request:
+// 
+//   StartWorkflowRequest{
+//     ActiveClusterSelectionPolicy: {
+//       ClusterAttribute: {
+//            Scope: "cityID",
+//            Name: "Lisbon" 
+//        }
+//     }
+//   }
+// 
+// and this means that this workflow will be associate with the domain's cluster attribute 'Lisbon',
+// be active in the cluster that has Lisbon active and 
+// failover when that cluster-attribute is set to failover.
 struct ClusterAttribute {
   1: optional string scope
   2: optional string name
