@@ -51,8 +51,6 @@ exception EntityNotExistsError {
   2: optional string currentCluster
   3: optional string activeCluster
   4: required list<string> activeClusters // todo(david.porter) remove as its disused
-  // activeClusters is a list of active clusters for active-active domain
-  5: required ActiveClusters activeClusters
 }
 
 exception ServiceBusyError {
@@ -74,9 +72,6 @@ exception DomainNotActiveError {
   3: required string currentCluster
   4: required string activeCluster
   5: required list<string> activeClusters // todo (david.porter) remove this field as it's disused
-
-  // activeClusters is a list of active clusters for active-active domain
-  6: required ActiveClusters activeClusters
 }
 
 exception LimitExceededError {
