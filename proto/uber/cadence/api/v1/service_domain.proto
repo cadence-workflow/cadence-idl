@@ -78,7 +78,7 @@ message RegisterDomainRequest {
   ArchivalStatus visibility_archival_status = 12;
   string visibility_archival_uri = 13;
   map<string, string> active_clusters_by_region = 14; // todo (david.porter) to remove as this is no longer used
-  ActiveClusters active_clusters_by_cluster_attribute = 15;
+  ActiveClusters active_clusters = 15;
 }
 
 message RegisterDomainResponse {
@@ -113,6 +113,9 @@ message UpdateDomainResponse {
 message FailoverDomainRequest {
   string domain_name = 1;
   string domain_active_cluster_name = 10;
+  // only applicable for active-active use-cases where the failover is occurring
+  // at the cluster-attribute level only
+  ActiveClusters active_clusters = 30;
 }
 
 message FailoverDomainResponse {
