@@ -1204,6 +1204,9 @@ struct UpdateDomainResponse {
 struct FailoverDomainRequest {
  10: optional string domainName
  20: optional string domainActiveClusterName
+ // only applicable to active-active domains where 
+ // specific cluster-attributes are being failed over
+ 30: optional ActiveClusters activeClusters
 }
 
 struct FailoverDomainResponse {
