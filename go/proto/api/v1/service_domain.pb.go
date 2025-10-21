@@ -989,6 +989,442 @@ func (m *ListDomainsResponse) GetNextPageToken() []byte {
 	return nil
 }
 
+type ListFailoverHistoryRequest struct {
+	// ListFailoverHistoryRequestFilters specifies the filters to apply to the request.
+	// If not provided all failover events will be returned.
+	Filters *ListFailoverHistoryRequestFilters `protobuf:"bytes,1,opt,name=filters,proto3" json:"filters,omitempty"`
+	// PaginationOptions will be used to paginate the results.
+	// If not provided the first 5 events will be returned.
+	Pagination           *PaginationOptions `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
+	XXX_unrecognized     []byte             `json:"-"`
+	XXX_sizecache        int32              `json:"-"`
+}
+
+func (m *ListFailoverHistoryRequest) Reset()         { *m = ListFailoverHistoryRequest{} }
+func (m *ListFailoverHistoryRequest) String() string { return proto.CompactTextString(m) }
+func (*ListFailoverHistoryRequest) ProtoMessage()    {}
+func (*ListFailoverHistoryRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2e37d15268893114, []int{14}
+}
+func (m *ListFailoverHistoryRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListFailoverHistoryRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListFailoverHistoryRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListFailoverHistoryRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListFailoverHistoryRequest.Merge(m, src)
+}
+func (m *ListFailoverHistoryRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListFailoverHistoryRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListFailoverHistoryRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListFailoverHistoryRequest proto.InternalMessageInfo
+
+func (m *ListFailoverHistoryRequest) GetFilters() *ListFailoverHistoryRequestFilters {
+	if m != nil {
+		return m.Filters
+	}
+	return nil
+}
+
+func (m *ListFailoverHistoryRequest) GetPagination() *PaginationOptions {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type ListFailoverHistoryRequestFilters struct {
+	// domain_id is the id of the domain to list failover history for.
+	DomainId string `protobuf:"bytes,1,opt,name=domain_id,json=domainId,proto3" json:"domain_id,omitempty"`
+	// attributes specifies every attribute type that should be returned on the request. If none are specified, defaults to all ClusterAttributes.
+	// If multiple attributes are specified all failover events containing any of the attributes will be returned.
+	Attributes []*ClusterAttribute `protobuf:"bytes,2,rep,name=attributes,proto3" json:"attributes,omitempty"`
+	// default_active_cluster: when true, retrieves the domain wide ActiveClusterName failover events.
+	DefaultActiveCluster bool     `protobuf:"varint,3,opt,name=default_active_cluster,json=defaultActiveCluster,proto3" json:"default_active_cluster,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ListFailoverHistoryRequestFilters) Reset()         { *m = ListFailoverHistoryRequestFilters{} }
+func (m *ListFailoverHistoryRequestFilters) String() string { return proto.CompactTextString(m) }
+func (*ListFailoverHistoryRequestFilters) ProtoMessage()    {}
+func (*ListFailoverHistoryRequestFilters) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2e37d15268893114, []int{15}
+}
+func (m *ListFailoverHistoryRequestFilters) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListFailoverHistoryRequestFilters) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListFailoverHistoryRequestFilters.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListFailoverHistoryRequestFilters) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListFailoverHistoryRequestFilters.Merge(m, src)
+}
+func (m *ListFailoverHistoryRequestFilters) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListFailoverHistoryRequestFilters) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListFailoverHistoryRequestFilters.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListFailoverHistoryRequestFilters proto.InternalMessageInfo
+
+func (m *ListFailoverHistoryRequestFilters) GetDomainId() string {
+	if m != nil {
+		return m.DomainId
+	}
+	return ""
+}
+
+func (m *ListFailoverHistoryRequestFilters) GetAttributes() []*ClusterAttribute {
+	if m != nil {
+		return m.Attributes
+	}
+	return nil
+}
+
+func (m *ListFailoverHistoryRequestFilters) GetDefaultActiveCluster() bool {
+	if m != nil {
+		return m.DefaultActiveCluster
+	}
+	return false
+}
+
+type ListFailoverHistoryResponse struct {
+	FailoverEvents []*FailoverEvent `protobuf:"bytes,1,rep,name=failover_events,json=failoverEvents,proto3" json:"failover_events,omitempty"`
+	// next_page_token can be passed in a subsequent request to fetch the next set of events.
+	NextPageToken        []byte   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ListFailoverHistoryResponse) Reset()         { *m = ListFailoverHistoryResponse{} }
+func (m *ListFailoverHistoryResponse) String() string { return proto.CompactTextString(m) }
+func (*ListFailoverHistoryResponse) ProtoMessage()    {}
+func (*ListFailoverHistoryResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2e37d15268893114, []int{16}
+}
+func (m *ListFailoverHistoryResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListFailoverHistoryResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListFailoverHistoryResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListFailoverHistoryResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListFailoverHistoryResponse.Merge(m, src)
+}
+func (m *ListFailoverHistoryResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListFailoverHistoryResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListFailoverHistoryResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListFailoverHistoryResponse proto.InternalMessageInfo
+
+func (m *ListFailoverHistoryResponse) GetFailoverEvents() []*FailoverEvent {
+	if m != nil {
+		return m.FailoverEvents
+	}
+	return nil
+}
+
+func (m *ListFailoverHistoryResponse) GetNextPageToken() []byte {
+	if m != nil {
+		return m.NextPageToken
+	}
+	return nil
+}
+
+type FailoverEvent struct {
+	// id of the failover event
+	// Can be passed with the created time to fetch a specific event.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// created_time is the time the failover event was created.
+	// Can be passed with the ID to fetch a specific event.
+	CreatedTime          *types.Timestamp `protobuf:"bytes,2,opt,name=created_time,json=createdTime,proto3" json:"created_time,omitempty"`
+	FailoverType         FailoverType     `protobuf:"varint,3,opt,name=failover_type,json=failoverType,proto3,enum=uber.cadence.api.v1.FailoverType" json:"failover_type,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *FailoverEvent) Reset()         { *m = FailoverEvent{} }
+func (m *FailoverEvent) String() string { return proto.CompactTextString(m) }
+func (*FailoverEvent) ProtoMessage()    {}
+func (*FailoverEvent) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2e37d15268893114, []int{17}
+}
+func (m *FailoverEvent) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *FailoverEvent) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_FailoverEvent.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *FailoverEvent) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FailoverEvent.Merge(m, src)
+}
+func (m *FailoverEvent) XXX_Size() int {
+	return m.Size()
+}
+func (m *FailoverEvent) XXX_DiscardUnknown() {
+	xxx_messageInfo_FailoverEvent.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FailoverEvent proto.InternalMessageInfo
+
+func (m *FailoverEvent) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *FailoverEvent) GetCreatedTime() *types.Timestamp {
+	if m != nil {
+		return m.CreatedTime
+	}
+	return nil
+}
+
+func (m *FailoverEvent) GetFailoverType() FailoverType {
+	if m != nil {
+		return m.FailoverType
+	}
+	return FailoverType_FAILOVER_TYPE_INVALID
+}
+
+type ClusterFailover struct {
+	FromCluster *ActiveClusterInfo `protobuf:"bytes,1,opt,name=from_cluster,json=fromCluster,proto3" json:"from_cluster,omitempty"`
+	ToCluster   *ActiveClusterInfo `protobuf:"bytes,2,opt,name=to_cluster,json=toCluster,proto3" json:"to_cluster,omitempty"`
+	// cluster_attribute is the scope and name for the attribute that was failed over.
+	// It will not be defined when is_default_cluster is true.
+	ClusterAttribute *ClusterAttribute `protobuf:"bytes,3,opt,name=cluster_attribute,json=clusterAttribute,proto3" json:"cluster_attribute,omitempty"`
+	// If the failover was for the default domain-wide active cluster name.
+	IsDefaultCluster     bool     `protobuf:"varint,4,opt,name=is_default_cluster,json=isDefaultCluster,proto3" json:"is_default_cluster,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ClusterFailover) Reset()         { *m = ClusterFailover{} }
+func (m *ClusterFailover) String() string { return proto.CompactTextString(m) }
+func (*ClusterFailover) ProtoMessage()    {}
+func (*ClusterFailover) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2e37d15268893114, []int{18}
+}
+func (m *ClusterFailover) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ClusterFailover) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ClusterFailover.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ClusterFailover) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ClusterFailover.Merge(m, src)
+}
+func (m *ClusterFailover) XXX_Size() int {
+	return m.Size()
+}
+func (m *ClusterFailover) XXX_DiscardUnknown() {
+	xxx_messageInfo_ClusterFailover.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ClusterFailover proto.InternalMessageInfo
+
+func (m *ClusterFailover) GetFromCluster() *ActiveClusterInfo {
+	if m != nil {
+		return m.FromCluster
+	}
+	return nil
+}
+
+func (m *ClusterFailover) GetToCluster() *ActiveClusterInfo {
+	if m != nil {
+		return m.ToCluster
+	}
+	return nil
+}
+
+func (m *ClusterFailover) GetClusterAttribute() *ClusterAttribute {
+	if m != nil {
+		return m.ClusterAttribute
+	}
+	return nil
+}
+
+func (m *ClusterFailover) GetIsDefaultCluster() bool {
+	if m != nil {
+		return m.IsDefaultCluster
+	}
+	return false
+}
+
+// GetFailoverEventRequest is used to fetch a specific failover event by id and created time.
+type GetFailoverEventRequest struct {
+	DomainId             string           `protobuf:"bytes,1,opt,name=domain_id,json=domainId,proto3" json:"domain_id,omitempty"`
+	FailoverEventId      string           `protobuf:"bytes,2,opt,name=failover_event_id,json=failoverEventId,proto3" json:"failover_event_id,omitempty"`
+	CreatedTime          *types.Timestamp `protobuf:"bytes,3,opt,name=created_time,json=createdTime,proto3" json:"created_time,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *GetFailoverEventRequest) Reset()         { *m = GetFailoverEventRequest{} }
+func (m *GetFailoverEventRequest) String() string { return proto.CompactTextString(m) }
+func (*GetFailoverEventRequest) ProtoMessage()    {}
+func (*GetFailoverEventRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2e37d15268893114, []int{19}
+}
+func (m *GetFailoverEventRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetFailoverEventRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetFailoverEventRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetFailoverEventRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetFailoverEventRequest.Merge(m, src)
+}
+func (m *GetFailoverEventRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetFailoverEventRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetFailoverEventRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetFailoverEventRequest proto.InternalMessageInfo
+
+func (m *GetFailoverEventRequest) GetDomainId() string {
+	if m != nil {
+		return m.DomainId
+	}
+	return ""
+}
+
+func (m *GetFailoverEventRequest) GetFailoverEventId() string {
+	if m != nil {
+		return m.FailoverEventId
+	}
+	return ""
+}
+
+func (m *GetFailoverEventRequest) GetCreatedTime() *types.Timestamp {
+	if m != nil {
+		return m.CreatedTime
+	}
+	return nil
+}
+
+// GetFailoverEventResponse contains the cluster failovers that occurred as part of the failover event.
+// It may be a large response if 1000s of ClusterAttributes were failed over as part of the event.
+type GetFailoverEventResponse struct {
+	ClusterFailovers     []*ClusterFailover `protobuf:"bytes,1,rep,name=cluster_failovers,json=clusterFailovers,proto3" json:"cluster_failovers,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
+	XXX_unrecognized     []byte             `json:"-"`
+	XXX_sizecache        int32              `json:"-"`
+}
+
+func (m *GetFailoverEventResponse) Reset()         { *m = GetFailoverEventResponse{} }
+func (m *GetFailoverEventResponse) String() string { return proto.CompactTextString(m) }
+func (*GetFailoverEventResponse) ProtoMessage()    {}
+func (*GetFailoverEventResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_2e37d15268893114, []int{20}
+}
+func (m *GetFailoverEventResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetFailoverEventResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetFailoverEventResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetFailoverEventResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetFailoverEventResponse.Merge(m, src)
+}
+func (m *GetFailoverEventResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetFailoverEventResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetFailoverEventResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetFailoverEventResponse proto.InternalMessageInfo
+
+func (m *GetFailoverEventResponse) GetClusterFailovers() []*ClusterFailover {
+	if m != nil {
+		return m.ClusterFailovers
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*RegisterDomainRequest)(nil), "uber.cadence.api.v1.RegisterDomainRequest")
 	proto.RegisterMapType((map[string]string)(nil), "uber.cadence.api.v1.RegisterDomainRequest.ActiveClustersByRegionEntry")
@@ -1007,6 +1443,13 @@ func init() {
 	proto.RegisterType((*DescribeDomainResponse)(nil), "uber.cadence.api.v1.DescribeDomainResponse")
 	proto.RegisterType((*ListDomainsRequest)(nil), "uber.cadence.api.v1.ListDomainsRequest")
 	proto.RegisterType((*ListDomainsResponse)(nil), "uber.cadence.api.v1.ListDomainsResponse")
+	proto.RegisterType((*ListFailoverHistoryRequest)(nil), "uber.cadence.api.v1.ListFailoverHistoryRequest")
+	proto.RegisterType((*ListFailoverHistoryRequestFilters)(nil), "uber.cadence.api.v1.ListFailoverHistoryRequestFilters")
+	proto.RegisterType((*ListFailoverHistoryResponse)(nil), "uber.cadence.api.v1.ListFailoverHistoryResponse")
+	proto.RegisterType((*FailoverEvent)(nil), "uber.cadence.api.v1.FailoverEvent")
+	proto.RegisterType((*ClusterFailover)(nil), "uber.cadence.api.v1.ClusterFailover")
+	proto.RegisterType((*GetFailoverEventRequest)(nil), "uber.cadence.api.v1.GetFailoverEventRequest")
+	proto.RegisterType((*GetFailoverEventResponse)(nil), "uber.cadence.api.v1.GetFailoverEventResponse")
 }
 
 func init() {
@@ -1014,82 +1457,108 @@ func init() {
 }
 
 var fileDescriptor_2e37d15268893114 = []byte{
-	// 1198 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x58, 0xcb, 0x73, 0xdb, 0xb6,
-	0x13, 0x0e, 0xfd, 0x8a, 0xbc, 0xb2, 0x25, 0x1b, 0x7a, 0xd1, 0xf2, 0x8c, 0xa3, 0x51, 0xe6, 0xf7,
-	0xab, 0x9a, 0xb6, 0x54, 0xad, 0xf4, 0x35, 0xcd, 0xc9, 0xb2, 0xec, 0x3a, 0xd3, 0xc4, 0xa3, 0xa1,
-	0x93, 0x43, 0xdb, 0x03, 0x0b, 0x92, 0xb0, 0x8c, 0x31, 0x45, 0xaa, 0x24, 0x28, 0x47, 0xb9, 0xf5,
-	0x6f, 0xeb, 0xa5, 0xc7, 0xfe, 0x09, 0x1d, 0x1f, 0x7a, 0xea, 0xb5, 0xf7, 0x0e, 0x01, 0xd0, 0xd6,
-	0x83, 0xb4, 0x95, 0xd8, 0xe9, 0x8d, 0x5a, 0xec, 0x7e, 0xbb, 0xf8, 0x76, 0xf1, 0x81, 0x22, 0x34,
-	0x42, 0x93, 0xf8, 0x4d, 0x0b, 0xdb, 0xc4, 0xb5, 0x48, 0x13, 0x0f, 0x68, 0x73, 0xb8, 0xdb, 0x0c,
-	0x88, 0x3f, 0xa4, 0x16, 0x31, 0x6c, 0xaf, 0x8f, 0xa9, 0xab, 0x0d, 0x7c, 0x8f, 0x79, 0xa8, 0x10,
-	0x79, 0x6a, 0xd2, 0x53, 0xc3, 0x03, 0xaa, 0x0d, 0x77, 0xab, 0x3b, 0x3d, 0xcf, 0xeb, 0x39, 0xa4,
-	0xc9, 0x5d, 0xcc, 0xf0, 0xb4, 0x69, 0x87, 0x3e, 0x66, 0xd4, 0x93, 0x41, 0xd5, 0xda, 0xf4, 0xfa,
-	0x29, 0x25, 0x8e, 0x6d, 0xf4, 0x71, 0x70, 0x1e, 0x7b, 0x24, 0x15, 0x30, 0x9e, 0xb8, 0xfe, 0x4f,
-	0x06, 0x4a, 0x3a, 0xe9, 0xd1, 0x80, 0x11, 0xbf, 0xc3, 0x17, 0x74, 0xf2, 0x4b, 0x48, 0x02, 0x86,
-	0xfe, 0x07, 0xb9, 0x80, 0x58, 0xa1, 0x4f, 0xd9, 0xc8, 0x60, 0xde, 0x39, 0x71, 0x55, 0xa5, 0xa6,
-	0x34, 0x56, 0xf5, 0xf5, 0xd8, 0xfa, 0x2a, 0x32, 0x22, 0x04, 0x4b, 0x2e, 0xee, 0x13, 0x75, 0x81,
-	0x2f, 0xf2, 0x67, 0x54, 0x83, 0xac, 0x4d, 0x02, 0xcb, 0xa7, 0x83, 0xa8, 0x5a, 0x75, 0x91, 0x2f,
-	0x8d, 0x9b, 0xd0, 0x23, 0xc8, 0x7a, 0x17, 0x2e, 0xf1, 0x0d, 0xd2, 0xc7, 0xd4, 0x51, 0x97, 0xb8,
-	0x07, 0x70, 0xd3, 0x41, 0x64, 0x41, 0x67, 0xf0, 0xf8, 0xc2, 0xf3, 0xcf, 0x4f, 0x1d, 0xef, 0xc2,
-	0x20, 0x6f, 0x88, 0x15, 0x46, 0x61, 0x86, 0x4f, 0x18, 0x71, 0xf9, 0xd3, 0x80, 0xf8, 0xd4, 0xb3,
-	0xd5, 0xe5, 0x9a, 0xd2, 0xc8, 0xb6, 0xb6, 0x34, 0xc1, 0x84, 0x16, 0x33, 0xa1, 0x75, 0x24, 0x53,
-	0x7a, 0x2d, 0x46, 0x39, 0x88, 0x41, 0xf4, 0x18, 0xa3, 0xcb, 0x21, 0x50, 0x17, 0x32, 0x96, 0x13,
-	0x46, 0xfb, 0x0f, 0xd4, 0x95, 0xda, 0x62, 0x23, 0xdb, 0xfa, 0x42, 0x4b, 0xe8, 0x86, 0xb6, 0x2f,
-	0x9c, 0x74, 0x32, 0x70, 0xa8, 0xc5, 0xc1, 0xf7, 0x3d, 0xf7, 0x94, 0xf6, 0xe2, 0x4c, 0x57, 0x28,
-	0x48, 0x83, 0x02, 0xb6, 0x18, 0x1d, 0x12, 0x43, 0x9a, 0x0c, 0xce, 0xd0, 0x43, 0xbe, 0xc9, 0x4d,
-	0xb1, 0x24, 0xd1, 0x8e, 0x23, 0xba, 0x8e, 0x60, 0xc9, 0xc6, 0x0c, 0xab, 0x99, 0x1b, 0xb2, 0x27,
-	0xf6, 0x48, 0xeb, 0x60, 0x86, 0x0f, 0x5c, 0xe6, 0x8f, 0x74, 0x8e, 0x80, 0x1a, 0xb0, 0x41, 0x03,
-	0xa3, 0xe7, 0x78, 0x26, 0x76, 0xe4, 0x80, 0xa9, 0xab, 0x35, 0xa5, 0x91, 0xd1, 0x73, 0x34, 0xf8,
-	0x8e, 0x9b, 0x05, 0x00, 0xfa, 0x09, 0x2a, 0x67, 0x34, 0x60, 0x9e, 0x3f, 0x32, 0xb0, 0x6f, 0x9d,
-	0xd1, 0x21, 0x76, 0x8c, 0x80, 0x61, 0x16, 0x06, 0x2a, 0xd4, 0x94, 0x46, 0xae, 0xf5, 0x38, 0xb1,
-	0x8c, 0x3d, 0xe9, 0x7b, 0xc2, 0x5d, 0xf5, 0x92, 0xc4, 0x98, 0x34, 0xa3, 0xcf, 0xa1, 0x38, 0x03,
-	0x1e, 0xfa, 0x54, 0xcd, 0x72, 0x06, 0xd0, 0x54, 0xd0, 0x6b, 0x9f, 0x22, 0x0c, 0xd5, 0x21, 0x0d,
-	0xa8, 0x49, 0x9d, 0x68, 0xdc, 0xa6, 0x2b, 0x5a, 0x9b, 0xbf, 0x22, 0xf5, 0x1a, 0x66, 0xaa, 0xa8,
-	0xaf, 0xa0, 0x92, 0x94, 0x22, 0xaa, 0x6b, 0x9d, 0xd7, 0x55, 0x9a, 0x0d, 0x8d, 0x4a, 0xfb, 0x55,
-	0x81, 0xad, 0xc9, 0x76, 0x06, 0x86, 0x39, 0x32, 0x7c, 0xd2, 0x8b, 0x66, 0x3b, 0xc7, 0x7b, 0x76,
-	0xf8, 0x0e, 0x3d, 0xdb, 0x1b, 0xef, 0x7f, 0xd0, 0x1e, 0xe9, 0x1c, 0x48, 0x74, 0xb1, 0x8c, 0x13,
-	0x17, 0xd1, 0x0b, 0xc8, 0x4f, 0x95, 0xa0, 0xe6, 0xf9, 0xe4, 0xa7, 0x70, 0x32, 0x81, 0xa2, 0xe7,
-	0x26, 0x51, 0xab, 0x5f, 0xc3, 0xea, 0xd5, 0xe0, 0xa0, 0x0d, 0x58, 0x3c, 0x27, 0x23, 0x79, 0xb6,
-	0xa3, 0x47, 0x54, 0x84, 0xe5, 0x21, 0x76, 0xc2, 0xf8, 0x48, 0x8b, 0x1f, 0xdf, 0x2e, 0x7c, 0xa3,
-	0x54, 0x9f, 0xc3, 0xf6, 0x0d, 0xd5, 0xbf, 0x0b, 0x54, 0x5d, 0x85, 0xf2, 0x34, 0x3d, 0xc1, 0xc0,
-	0x73, 0x03, 0x52, 0xff, 0x3b, 0x03, 0x85, 0xd7, 0x03, 0x1b, 0x33, 0x72, 0x6f, 0x7a, 0xf4, 0x0c,
-	0xb2, 0x21, 0x47, 0xe4, 0xda, 0xc8, 0x07, 0x3c, 0xdb, 0xaa, 0xce, 0x88, 0xc6, 0x61, 0x24, 0x9f,
-	0x2f, 0x71, 0x70, 0xae, 0x83, 0x70, 0x8f, 0x9e, 0xa7, 0xc5, 0x2c, 0x7b, 0xab, 0x98, 0xad, 0xcd,
-	0x88, 0xd9, 0xa1, 0x3c, 0xe0, 0xeb, 0x7c, 0x58, 0x5a, 0x89, 0x3d, 0x4b, 0xd8, 0xf2, 0xcc, 0xf1,
-	0x9e, 0x53, 0x14, 0x73, 0x77, 0x17, 0xc5, 0x7d, 0x58, 0x33, 0xb1, 0x6d, 0x98, 0xd4, 0xc5, 0x3e,
-	0x25, 0xf1, 0xb4, 0xd5, 0x12, 0x2b, 0x6f, 0x63, 0xbb, 0x2d, 0xfd, 0xf4, 0xac, 0x79, 0xfd, 0xe3,
-	0x26, 0x8d, 0xd9, 0xf8, 0x60, 0x1a, 0xb3, 0xf9, 0x9e, 0x1a, 0x83, 0x3e, 0xb0, 0xc6, 0x14, 0x6e,
-	0xd2, 0x98, 0x94, 0x1b, 0xa3, 0x98, 0x76, 0x63, 0x8c, 0xdf, 0x59, 0xa5, 0x7b, 0xb9, 0xb3, 0x9e,
-	0xc0, 0xa6, 0x4d, 0x1c, 0xc2, 0x88, 0x71, 0xd5, 0xf7, 0x91, 0x5a, 0xe6, 0xf9, 0xf3, 0x62, 0x21,
-	0x6e, 0xf3, 0x08, 0x75, 0x60, 0xe3, 0x14, 0x53, 0xc7, 0x1b, 0x12, 0xdf, 0x60, 0xb4, 0x4f, 0xbc,
-	0x90, 0xa9, 0x95, 0xdb, 0x66, 0x2e, 0x1f, 0x87, 0xbc, 0x12, 0x11, 0x49, 0x9a, 0xa6, 0xfe, 0xf7,
-	0x9a, 0x56, 0xff, 0x1e, 0x8a, 0x93, 0x47, 0x4f, 0xc8, 0x10, 0x7a, 0x0a, 0x2b, 0xf2, 0x02, 0x55,
-	0x78, 0x55, 0xdb, 0x89, 0x55, 0xc9, 0x20, 0xe9, 0x5a, 0xff, 0x4d, 0x81, 0xd2, 0xa1, 0xdc, 0xe7,
-	0xa4, 0x7a, 0x3d, 0x82, 0xac, 0xf0, 0x11, 0x9d, 0x15, 0xa5, 0x81, 0x30, 0x1d, 0x0b, 0x8d, 0xaa,
-	0x4a, 0x87, 0xa4, 0x49, 0x00, 0xee, 0x5f, 0x11, 0x1e, 0x7b, 0x33, 0xf3, 0x90, 0xc0, 0xe5, 0xce,
-	0x7b, 0x73, 0x59, 0x7f, 0x09, 0xe5, 0xe9, 0x4d, 0xdc, 0x85, 0x94, 0x13, 0x28, 0x77, 0xc8, 0xc0,
-	0x27, 0xd6, 0x3d, 0x4a, 0x7a, 0x7d, 0x0b, 0x2a, 0x33, 0xa0, 0xf2, 0x02, 0xe9, 0x42, 0xa1, 0xc3,
-	0x27, 0xf6, 0xde, 0x92, 0x95, 0xa1, 0x38, 0x89, 0x28, 0x33, 0x1d, 0x43, 0xa9, 0xc3, 0xef, 0x01,
-	0x73, 0x2a, 0xd7, 0x06, 0x2c, 0x50, 0x5b, 0xe0, 0x1f, 0x3d, 0xd0, 0x17, 0xa8, 0x8d, 0x8a, 0xe3,
-	0xb0, 0x47, 0x0f, 0x04, 0x70, 0x7b, 0x3d, 0xbe, 0x5b, 0x4c, 0x62, 0x98, 0xa3, 0x88, 0xf8, 0x69,
-	0xbc, 0xbb, 0x10, 0xff, 0x03, 0xa0, 0x17, 0x34, 0x60, 0xc2, 0x1a, 0xc4, 0xb5, 0x6d, 0xc3, 0xea,
-	0x00, 0xf7, 0x88, 0x11, 0xd0, 0xb7, 0x62, 0x0e, 0x97, 0xf5, 0x4c, 0x64, 0x38, 0xa1, 0x6f, 0x09,
-	0xfa, 0x3f, 0xe4, 0x5d, 0xf2, 0x86, 0x19, 0xdc, 0x43, 0xb0, 0x14, 0x55, 0xbc, 0xa6, 0xaf, 0x47,
-	0xe6, 0x2e, 0xee, 0x11, 0xce, 0x52, 0x9d, 0x41, 0x61, 0x02, 0x5a, 0x96, 0xf9, 0x25, 0x3c, 0x14,
-	0xb9, 0x03, 0x55, 0xe1, 0xb2, 0x74, 0x63, 0x9d, 0xb1, 0xef, 0xbc, 0x59, 0x5b, 0x7f, 0x2d, 0xc3,
-	0xaa, 0x88, 0xdd, 0xeb, 0x3e, 0x47, 0x14, 0x72, 0x93, 0xaf, 0x10, 0xe8, 0xc9, 0xfc, 0xaf, 0x61,
-	0xd5, 0x4f, 0xe6, 0xf2, 0x95, 0xfb, 0xa2, 0x90, 0x9b, 0x6c, 0x4c, 0x4a, 0xaa, 0xc4, 0x69, 0x48,
-	0x49, 0x95, 0xd2, 0xe9, 0x9f, 0x21, 0x3b, 0xc6, 0x2c, 0xfa, 0x28, 0x31, 0x76, 0xb6, 0xad, 0xd5,
-	0xc6, 0xed, 0x8e, 0x32, 0x83, 0x05, 0x6b, 0xe3, 0x8a, 0x87, 0x1a, 0xf3, 0xbe, 0x8f, 0x54, 0x3f,
-	0x9e, 0xc3, 0xf3, 0x9a, 0xb1, 0x49, 0x0d, 0x49, 0x61, 0x2c, 0x51, 0x2d, 0x53, 0x18, 0x4b, 0x11,
-	0x25, 0x07, 0xf2, 0x53, 0x52, 0x80, 0xd2, 0x18, 0x4f, 0x52, 0xa1, 0xea, 0xa7, 0xf3, 0x39, 0x5f,
-	0xb3, 0x37, 0xae, 0x05, 0x29, 0xec, 0x25, 0x08, 0x50, 0x0a, 0x7b, 0x49, 0xc2, 0xd2, 0x76, 0x7f,
-	0xbf, 0xdc, 0x51, 0xfe, 0xb8, 0xdc, 0x51, 0xfe, 0xbc, 0xdc, 0x51, 0xa0, 0x62, 0x79, 0xfd, 0xa4,
-	0xd8, 0x36, 0x12, 0x61, 0x27, 0xe2, 0x8b, 0x42, 0x37, 0xba, 0x73, 0xbb, 0xca, 0x8f, 0xbb, 0x3d,
-	0xca, 0xce, 0x42, 0x53, 0xb3, 0xbc, 0x7e, 0x73, 0xfc, 0xff, 0xff, 0x67, 0xd4, 0x76, 0x9a, 0x3d,
-	0x4f, 0x7c, 0x2e, 0x90, 0x1f, 0x03, 0x9e, 0xe1, 0x01, 0x1d, 0xee, 0x9a, 0x2b, 0xdc, 0xf6, 0xf4,
-	0xdf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x59, 0xb8, 0x45, 0x28, 0xb1, 0x10, 0x00, 0x00,
+	// 1616 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x58, 0x4d, 0x77, 0xda, 0xcc,
+	0x15, 0x8e, 0x6c, 0x27, 0xc6, 0x17, 0x0c, 0x78, 0xfc, 0xa5, 0xe0, 0x73, 0x1c, 0x42, 0x9a, 0x94,
+	0xa6, 0x09, 0xc4, 0x24, 0x4d, 0x7b, 0x9a, 0xd3, 0x85, 0x1d, 0xec, 0xd8, 0x27, 0x1f, 0xa5, 0xb2,
+	0xb3, 0x68, 0xbb, 0x50, 0x07, 0x69, 0xc0, 0x73, 0x2c, 0x10, 0x95, 0x06, 0x12, 0xb2, 0xeb, 0x5f,
+	0xe8, 0x3f, 0xe8, 0xa2, 0xfd, 0x09, 0xdd, 0x75, 0xd5, 0x4d, 0x97, 0xed, 0x3f, 0xe8, 0xc9, 0xfa,
+	0xdd, 0xbe, 0xfb, 0xf7, 0x68, 0x3e, 0x00, 0x09, 0x09, 0xe3, 0xc4, 0x79, 0x77, 0xd2, 0x9d, 0x3b,
+	0xcf, 0xbd, 0xf3, 0xcc, 0x9d, 0xe7, 0x8e, 0x04, 0xe5, 0x7e, 0x93, 0x78, 0x55, 0x0b, 0xdb, 0xa4,
+	0x6b, 0x91, 0x2a, 0xee, 0xd1, 0xea, 0x60, 0xaf, 0xea, 0x13, 0x6f, 0x40, 0x2d, 0x62, 0xda, 0x6e,
+	0x07, 0xd3, 0x6e, 0xa5, 0xe7, 0xb9, 0xcc, 0x45, 0xeb, 0x81, 0x67, 0x45, 0x7a, 0x56, 0x70, 0x8f,
+	0x56, 0x06, 0x7b, 0x85, 0xdd, 0xb6, 0xeb, 0xb6, 0x1d, 0x52, 0xe5, 0x2e, 0xcd, 0x7e, 0xab, 0x6a,
+	0xf7, 0x3d, 0xcc, 0xa8, 0x2b, 0x27, 0x15, 0x8a, 0xd1, 0xf1, 0x16, 0x25, 0x8e, 0x6d, 0x76, 0xb0,
+	0x7f, 0x21, 0x3d, 0xee, 0x44, 0x3d, 0x18, 0xed, 0x10, 0x9f, 0xe1, 0x4e, 0x4f, 0x41, 0xc4, 0x65,
+	0x68, 0xb9, 0x9d, 0xce, 0x38, 0x48, 0x9c, 0xc7, 0x64, 0xee, 0xa5, 0xef, 0x53, 0xb0, 0x69, 0x90,
+	0x36, 0xf5, 0x19, 0xf1, 0xea, 0x7c, 0xc0, 0x20, 0x7f, 0xee, 0x13, 0x9f, 0xa1, 0xfb, 0x90, 0xf5,
+	0x89, 0xd5, 0xf7, 0x28, 0x1b, 0x9a, 0xcc, 0xbd, 0x20, 0x5d, 0x5d, 0x2b, 0x6a, 0xe5, 0x15, 0x63,
+	0x55, 0x59, 0xcf, 0x02, 0x23, 0x42, 0xb0, 0xd4, 0xc5, 0x1d, 0xa2, 0x2f, 0xf0, 0x41, 0xfe, 0x8c,
+	0x8a, 0x90, 0xb6, 0x89, 0x6f, 0x79, 0xb4, 0x17, 0x2c, 0x58, 0x5f, 0xe4, 0x43, 0x93, 0x26, 0x74,
+	0x07, 0xd2, 0xee, 0x87, 0x2e, 0xf1, 0x4c, 0xd2, 0xc1, 0xd4, 0xd1, 0x97, 0xb8, 0x07, 0x70, 0xd3,
+	0x61, 0x60, 0x41, 0xe7, 0x70, 0xef, 0x83, 0xeb, 0x5d, 0xb4, 0x1c, 0xf7, 0x83, 0x49, 0x3e, 0x12,
+	0xab, 0x1f, 0x4c, 0x33, 0x3d, 0xc2, 0x48, 0x97, 0x3f, 0xf5, 0x88, 0x47, 0x5d, 0x5b, 0xbf, 0x59,
+	0xd4, 0xca, 0xe9, 0xda, 0xed, 0x8a, 0xa0, 0xaa, 0xa2, 0xa8, 0xaa, 0xd4, 0x25, 0xd9, 0x46, 0x51,
+	0xa1, 0x1c, 0x2a, 0x10, 0x43, 0x61, 0x34, 0x38, 0x04, 0x6a, 0x40, 0xca, 0x72, 0xfa, 0xc1, 0xfa,
+	0x7d, 0xfd, 0x56, 0x71, 0xb1, 0x9c, 0xae, 0x3d, 0xab, 0xc4, 0x6c, 0x68, 0xe5, 0xa5, 0x70, 0x32,
+	0x48, 0xcf, 0xa1, 0x16, 0x07, 0x7f, 0xe9, 0x76, 0x5b, 0xb4, 0xad, 0x22, 0x8d, 0x50, 0x50, 0x05,
+	0xd6, 0xb1, 0xc5, 0xe8, 0x80, 0x98, 0xd2, 0x64, 0x72, 0x86, 0x96, 0xf9, 0x22, 0xd7, 0xc4, 0x90,
+	0x44, 0x7b, 0x17, 0xd0, 0x75, 0x0c, 0x4b, 0x36, 0x66, 0x58, 0x4f, 0xcd, 0x88, 0x1e, 0xbb, 0x47,
+	0x95, 0x3a, 0x66, 0xf8, 0xb0, 0xcb, 0xbc, 0xa1, 0xc1, 0x11, 0x50, 0x19, 0xf2, 0xd4, 0x37, 0xdb,
+	0x8e, 0xdb, 0xc4, 0x8e, 0xac, 0x51, 0x7d, 0xa5, 0xa8, 0x95, 0x53, 0x46, 0x96, 0xfa, 0xaf, 0xb8,
+	0x59, 0x00, 0xa0, 0x3f, 0xc2, 0xf6, 0x39, 0xf5, 0x99, 0xeb, 0x0d, 0x4d, 0xec, 0x59, 0xe7, 0x74,
+	0x80, 0x1d, 0xd3, 0x67, 0x98, 0xf5, 0x7d, 0x1d, 0x8a, 0x5a, 0x39, 0x5b, 0xbb, 0x17, 0x9b, 0xc6,
+	0xbe, 0xf4, 0x3d, 0xe5, 0xae, 0xc6, 0xa6, 0xc4, 0x08, 0x9b, 0xd1, 0x13, 0xd8, 0x98, 0x02, 0xef,
+	0x7b, 0x54, 0x4f, 0x73, 0x06, 0x50, 0x64, 0xd2, 0x7b, 0x8f, 0x22, 0x0c, 0x85, 0x01, 0xf5, 0x69,
+	0x93, 0x3a, 0x41, 0xb9, 0x45, 0x33, 0xca, 0xcc, 0x9f, 0x91, 0x3e, 0x86, 0x89, 0x24, 0xf5, 0x1c,
+	0xb6, 0xe3, 0x42, 0x04, 0x79, 0xad, 0xf2, 0xbc, 0x36, 0xa7, 0xa7, 0x06, 0xa9, 0xfd, 0x45, 0x83,
+	0xdb, 0xe1, 0xed, 0xf4, 0xcd, 0xe6, 0xd0, 0xf4, 0x48, 0x3b, 0xa8, 0xed, 0x2c, 0xdf, 0xb3, 0xa3,
+	0x2b, 0xec, 0xd9, 0xfe, 0xe4, 0xfe, 0xfb, 0x07, 0x43, 0x83, 0x03, 0x89, 0x5d, 0xdc, 0xc2, 0xb1,
+	0x83, 0xe8, 0x0d, 0xe4, 0x22, 0x29, 0xe8, 0x39, 0x5e, 0xf9, 0x09, 0x9c, 0x84, 0x50, 0x8c, 0x6c,
+	0x18, 0xb5, 0xf0, 0x4b, 0x58, 0x19, 0x15, 0x0e, 0xca, 0xc3, 0xe2, 0x05, 0x19, 0xca, 0xb3, 0x1d,
+	0x3c, 0xa2, 0x0d, 0xb8, 0x39, 0xc0, 0x4e, 0x5f, 0x1d, 0x69, 0xf1, 0xf2, 0xeb, 0x85, 0x5f, 0x69,
+	0x85, 0x13, 0xd8, 0x99, 0x91, 0xfd, 0x55, 0xa0, 0x4a, 0x3a, 0x6c, 0x45, 0xe9, 0xf1, 0x7b, 0x6e,
+	0xd7, 0x27, 0xa5, 0xef, 0x52, 0xb0, 0xfe, 0xbe, 0x67, 0x63, 0x46, 0xae, 0x4d, 0x8f, 0x5e, 0x40,
+	0xba, 0xcf, 0x11, 0xb9, 0xbc, 0xf2, 0x02, 0x4f, 0xd7, 0x0a, 0x53, 0xa2, 0x71, 0x14, 0x28, 0xf0,
+	0x5b, 0xec, 0x5f, 0x18, 0x20, 0xdc, 0x83, 0xe7, 0xa8, 0x98, 0xa5, 0x2f, 0x15, 0xb3, 0xcc, 0x94,
+	0x98, 0x1d, 0xc9, 0x03, 0xbe, 0xca, 0x8b, 0xa5, 0x16, 0xbb, 0x67, 0x31, 0x4b, 0x9e, 0x3a, 0xde,
+	0x73, 0x8a, 0x62, 0xf6, 0xeb, 0x45, 0xf1, 0x25, 0x64, 0x9a, 0xd8, 0x36, 0x9b, 0xb4, 0x8b, 0x3d,
+	0x4a, 0x54, 0xb5, 0x15, 0x63, 0x33, 0x3f, 0xc0, 0xf6, 0x81, 0xf4, 0x33, 0xd2, 0xcd, 0xf1, 0xcb,
+	0x2c, 0x8d, 0xc9, 0x7f, 0x33, 0x8d, 0x59, 0xfb, 0x42, 0x8d, 0x41, 0xdf, 0x58, 0x63, 0xd6, 0x67,
+	0x69, 0x4c, 0x42, 0xc7, 0xd8, 0x48, 0xea, 0x18, 0x93, 0x3d, 0x6b, 0xf3, 0x5a, 0x7a, 0xd6, 0x43,
+	0x58, 0xb3, 0x89, 0x43, 0x18, 0x31, 0x47, 0xfb, 0x3e, 0xd4, 0xb7, 0x78, 0xfc, 0x9c, 0x18, 0x50,
+	0xdb, 0x3c, 0x44, 0x75, 0xc8, 0xb7, 0x30, 0x75, 0xdc, 0x01, 0xf1, 0xcc, 0xe0, 0x4e, 0xe2, 0xf6,
+	0x99, 0xbe, 0x7d, 0x59, 0xcd, 0xe5, 0xd4, 0x94, 0x33, 0x31, 0x23, 0x4e, 0xd3, 0xf4, 0x1f, 0x5f,
+	0xd3, 0x4a, 0xaf, 0x61, 0x23, 0x7c, 0xf4, 0x84, 0x0c, 0xa1, 0xa7, 0x70, 0x4b, 0x36, 0x50, 0x8d,
+	0x67, 0xb5, 0x13, 0x9b, 0x95, 0x9c, 0x24, 0x5d, 0x4b, 0xff, 0xd6, 0x60, 0xf3, 0x48, 0xae, 0x33,
+	0xac, 0x5e, 0x77, 0x20, 0x2d, 0x7c, 0xc4, 0xce, 0x8a, 0xd4, 0x40, 0x98, 0xde, 0x09, 0x8d, 0x2a,
+	0x48, 0x87, 0xb8, 0x4a, 0x00, 0xee, 0xbf, 0x2d, 0x3c, 0xf6, 0xa7, 0xea, 0x21, 0x86, 0xcb, 0xdd,
+	0x2f, 0xe6, 0xb2, 0xf4, 0x16, 0xb6, 0xa2, 0x8b, 0xf8, 0x1a, 0x52, 0x4e, 0x61, 0xab, 0x4e, 0x7a,
+	0x1e, 0xb1, 0xae, 0x51, 0xd2, 0x4b, 0xb7, 0x61, 0x7b, 0x0a, 0x54, 0x36, 0x90, 0x06, 0xac, 0xd7,
+	0x79, 0xc5, 0x5e, 0x5b, 0xb0, 0x2d, 0xd8, 0x08, 0x23, 0xca, 0x48, 0xef, 0x60, 0xb3, 0xce, 0xfb,
+	0x40, 0x33, 0x12, 0x2b, 0x0f, 0x0b, 0xd4, 0x16, 0xf8, 0xc7, 0x37, 0x8c, 0x05, 0x6a, 0xa3, 0x8d,
+	0x49, 0xd8, 0xe3, 0x1b, 0x02, 0xf8, 0x60, 0x55, 0xf5, 0x96, 0x26, 0x31, 0x9b, 0xc3, 0x80, 0xf8,
+	0x28, 0xde, 0xd7, 0x10, 0xff, 0x7b, 0x40, 0x6f, 0xa8, 0xcf, 0x84, 0xd5, 0x57, 0xb9, 0xed, 0xc0,
+	0x4a, 0x0f, 0xb7, 0x89, 0xe9, 0xd3, 0x4f, 0xa2, 0x0e, 0x6f, 0x1a, 0xa9, 0xc0, 0x70, 0x4a, 0x3f,
+	0x11, 0xf4, 0x00, 0x72, 0x5d, 0xf2, 0x91, 0x99, 0xdc, 0x43, 0xb0, 0x14, 0x64, 0x9c, 0x31, 0x56,
+	0x03, 0x73, 0x03, 0xb7, 0x09, 0x67, 0xa9, 0xc4, 0x60, 0x3d, 0x04, 0x2d, 0xd3, 0xfc, 0x05, 0x2c,
+	0x8b, 0xd8, 0xbe, 0xae, 0x71, 0x59, 0x9a, 0x99, 0xa7, 0xf2, 0x9d, 0x3b, 0xea, 0x3f, 0x35, 0x28,
+	0x04, 0x61, 0x55, 0x75, 0x1e, 0x0b, 0x91, 0x57, 0x2b, 0x6b, 0xc0, 0x72, 0x8b, 0x3a, 0xbc, 0xfa,
+	0x05, 0x4b, 0xcf, 0x63, 0xa3, 0x27, 0x23, 0x1c, 0x89, 0xd9, 0x86, 0x82, 0x41, 0x47, 0x00, 0x3d,
+	0xdc, 0xa6, 0x5d, 0x2e, 0x61, 0x3c, 0xa7, 0x74, 0xed, 0x41, 0x2c, 0x68, 0x63, 0xe4, 0xf6, 0x5b,
+	0x7e, 0x29, 0xf0, 0x8d, 0x89, 0x99, 0xa5, 0x7f, 0x69, 0x70, 0xf7, 0xd2, 0xb0, 0xc1, 0xce, 0x48,
+	0x09, 0x50, 0xc5, 0x63, 0xa4, 0x84, 0xe1, 0xc4, 0x46, 0x87, 0x00, 0x98, 0x31, 0x8f, 0x36, 0xfb,
+	0x8c, 0xf8, 0xfa, 0x02, 0x67, 0xf7, 0xfe, 0x2c, 0xd1, 0xdf, 0x57, 0xde, 0xc6, 0xc4, 0x44, 0xf4,
+	0x0c, 0xb6, 0x6c, 0xd2, 0xc2, 0x7d, 0x87, 0x45, 0x74, 0x86, 0x7f, 0xa5, 0xa5, 0x8c, 0x0d, 0x39,
+	0x1a, 0x92, 0x88, 0xd2, 0x5f, 0x35, 0xd8, 0x89, 0xcd, 0x5f, 0xee, 0xfb, 0x6b, 0x18, 0xc9, 0xbb,
+	0x49, 0x06, 0xa4, 0xcb, 0xd4, 0xfe, 0x97, 0x62, 0x33, 0x54, 0x30, 0x87, 0x81, 0xab, 0x91, 0x6d,
+	0x4d, 0xbe, 0xce, 0x5f, 0x0d, 0xff, 0xd0, 0x60, 0x35, 0x84, 0x84, 0xb2, 0xe3, 0x63, 0xc7, 0x0f,
+	0xdd, 0x6f, 0x20, 0x63, 0x79, 0x04, 0x33, 0x62, 0xf3, 0x3e, 0x25, 0x37, 0x70, 0xfa, 0xe2, 0x77,
+	0xa6, 0x3e, 0xac, 0x8d, 0xb4, 0xf4, 0x0f, 0x2c, 0xe8, 0x08, 0x56, 0xc7, 0x7d, 0x6e, 0xd8, 0x23,
+	0x9c, 0xa2, 0x6c, 0xed, 0xee, 0xcc, 0x35, 0x9d, 0x0d, 0x7b, 0xc4, 0xc8, 0xb4, 0x26, 0xde, 0x4a,
+	0x7f, 0x5f, 0x80, 0x9c, 0x64, 0x52, 0x79, 0xa1, 0x13, 0xc8, 0xb4, 0x3c, 0xb7, 0x33, 0x62, 0x5f,
+	0x9b, 0x51, 0x5b, 0xa1, 0xbd, 0x38, 0xe9, 0xb6, 0x5c, 0x23, 0x1d, 0xcc, 0x95, 0x86, 0xa0, 0x32,
+	0x98, 0x3b, 0x02, 0x5a, 0xb8, 0x12, 0xd0, 0x0a, 0x73, 0x15, 0x8c, 0x01, 0x6b, 0xaa, 0xe5, 0x8c,
+	0xea, 0x85, 0xaf, 0x78, 0xee, 0x3a, 0xcb, 0x5b, 0x11, 0x0b, 0x7a, 0x04, 0x88, 0xfa, 0xa6, 0x2a,
+	0x38, 0x95, 0xe2, 0x12, 0xaf, 0xb4, 0x3c, 0xf5, 0xeb, 0x62, 0x40, 0x55, 0xd9, 0xdf, 0x34, 0xd8,
+	0x7e, 0x45, 0x58, 0xb8, 0x3a, 0xc6, 0xaa, 0x95, 0x7c, 0x36, 0x1e, 0xc2, 0x5a, 0xb8, 0xfc, 0x02,
+	0x27, 0x21, 0xe0, 0xb9, 0x50, 0x71, 0x9d, 0x4c, 0xd7, 0xc4, 0xe2, 0x95, 0x6a, 0xa2, 0xd4, 0x01,
+	0x7d, 0x3a, 0x45, 0x79, 0x0a, 0x7e, 0x37, 0x66, 0x50, 0x45, 0x55, 0xe7, 0xe0, 0x27, 0xb3, 0x18,
+	0x54, 0x68, 0x23, 0x02, 0x95, 0xc1, 0xaf, 0xfd, 0x6f, 0x19, 0x56, 0x84, 0x5a, 0xee, 0x37, 0x4e,
+	0x10, 0x85, 0x6c, 0xf8, 0xa3, 0x09, 0x3d, 0x9c, 0xff, 0xc3, 0xb3, 0xf0, 0xf3, 0xb9, 0x7c, 0xe5,
+	0x5a, 0x28, 0x64, 0xc3, 0xad, 0x28, 0x21, 0x54, 0x6c, 0xff, 0x4b, 0x08, 0x95, 0xd0, 0xdb, 0xfe,
+	0x04, 0xe9, 0x89, 0x5e, 0x82, 0x7e, 0x9a, 0x28, 0xda, 0xe1, 0x46, 0x56, 0x28, 0x5f, 0xee, 0x28,
+	0x23, 0x58, 0x90, 0x99, 0xbc, 0xe3, 0xa1, 0xf2, 0xbc, 0x5f, 0x60, 0x85, 0x9f, 0xcd, 0xe1, 0x39,
+	0x66, 0x2c, 0x7c, 0x6b, 0x4a, 0x60, 0x2c, 0xf6, 0x7e, 0x98, 0xc0, 0x58, 0xc2, 0x35, 0xcc, 0x81,
+	0x5c, 0xe4, 0xf2, 0x83, 0x92, 0x18, 0x8f, 0xbb, 0x77, 0x15, 0x1e, 0xcd, 0xe7, 0x3c, 0x66, 0x6f,
+	0xf2, 0xf6, 0x93, 0xc0, 0x5e, 0xcc, 0x95, 0x2b, 0x81, 0xbd, 0xb8, 0xab, 0x14, 0xfa, 0x28, 0x2e,
+	0x14, 0x91, 0x06, 0x83, 0xaa, 0x57, 0xec, 0xe0, 0x85, 0x27, 0xf3, 0x4f, 0x90, 0x91, 0x5d, 0xc8,
+	0x47, 0x4f, 0x34, 0x8a, 0x27, 0x28, 0x41, 0x9b, 0x0a, 0x8f, 0xe7, 0xf4, 0x16, 0x01, 0x0f, 0xba,
+	0xff, 0xf9, 0xbc, 0xab, 0xfd, 0xf7, 0xf3, 0xae, 0xf6, 0xff, 0xcf, 0xbb, 0x1a, 0x6c, 0x5b, 0x6e,
+	0x27, 0x6e, 0xfe, 0x01, 0x12, 0x0c, 0x9d, 0x8a, 0x3f, 0xce, 0x8d, 0x40, 0x97, 0x1a, 0xda, 0x1f,
+	0xf6, 0xda, 0x94, 0x9d, 0xf7, 0x9b, 0x15, 0xcb, 0xed, 0x54, 0x27, 0x7f, 0xee, 0x3e, 0xa6, 0xb6,
+	0x53, 0x6d, 0xbb, 0xe2, 0x67, 0xb1, 0xfc, 0xd3, 0xfb, 0x02, 0xf7, 0xe8, 0x60, 0xaf, 0x79, 0x8b,
+	0xdb, 0x9e, 0xfe, 0x10, 0x00, 0x00, 0xff, 0xff, 0xcb, 0xb9, 0x4f, 0xf6, 0xd1, 0x16, 0x00, 0x00,
 }
 
 func (m *RegisterDomainRequest) Marshal() (dAtA []byte, err error) {
@@ -1954,6 +2423,381 @@ func (m *ListDomainsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *ListFailoverHistoryRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListFailoverHistoryRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListFailoverHistoryRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintServiceDomain(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Filters != nil {
+		{
+			size, err := m.Filters.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintServiceDomain(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ListFailoverHistoryRequestFilters) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListFailoverHistoryRequestFilters) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListFailoverHistoryRequestFilters) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.DefaultActiveCluster {
+		i--
+		if m.DefaultActiveCluster {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.Attributes) > 0 {
+		for iNdEx := len(m.Attributes) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Attributes[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintServiceDomain(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if len(m.DomainId) > 0 {
+		i -= len(m.DomainId)
+		copy(dAtA[i:], m.DomainId)
+		i = encodeVarintServiceDomain(dAtA, i, uint64(len(m.DomainId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ListFailoverHistoryResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListFailoverHistoryResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListFailoverHistoryResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.NextPageToken) > 0 {
+		i -= len(m.NextPageToken)
+		copy(dAtA[i:], m.NextPageToken)
+		i = encodeVarintServiceDomain(dAtA, i, uint64(len(m.NextPageToken)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.FailoverEvents) > 0 {
+		for iNdEx := len(m.FailoverEvents) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.FailoverEvents[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintServiceDomain(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *FailoverEvent) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *FailoverEvent) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *FailoverEvent) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.FailoverType != 0 {
+		i = encodeVarintServiceDomain(dAtA, i, uint64(m.FailoverType))
+		i--
+		dAtA[i] = 0x18
+	}
+	if m.CreatedTime != nil {
+		{
+			size, err := m.CreatedTime.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintServiceDomain(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Id) > 0 {
+		i -= len(m.Id)
+		copy(dAtA[i:], m.Id)
+		i = encodeVarintServiceDomain(dAtA, i, uint64(len(m.Id)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ClusterFailover) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ClusterFailover) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ClusterFailover) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.IsDefaultCluster {
+		i--
+		if m.IsDefaultCluster {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.ClusterAttribute != nil {
+		{
+			size, err := m.ClusterAttribute.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintServiceDomain(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.ToCluster != nil {
+		{
+			size, err := m.ToCluster.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintServiceDomain(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.FromCluster != nil {
+		{
+			size, err := m.FromCluster.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintServiceDomain(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetFailoverEventRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetFailoverEventRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetFailoverEventRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.CreatedTime != nil {
+		{
+			size, err := m.CreatedTime.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintServiceDomain(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.FailoverEventId) > 0 {
+		i -= len(m.FailoverEventId)
+		copy(dAtA[i:], m.FailoverEventId)
+		i = encodeVarintServiceDomain(dAtA, i, uint64(len(m.FailoverEventId)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.DomainId) > 0 {
+		i -= len(m.DomainId)
+		copy(dAtA[i:], m.DomainId)
+		i = encodeVarintServiceDomain(dAtA, i, uint64(len(m.DomainId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetFailoverEventResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetFailoverEventResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetFailoverEventResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.ClusterFailovers) > 0 {
+		for iNdEx := len(m.ClusterFailovers) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.ClusterFailovers[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintServiceDomain(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintServiceDomain(dAtA []byte, offset int, v uint64) int {
 	offset -= sovServiceDomain(v)
 	base := offset
@@ -2345,6 +3189,165 @@ func (m *ListDomainsResponse) Size() (n int) {
 	l = len(m.NextPageToken)
 	if l > 0 {
 		n += 1 + l + sovServiceDomain(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *ListFailoverHistoryRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Filters != nil {
+		l = m.Filters.Size()
+		n += 1 + l + sovServiceDomain(uint64(l))
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovServiceDomain(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *ListFailoverHistoryRequestFilters) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.DomainId)
+	if l > 0 {
+		n += 1 + l + sovServiceDomain(uint64(l))
+	}
+	if len(m.Attributes) > 0 {
+		for _, e := range m.Attributes {
+			l = e.Size()
+			n += 1 + l + sovServiceDomain(uint64(l))
+		}
+	}
+	if m.DefaultActiveCluster {
+		n += 2
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *ListFailoverHistoryResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.FailoverEvents) > 0 {
+		for _, e := range m.FailoverEvents {
+			l = e.Size()
+			n += 1 + l + sovServiceDomain(uint64(l))
+		}
+	}
+	l = len(m.NextPageToken)
+	if l > 0 {
+		n += 1 + l + sovServiceDomain(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *FailoverEvent) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovServiceDomain(uint64(l))
+	}
+	if m.CreatedTime != nil {
+		l = m.CreatedTime.Size()
+		n += 1 + l + sovServiceDomain(uint64(l))
+	}
+	if m.FailoverType != 0 {
+		n += 1 + sovServiceDomain(uint64(m.FailoverType))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *ClusterFailover) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.FromCluster != nil {
+		l = m.FromCluster.Size()
+		n += 1 + l + sovServiceDomain(uint64(l))
+	}
+	if m.ToCluster != nil {
+		l = m.ToCluster.Size()
+		n += 1 + l + sovServiceDomain(uint64(l))
+	}
+	if m.ClusterAttribute != nil {
+		l = m.ClusterAttribute.Size()
+		n += 1 + l + sovServiceDomain(uint64(l))
+	}
+	if m.IsDefaultCluster {
+		n += 2
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *GetFailoverEventRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.DomainId)
+	if l > 0 {
+		n += 1 + l + sovServiceDomain(uint64(l))
+	}
+	l = len(m.FailoverEventId)
+	if l > 0 {
+		n += 1 + l + sovServiceDomain(uint64(l))
+	}
+	if m.CreatedTime != nil {
+		l = m.CreatedTime.Size()
+		n += 1 + l + sovServiceDomain(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *GetFailoverEventResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.ClusterFailovers) > 0 {
+		for _, e := range m.ClusterFailovers {
+			l = e.Size()
+			n += 1 + l + sovServiceDomain(uint64(l))
+		}
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -4846,6 +5849,938 @@ func (m *ListDomainsResponse) Unmarshal(dAtA []byte) error {
 			m.NextPageToken = append(m.NextPageToken[:0], dAtA[iNdEx:postIndex]...)
 			if m.NextPageToken == nil {
 				m.NextPageToken = []byte{}
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipServiceDomain(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListFailoverHistoryRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowServiceDomain
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListFailoverHistoryRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListFailoverHistoryRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Filters", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Filters == nil {
+				m.Filters = &ListFailoverHistoryRequestFilters{}
+			}
+			if err := m.Filters.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &PaginationOptions{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipServiceDomain(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListFailoverHistoryRequestFilters) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowServiceDomain
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListFailoverHistoryRequestFilters: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListFailoverHistoryRequestFilters: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DomainId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DomainId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Attributes", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Attributes = append(m.Attributes, &ClusterAttribute{})
+			if err := m.Attributes[len(m.Attributes)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultActiveCluster", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.DefaultActiveCluster = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipServiceDomain(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListFailoverHistoryResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowServiceDomain
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListFailoverHistoryResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListFailoverHistoryResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FailoverEvents", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.FailoverEvents = append(m.FailoverEvents, &FailoverEvent{})
+			if err := m.FailoverEvents[len(m.FailoverEvents)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NextPageToken", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.NextPageToken = append(m.NextPageToken[:0], dAtA[iNdEx:postIndex]...)
+			if m.NextPageToken == nil {
+				m.NextPageToken = []byte{}
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipServiceDomain(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *FailoverEvent) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowServiceDomain
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: FailoverEvent: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: FailoverEvent: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CreatedTime", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.CreatedTime == nil {
+				m.CreatedTime = &types.Timestamp{}
+			}
+			if err := m.CreatedTime.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FailoverType", wireType)
+			}
+			m.FailoverType = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.FailoverType |= FailoverType(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipServiceDomain(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ClusterFailover) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowServiceDomain
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ClusterFailover: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ClusterFailover: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FromCluster", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.FromCluster == nil {
+				m.FromCluster = &ActiveClusterInfo{}
+			}
+			if err := m.FromCluster.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ToCluster", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.ToCluster == nil {
+				m.ToCluster = &ActiveClusterInfo{}
+			}
+			if err := m.ToCluster.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ClusterAttribute", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.ClusterAttribute == nil {
+				m.ClusterAttribute = &ClusterAttribute{}
+			}
+			if err := m.ClusterAttribute.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsDefaultCluster", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsDefaultCluster = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipServiceDomain(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetFailoverEventRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowServiceDomain
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetFailoverEventRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetFailoverEventRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DomainId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DomainId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FailoverEventId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.FailoverEventId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CreatedTime", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.CreatedTime == nil {
+				m.CreatedTime = &types.Timestamp{}
+			}
+			if err := m.CreatedTime.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipServiceDomain(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetFailoverEventResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowServiceDomain
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetFailoverEventResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetFailoverEventResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ClusterFailovers", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceDomain
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceDomain
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ClusterFailovers = append(m.ClusterFailovers, &ClusterFailover{})
+			if err := m.ClusterFailovers[len(m.ClusterFailovers)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		default:

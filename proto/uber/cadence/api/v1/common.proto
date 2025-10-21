@@ -22,12 +22,12 @@ syntax = "proto3";
 
 package uber.cadence.api.v1;
 
+import "google/protobuf/duration.proto";
+
 option go_package = "github.com/uber/cadence-idl/go/proto/api/v1;apiv1";
 option java_multiple_files = true;
 option java_outer_classname = "CommonProto";
 option java_package = "com.uber.cadence.api.v1";
-
-import "google/protobuf/duration.proto";
 
 message WorkflowExecution {
   string workflow_id = 1;
@@ -123,7 +123,7 @@ message IsolationGroupPartition {
 }
 
 message IsolationGroupConfiguration {
-    repeated IsolationGroupPartition isolation_groups = 1;
+  repeated IsolationGroupPartition isolation_groups = 1;
 }
 
 message AsyncWorkflowConfiguration {
@@ -162,7 +162,7 @@ message ActiveClusterSelectionPolicy {
 // ClusterAttribute refers to a means of dividing the workflows in an active/active domain
 // for example, where they are started or some secondary attribute they're associated with
 // for example, in a start workflow request:
-// 
+//
 //   StartWorkflowRequest{
 //     ActiveClusterSelectionPolicy: {
 //       ClusterAttribute: {
@@ -171,7 +171,7 @@ message ActiveClusterSelectionPolicy {
 //        }
 //     }
 //   }
-// 
+//
 // this means that this workflow will follow the failover pattern of Lisbon, as it's defined
 // in the domain.
 message ClusterAttribute {
@@ -184,8 +184,24 @@ message ActiveClusterStickyRegionConfig {
   string sticky_region = 1;
 }
 
+// FailoverType describes how a failover operation will be performed.
+enum FailoverType {
+  FAILOVER_TYPE_INVALID = 0;
+  FAILOVER_TYPE_FORCE = 1;
+  FAILOVER_TYPE_GRACEFUL = 2;
+}
+
 // todo (david.porter) to remove as this is no longer used
 message ActiveClusterExternalEntityConfig {
   string external_entity_type = 1;
   string external_entity_key = 2;
+}
+
+// PaginationOptions provides common options for paginated RPCs.
+message PaginationOptions {
+  // page_size configures the number of results to be returned as part of each page
+  int32 page_size = 1;
+  // next_page_token should be provided from a previous response to fetch the next page.
+  // if empty, the first page will be returned.
+  bytes next_page_token = 2;
 }
