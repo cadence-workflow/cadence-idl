@@ -1115,16 +1115,16 @@ struct ClusterAttributeScope {
 // activeClustersByClusterAttribute is a map of whatever subdivision of the domain chosen
 // to active cluster info for active-active domains. The key refers to the type of
 // cluster attribute and the value refers to its cluster mappings.
-// 
+//
 // For example, a request to update the domain for two locations
-// 
+//
 // UpdateDomainRequest{
 //    ReplicationConfiguration: {
 //       ActiveClusters: {
 //           ActiveClustersByClusterAttribute: {
 //             "location": ClusterAttributeScope{
-//                   "Tokyo": {ActiveClusterInfo: "cluster0, FailoverVersion: 123}, 
-//                   "Morocco": {ActiveClusterInfo: "cluster1", FailoverVersion: 100}, 
+//                   "Tokyo": {ActiveClusterInfo: "cluster0, FailoverVersion: 123},
+//                   "Morocco": {ActiveClusterInfo: "cluster1", FailoverVersion: 100},
 //             }
 //          }
 //       }
@@ -1230,6 +1230,64 @@ struct DeprecateDomainRequest {
 struct DeleteDomainRequest {
  10: optional string name
  20: optional string securityToken
+}
+
+struct ListFailoverHistoryRequest {
+  // ListFailoverHistoryRequestFilters specifies the filters to apply to the request.
+  // If not provided all failover events will be returned.
+  10: optional ListFailoverHistoryRequestFilters filters
+  // PaginationOptions will be used to paginate the results.
+  // If not provided the first 5 events will be returned.
+  20: optional PaginationOptions pagination
+}
+
+struct ListFailoverHistoryRequestFilters {
+  // domain_id is the id of the domain to list failover history for.
+  10: optional string domainID
+  // attributes specifies every attribute type that should be returned on the request. If none are specified, defaults to all ClusterAttributes.
+  // If multiple attributes are specified all failover events containing any of the attributes will be returned.
+  20: optional list<ClusterAttribute> attributes
+  // default_active_cluster: when true, retrieves the domain wide ActiveClusterName failover events.
+  30: optional bool defaultActiveCluster
+}
+
+struct ListFailoverHistoryResponse {
+  10: optional list<FailoverEvent> failoverEvents
+  // next_page_token can be passed in a subsequent request to fetch the next set of events.
+  20: optional binary nextPageToken
+}
+
+struct FailoverEvent {
+  // id of the failover event
+  // Can be passed with the created time to fetch a specific event.
+  10: optional string id
+  // created_time is the time the failover event was created.
+  // Can be passed with the ID to fetch a specific event.
+  20: optional i64 (js.type = "Long") createdTime
+  30: optional FailoverType failoverType
+}
+
+struct ClusterFailover {
+  10: optional ActiveClusterInfo fromCluster
+  20: optional ActiveClusterInfo toCluster
+  // cluster_attribute is the scope and name for the attribute that was failed over.
+  // It will not be defined when is_default_cluster is true.
+  30: optional ClusterAttribute clusterAttribute
+  // If the failover was for the default domain-wide active cluster name.
+  40: optional bool isDefaultCluster
+}
+
+// GetFailoverEventRequest is used to fetch a specific failover event by id and created time.
+struct GetFailoverEventRequest {
+  10: optional string domainID
+  20: optional string failoverEventID
+  30: optional i64 (js.type = "Long") createdTime
+}
+
+// GetFailoverEventResponse contains the cluster failovers that occurred as part of the failover event.
+// It may be a large response if 1000s of ClusterAttributes were failed over as part of the event.
+struct GetFailoverEventResponse {
+  10: optional list<ClusterFailover> clusterFailovers
 }
 
 struct StartWorkflowExecutionRequest {
@@ -2169,24 +2227,40 @@ struct ActiveClusterSelectionPolicy {
 // ClusterAttribute is used for subdividing workflows in a domain into their active
 // and passive clusters. Examples of this might be 'region' and 'cluster1' as
 // respective region and scope fields.
-// 
+//
 // for example, a workflow may specify this in it's start request:
-// 
+//
 //   StartWorkflowRequest{
 //     ActiveClusterSelectionPolicy: {
 //       ClusterAttribute: {
 //            Scope: "cityID",
-//            Name: "Lisbon" 
+//            Name: "Lisbon"
 //        }
 //     }
 //   }
-// 
+//
 // and this means that this workflow will be associate with the domain's cluster attribute 'Lisbon',
-// be active in the cluster that has Lisbon active and 
+// be active in the cluster that has Lisbon active and
 // failover when that cluster-attribute is set to failover.
 struct ClusterAttribute {
   1: optional string scope
   2: optional string name
+}
+
+// FailoverType describes how a failover operation will be performed.
+enum FailoverType {
+  INVALID,
+  FORCE,
+  GRACEFUL,
+}
+
+// PaginationOptions provides common options for paginated RPCs.
+struct PaginationOptions {
+  // page_size configures the number of results to be returned as part of each page
+  10: optional i32 pageSize
+  // next_page_token should be provided from a previous response to fetch the next page.
+  // if empty, the first page will be returned.
+  20: optional binary nextPageToken
 }
 
 // todo (david.porter) Remove this, as it's no longer needed

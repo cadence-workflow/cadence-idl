@@ -127,6 +127,32 @@ service WorkflowService {
     )
 
   /**
+  * ListFailoverHistory returns the history of failover events for a domain.
+  **/
+  shared.ListFailoverHistoryResponse ListFailoverHistory(1: shared.ListFailoverHistoryRequest listRequest)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.ServiceBusyError serviceBusyError,
+      3: shared.ClientVersionNotSupportedError clientVersionNotSupportedError,
+      4: shared.AccessDeniedError accessDeniedError,
+    )
+
+  /**
+  * GetFailoverEvent returns the cluster failovers that occurred as part of a specific failover event.
+  * To construct the request, use:
+  * - domain_id: the id of the domain to fetch the failover event for.
+  * - failover_event_id: the id of the failover event to fetch.
+  * - created_time: the time the failover event was created.
+  **/
+  shared.GetFailoverEventResponse GetFailoverEvent(1: shared.GetFailoverEventRequest getRequest)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.ServiceBusyError serviceBusyError,
+      3: shared.ClientVersionNotSupportedError clientVersionNotSupportedError,
+      4: shared.AccessDeniedError accessDeniedError,
+    )
+
+  /**
   * RestartWorkflowExecution restarts a previous workflow
   * If the workflow is currently running it will terminate and restart
   **/
