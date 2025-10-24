@@ -82,7 +82,7 @@ message RegisterDomainRequest {
   string history_archival_uri = 11;
   ArchivalStatus visibility_archival_status = 12;
   string visibility_archival_uri = 13;
-  map<string, string> active_clusters_by_region = 14; // todo (david.porter) to remove as this is no longer used
+  reserved 14;
   ActiveClusters active_clusters = 15;
 }
 

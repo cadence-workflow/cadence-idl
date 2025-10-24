@@ -91,7 +91,7 @@ enum ArchivalStatus {
 
 // ActiveClusters contains the configuration of active-active domain's active clusters/regions
 message ActiveClusters {
-  map<string, ActiveClusterInfo> region_to_cluster = 1; // todo (david.porter) to remove as this is no longer used
+  reserved 1;
   map<string, ClusterAttributeScope> active_clusters_by_cluster_attribute = 2;
 }
 

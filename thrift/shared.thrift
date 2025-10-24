@@ -1131,7 +1131,7 @@ struct ClusterAttributeScope {
 //    }
 //  }
 struct ActiveClusters {
-  10: optional map<string, ActiveClusterInfo> activeClustersByRegion // todo (david.porter) remove this as it's no longer used
+  // deprecated 10: optional map<string, ActiveClusterInfo> activeClustersByRegion
   11: optional map<string, ClusterAttributeScope> activeClustersByClusterAttribute
 }
 
@@ -1150,8 +1150,7 @@ struct RegisterDomainRequest {
   50: optional bool emitMetric = true
   60: optional list<ClusterReplicationConfiguration> clusters
   70: optional string activeClusterName
-  // todo (david.porter) remove this field as it's not going to be used
-  75: optional map<string, string> activeClustersByRegion
+  // deprecated 75: optional map<string, string> activeClustersByRegion
   // activeClusters is a map of cluster-attribute name to active cluster name for active-active domain
   76: optional ActiveClusters activeClusters
   // A key-value map for any customized purpose
@@ -2201,10 +2200,10 @@ struct TaskKey {
 struct ActiveClusterSelectionPolicy {
   1: optional ClusterAttribute clusterAttribute
 
-  10: optional ActiveClusterSelectionStrategy strategy // todo (david.porter) remove these as they're not used anymore
-  20: optional string stickyRegion                     // todo (david.porter) remove these as they're not used anymore
-  30: optional string externalEntityType               // todo (david.porter) remove these as they're not used anymore
-  40: optional string externalEntityKey                // todo (david.porter) remove these as they're not used anymore
+  // deprecated 10: optional ActiveClusterSelectionStrategy strategy
+  // deprecated 20: optional string stickyRegion
+  // deprecated 30: optional string externalEntityType
+  // deprecated 40: optional string externalEntityKey
 }
 
 // ClusterAttribute is used for subdividing workflows in a domain into their active
