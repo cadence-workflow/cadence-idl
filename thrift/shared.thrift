@@ -2237,9 +2237,9 @@ struct ClusterAttribute {
 
 // FailoverType describes how a failover operation will be performed.
 enum FailoverType {
-  INVALID,
-  FORCE,
-  GRACEFUL,
+  INVALID
+  FORCE
+  GRACEFUL
 }
 
 // PaginationOptions provides common options for paginated RPCs.
