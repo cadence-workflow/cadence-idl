@@ -1265,6 +1265,7 @@ struct FailoverEvent {
   // Can be passed with the ID to fetch a specific event.
   20: optional i64 (js.type = "Long") createdTime
   30: optional FailoverType failoverType
+  40: optional List<ClusterFailover> clusterFailovers 
 }
 
 struct ClusterFailover {
@@ -1275,19 +1276,6 @@ struct ClusterFailover {
   30: optional ClusterAttribute clusterAttribute
   // If the failover was for the default domain-wide active cluster name.
   40: optional bool isDefaultCluster
-}
-
-// GetFailoverEventRequest is used to fetch a specific failover event by id and created time.
-struct GetFailoverEventRequest {
-  10: optional string domainID
-  20: optional string failoverEventID
-  30: optional i64 (js.type = "Long") createdTime
-}
-
-// GetFailoverEventResponse contains the cluster failovers that occurred as part of the failover event.
-// It may be a large response if 1000s of ClusterAttributes were failed over as part of the event.
-struct GetFailoverEventResponse {
-  10: optional list<ClusterFailover> clusterFailovers
 }
 
 struct StartWorkflowExecutionRequest {

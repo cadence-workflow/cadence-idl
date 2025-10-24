@@ -65,15 +65,7 @@ service DomainAPI {
   rpc DeleteDomain(DeleteDomainRequest) returns (DeleteDomainResponse);
 
   // ListFailoverHistory returns the history of failover events for a domain.
-  //
   rpc ListFailoverHistory(ListFailoverHistoryRequest) returns (ListFailoverHistoryResponse);
-
-  // GetFailoverEvent returns the cluster failovers that occurred as part of a specific failover event.
-  // To construct the request, use:
-  // - domain_id: the id of the domain to fetch the failover event for.
-  // - failover_event_id: the id of the failover event to fetch.
-  // - created_time: the time the failover event was created.
-  rpc GetFailoverEvent(GetFailoverEventRequest) returns (GetFailoverEventResponse);
 }
 
 message RegisterDomainRequest {
@@ -180,6 +172,7 @@ message ListFailoverHistoryRequest {
 
 message ListFailoverHistoryRequestFilters {
   // domain_id is the id of the domain to list failover history for.
+  // domain_id is required.
   string domain_id = 1;
   // attributes specifies every attribute type that should be returned on the request. If none are specified, defaults to all ClusterAttributes.
   // If multiple attributes are specified all failover events containing any of the attributes will be returned.
@@ -202,6 +195,7 @@ message FailoverEvent {
   // Can be passed with the ID to fetch a specific event.
   google.protobuf.Timestamp created_time = 2;
   FailoverType failover_type = 3;
+  repeated ClusterFailover cluster_failovers = 4;
 }
 
 message ClusterFailover {
@@ -212,17 +206,4 @@ message ClusterFailover {
   ClusterAttribute cluster_attribute = 3;
   // If the failover was for the default domain-wide active cluster name.
   bool is_default_cluster = 4;
-}
-
-// GetFailoverEventRequest is used to fetch a specific failover event by id and created time.
-message GetFailoverEventRequest {
-  string domain_id = 1;
-  string failover_event_id = 2;
-  google.protobuf.Timestamp created_time = 3;
-}
-
-// GetFailoverEventResponse contains the cluster failovers that occurred as part of the failover event.
-// It may be a large response if 1000s of ClusterAttributes were failed over as part of the event.
-message GetFailoverEventResponse {
-  repeated ClusterFailover cluster_failovers = 1;
 }
