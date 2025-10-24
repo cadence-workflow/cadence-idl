@@ -1246,9 +1246,6 @@ struct ListFailoverHistoryRequest {
 struct ListFailoverHistoryRequestFilters {
   // domain_id is the id of the domain to list failover history for.
   10: optional string domainID
-  // attributes specifies every attribute type that should be returned on the request. If none are specified, defaults to all ClusterAttributes.
-  // If multiple attributes are specified all failover events containing any of the attributes will be returned.
-  20: optional list<ClusterAttribute> attributes
 }
 
 struct ListFailoverHistoryResponse {
