@@ -1241,14 +1241,14 @@ struct ListFailoverHistoryRequest {
   20: optional PaginationOptions pagination
 }
 
+// ListFailoverHistoryRequestFilters is used to filter the failover history.
+// It will be extended with additional filters (e.g ClusterAttributes) as the active-active feature is developed.
 struct ListFailoverHistoryRequestFilters {
   // domain_id is the id of the domain to list failover history for.
   10: optional string domainID
   // attributes specifies every attribute type that should be returned on the request. If none are specified, defaults to all ClusterAttributes.
   // If multiple attributes are specified all failover events containing any of the attributes will be returned.
   20: optional list<ClusterAttribute> attributes
-  // default_active_cluster: when true, retrieves the domain wide ActiveClusterName failover events.
-  30: optional bool defaultActiveCluster
 }
 
 struct ListFailoverHistoryResponse {
@@ -1272,10 +1272,8 @@ struct ClusterFailover {
   10: optional ActiveClusterInfo fromCluster
   20: optional ActiveClusterInfo toCluster
   // cluster_attribute is the scope and name for the attribute that was failed over.
-  // It will not be defined when is_default_cluster is true.
+  // If the cluster_attribute is not defined this failover can be assumed to be the default ActiveCluster.
   30: optional ClusterAttribute clusterAttribute
-  // If the failover was for the default domain-wide active cluster name.
-  40: optional bool isDefaultCluster
 }
 
 struct StartWorkflowExecutionRequest {
