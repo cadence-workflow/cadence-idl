@@ -1209,7 +1209,7 @@ struct UpdateDomainResponse {
 struct FailoverDomainRequest {
  10: optional string domainName
  20: optional string domainActiveClusterName
- // only applicable to active-active domains where 
+ // only applicable to active-active domains where
  // specific cluster-attributes are being failed over
  30: optional ActiveClusters activeClusters
 }
@@ -1262,7 +1262,7 @@ struct FailoverEvent {
   // Can be passed with the ID to fetch a specific event.
   20: optional i64 (js.type = "Long") createdTime
   30: optional FailoverType failoverType
-  40: optional List<ClusterFailover> clusterFailovers 
+  40: optional list<ClusterFailover> clusterFailovers
 }
 
 struct ClusterFailover {
