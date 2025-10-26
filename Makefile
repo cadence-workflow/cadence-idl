@@ -94,7 +94,12 @@ proto-go: $(PROTO_FILES) $(BIN)/$(PROTOC_VERSION_BIN) $(BIN)/protoc-gen-gogofast
 	@rm -r $(PROTO_GO_OUT)/uber
 
 thriftlint:
-	$(foreach thrift_file,$(THRIFT_FILES),$(shell thrift -o /tmp --gen go $(thrift_file)))
+	@for file in $(THRIFT_FILES); do \
+		if ! thrift --gen go "$$file"; then \
+			echo "FAILED: $$file"; \
+			exit 1; \
+		fi; \
+	done
 
 all: proto-lint proto-go
 
