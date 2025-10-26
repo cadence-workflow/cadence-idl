@@ -26,3 +26,25 @@ steps:
                 command:
                 - |-
                   make proto-lint
+
+  - label: "thrift compile"
+    agents:
+      queue: "buildkite-gcp"
+    plugins:
+      - kubernetes:
+          <<: *kubernetes
+          podSpec:
+            <<: *podSpec
+            containers:
+              - <<: *commandContainer
+                command:
+                - |-
+                  # Install thrift compiler
+                  apt-get update && apt-get install -y thrift-compiler
+                  # Compile all thrift files to check for syntax errors
+                  cd thrift
+                  for file in *.thrift; do
+                    echo "Compiling $file..."
+                    thrift --gen go "$file"
+                  done
+                  echo "All Thrift files compiled successfully!"
