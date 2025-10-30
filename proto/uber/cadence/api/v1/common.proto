@@ -136,10 +136,26 @@ message AsyncWorkflowConfiguration {
   DataBlob queue_config = 4;
 }
 
+// todo (david.porter) to remove as this is no longer used
+enum ActiveClusterSelectionStrategy {
+  ACTIVE_CLUSTER_SELECTION_STRATEGY_INVALID = 0;
+  ACTIVE_CLUSTER_SELECTION_STRATEGY_REGION_STICKY = 1;
+  ACTIVE_CLUSTER_SELECTION_STRATEGY_EXTERNAL_ENTITY = 2;
+}
+
 message ActiveClusterSelectionPolicy {
-  reserved 1;
-  reserved 2;
-  reserved 3;
+  ActiveClusterSelectionStrategy strategy = 1; // todo (david.porter) to remove
+
+  // todo (david.porter) to remove
+  oneof strategy_config {
+    // Sticky region config is applicable if strategy is ACTIVE_CLUSTER_SELECTION_STRATEGY_REGION_STICKY
+    // This is the default strategy for active-active domains and region would be set to receiver cluster's region if not specified.
+    ActiveClusterStickyRegionConfig active_cluster_sticky_region_config = 2;
+
+    // External entity config is applicable if strategy is ACTIVE_CLUSTER_SELECTION_STRATEGY_EXTERNAL_ENTITY
+    // External entity type must be one of the supported types in active cluster manager. Custom ones can be added by implementing the corresponding interface.
+    ActiveClusterExternalEntityConfig active_cluster_external_entity_config = 3;
+  }
   ClusterAttribute cluster_attribute = 4;
 }
 
@@ -161,6 +177,11 @@ message ActiveClusterSelectionPolicy {
 message ClusterAttribute {
   string scope = 1;
   string name = 2;
+}
+
+// todo (david.porter) to remove as this is no longer used
+message ActiveClusterStickyRegionConfig {
+  string sticky_region = 1;
 }
 
 // FailoverType describes how a failover operation will be performed.
