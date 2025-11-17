@@ -1212,6 +1212,8 @@ struct FailoverDomainRequest {
  // only applicable to active-active domains where
  // specific cluster-attributes are being failed over
  30: optional ActiveClusters activeClusters
+ // user-requested addition "reason" variable created to increase transparency around failovers
+ 40: optional string reason
 }
 
 struct FailoverDomainResponse {

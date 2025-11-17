@@ -120,6 +120,8 @@ message FailoverDomainRequest {
   // only applicable for active-active use-cases where the failover is occurring
   // at the cluster-attribute level only
   ActiveClusters active_clusters = 30;
+  // user-requested addition "reason" variable created to increase transparency around failovers
+  string reason = 31;
 }
 
 message FailoverDomainResponse {
