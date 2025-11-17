@@ -138,23 +138,24 @@ message AsyncWorkflowConfiguration {
 
 // todo (david.porter) to remove as this is no longer used
 enum ActiveClusterSelectionStrategy {
+  option deprecated = true; // Deprecates the entire enum type
   ACTIVE_CLUSTER_SELECTION_STRATEGY_INVALID = 0;
   ACTIVE_CLUSTER_SELECTION_STRATEGY_REGION_STICKY = 1;
   ACTIVE_CLUSTER_SELECTION_STRATEGY_EXTERNAL_ENTITY = 2;
 }
 
 message ActiveClusterSelectionPolicy {
-  ActiveClusterSelectionStrategy strategy = 1; // todo (david.porter) to remove
+  ActiveClusterSelectionStrategy strategy = 1 [deprecated = true]; // todo (david.porter) to remove
 
   // todo (david.porter) to remove
   oneof strategy_config {
     // Sticky region config is applicable if strategy is ACTIVE_CLUSTER_SELECTION_STRATEGY_REGION_STICKY
     // This is the default strategy for active-active domains and region would be set to receiver cluster's region if not specified.
-    ActiveClusterStickyRegionConfig active_cluster_sticky_region_config = 2;
+    ActiveClusterStickyRegionConfig active_cluster_sticky_region_config = 2 [deprecated = true];
 
     // External entity config is applicable if strategy is ACTIVE_CLUSTER_SELECTION_STRATEGY_EXTERNAL_ENTITY
     // External entity type must be one of the supported types in active cluster manager. Custom ones can be added by implementing the corresponding interface.
-    ActiveClusterExternalEntityConfig active_cluster_external_entity_config = 3;
+    ActiveClusterExternalEntityConfig active_cluster_external_entity_config = 3 [deprecated = true];
   }
   ClusterAttribute cluster_attribute = 4;
 }
@@ -181,6 +182,7 @@ message ClusterAttribute {
 
 // todo (david.porter) to remove as this is no longer used
 message ActiveClusterStickyRegionConfig {
+  option deprecated = true;
   string sticky_region = 1;
 }
 
@@ -193,6 +195,7 @@ enum FailoverType {
 
 // todo (david.porter) to remove as this is no longer used
 message ActiveClusterExternalEntityConfig {
+  option deprecated = true;
   string external_entity_type = 1;
   string external_entity_key = 2;
 }
