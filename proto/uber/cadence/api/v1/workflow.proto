@@ -51,6 +51,9 @@ message WorkflowExecutionInfo {
   map<string, string> partition_config = 15;
   CronOverlapPolicy cron_overlap_policy = 16;
   ActiveClusterSelectionPolicy active_cluster_selection_policy = 18;
+  string cron_schedule = 19;
+  WorkflowExecutionStatus execution_status = 20;
+  google.protobuf.Timestamp scheduled_execution_time = 21;
 }
 
 message WorkflowExecutionConfiguration {
@@ -183,6 +186,18 @@ enum WorkflowExecutionCloseStatus {
   WORKFLOW_EXECUTION_CLOSE_STATUS_TERMINATED = 4;
   WORKFLOW_EXECUTION_CLOSE_STATUS_CONTINUED_AS_NEW = 5;
   WORKFLOW_EXECUTION_CLOSE_STATUS_TIMED_OUT = 6;
+}
+
+enum WorkflowExecutionStatus {
+  WORKFLOW_EXECUTION_STATUS_INVALID = 0;
+  WORKFLOW_EXECUTION_STATUS_PENDING = 1;
+  WORKFLOW_EXECUTION_STATUS_STARTED = 2;
+  WORKFLOW_EXECUTION_STATUS_COMPLETED = 3;
+  WORKFLOW_EXECUTION_STATUS_FAILED = 4;
+  WORKFLOW_EXECUTION_STATUS_CANCELED = 5;
+  WORKFLOW_EXECUTION_STATUS_TERMINATED = 6;
+  WORKFLOW_EXECUTION_STATUS_CONTINUED_AS_NEW = 7;
+  WORKFLOW_EXECUTION_STATUS_TIMED_OUT = 8;
 }
 
 enum ContinueAsNewInitiator {

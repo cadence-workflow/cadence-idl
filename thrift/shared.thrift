@@ -286,6 +286,17 @@ enum WorkflowExecutionCloseStatus {
   TIMED_OUT,
 }
 
+enum WorkflowExecutionStatus {
+  PENDING,
+  STARTED,
+  COMPLETED,
+  FAILED,
+  CANCELED,
+  TERMINATED,
+  CONTINUED_AS_NEW,
+  TIMED_OUT,
+}
+
 enum QueryTaskCompletedType {
   COMPLETED,
   FAILED,
@@ -422,6 +433,9 @@ struct WorkflowExecutionInfo {
   150: optional map<string, string> partitionConfig
   160: optional CronOverlapPolicy cronOverlapPolicy
   170: optional ActiveClusterSelectionPolicy activeClusterSelectionPolicy
+  180: optional string cronSchedule
+  190: optional WorkflowExecutionStatus executionStatus
+  200: optional i64 (js.type = "Long") scheduledExecutionTime
 }
 
 struct WorkflowExecutionConfiguration {
