@@ -76,3 +76,6 @@ message ServiceBusyError {
 
 message StickyWorkerUnavailableError {
 }
+
+message ReadOnlyPartitionError {
+}
