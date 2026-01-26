@@ -318,6 +318,10 @@ struct AsyncRequestMessage {
 // a substruct on the executions record which is intended to be used to track
 // timers and other records for debugging and cleanup
 struct WorkflowTimerTaskInfo {
+    10: optional list<TimerReference> references
+}
+
+struct TimerReference {
     // Primary Keys. Always required
     // a reference to the the execution table task_id
     10: optional i64 taskID
