@@ -1971,6 +1971,7 @@ struct RefreshWorkflowTasksRequest {
 
 struct FeatureFlags {
 	10: optional bool WorkflowExecutionAlreadyCompletedErrorEnabled
+  20: optional bool AutoForwardingEnabled
 }
 
 enum CrossClusterTaskType {
