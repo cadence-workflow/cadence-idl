@@ -1,0 +1,186 @@
+// Copyright (c) 2024 Uber Technologies, Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+syntax = "proto3";
+
+package uber.cadence.api.v1;
+
+option go_package = "github.com/uber/cadence-idl/go/proto/api/v1;apiv1";
+option java_multiple_files = true;
+option java_outer_classname = "ScheduleProto";
+option java_package = "com.uber.cadence.api.v1";
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "uber/cadence/api/v1/common.proto";
+import "uber/cadence/api/v1/tasklist.proto";
+
+// ScheduleOverlapPolicy defines behavior when a new run is scheduled while a previous run is still active.
+enum ScheduleOverlapPolicy {
+  SCHEDULE_OVERLAP_POLICY_INVALID = 0;
+  // Skip the new run if the previous is still running.
+  SCHEDULE_OVERLAP_POLICY_SKIP_NEW = 1;
+  // Buffer new runs and execute them sequentially.
+  // Controlled by buffer_limit in SchedulePolicies (0 = unlimited, N = max N queued).
+  SCHEDULE_OVERLAP_POLICY_BUFFER = 2;
+  // Allow runs to execute concurrently.
+  // Controlled by concurrency_limit in SchedulePolicies (0 = unlimited, N = max N concurrent).
+  SCHEDULE_OVERLAP_POLICY_CONCURRENT = 3;
+  // Cancel the previous run gracefully and start the new one.
+  SCHEDULE_OVERLAP_POLICY_CANCEL_PREVIOUS = 4;
+  // Terminate the previous run immediately and start the new one.
+  SCHEDULE_OVERLAP_POLICY_TERMINATE_PREVIOUS = 5;
+}
+
+// ScheduleCatchUpPolicy defines how missed runs are handled on unpause or system recovery.
+// Catch-up runs are subject to the configured overlap policy: if the overlap buffer is full,
+// excess catch-up runs are dropped.
+enum ScheduleCatchUpPolicy {
+  SCHEDULE_CATCH_UP_POLICY_INVALID = 0;
+  // Skip all missed runs.
+  SCHEDULE_CATCH_UP_POLICY_SKIP = 1;
+  // Only run the most recent missed scheduled time, skip all others.
+  SCHEDULE_CATCH_UP_POLICY_ONE = 2;
+  // Run for each missed run, up to the catch_up_window.
+  SCHEDULE_CATCH_UP_POLICY_ALL = 3;
+}
+
+// ScheduleSpec defines when a schedule should trigger.
+message ScheduleSpec {
+  // Standard cron expression (e.g., "0 6 * * *").
+  // Timezone can be embedded using CRON_TZ prefix (e.g., "CRON_TZ=America/Los_Angeles 0 6 * * *").
+  // Defaults to UTC if no timezone specified.
+  string cron_expression = 1;
+  // Earliest time the schedule should trigger. If not set, starts immediately.
+  google.protobuf.Timestamp start_time = 2;
+  // Latest time the schedule should trigger. If not set, runs indefinitely.
+  google.protobuf.Timestamp end_time = 3;
+  // Random jitter applied to each trigger time to spread load.
+  // The actual trigger time will be offset by a random duration in [0, jitter).
+  google.protobuf.Duration jitter = 4;
+}
+
+// ScheduleAction defines what action to take when the schedule triggers.
+// Exactly one action field must be set.
+message ScheduleAction {
+  // StartWorkflowAction starts a new workflow execution on each trigger.
+  message StartWorkflowAction {
+    // Workflow type to start.
+    WorkflowType workflow_type = 1;
+    // Task list for the target workflow.
+    TaskList task_list = 2;
+    // Input payload for the target workflow.
+    Payload input = 3;
+    // Prefix for generating the target workflow ID.
+    string workflow_id_prefix = 4;
+    // Execution timeout for the target workflow.
+    google.protobuf.Duration execution_start_to_close_timeout = 5;
+    // Decision task timeout for the target workflow.
+    google.protobuf.Duration task_start_to_close_timeout = 6;
+    // Retry policy for the target workflow.
+    RetryPolicy retry_policy = 7;
+    // Additional memo data to attach to the target workflow.
+    Memo memo = 8;
+    // Search attributes to attach to the target workflow.
+    SearchAttributes search_attributes = 9;
+  }
+
+  // Start a new workflow execution on each trigger.
+  StartWorkflowAction start_workflow = 1;
+}
+
+// SchedulePolicies configures schedule behavior.
+message SchedulePolicies {
+  // Defines what happens when a new run is scheduled while the previous is still running.
+  ScheduleOverlapPolicy overlap_policy = 1;
+  // Defines how missed runs are handled on unpause or system recovery.
+  ScheduleCatchUpPolicy catch_up_policy = 2;
+  // Maximum time to look back for missed runs. Runs older than this window are skipped.
+  // If not set, the server uses a default (configurable via dynamic config).
+  google.protobuf.Duration catch_up_window = 3;
+  // If true, pause the schedule when a triggered workflow fails.
+  bool pause_on_failure = 4;
+  // Maximum number of runs to buffer when overlap_policy is BUFFER.
+  // 0 means unlimited. Only used with SCHEDULE_OVERLAP_POLICY_BUFFER.
+  int32 buffer_limit = 5;
+  // Maximum number of runs executing concurrently when overlap_policy is CONCURRENT.
+  // 0 means unlimited. Only used with SCHEDULE_OVERLAP_POLICY_CONCURRENT.
+  int32 concurrency_limit = 6;
+}
+
+// SchedulePauseInfo captures the state of a paused schedule.
+message SchedulePauseInfo {
+  // User-provided reason for pausing.
+  string reason = 1;
+  // Time when the schedule was paused.
+  google.protobuf.Timestamp paused_at = 2;
+  // Identity of the actor that paused the schedule.
+  string paused_by = 3;
+}
+
+// ScheduleState represents the current runtime state of a schedule.
+message ScheduleState {
+  // Whether the schedule is currently paused.
+  bool paused = 1;
+  // Details about the pause, present only when paused is true.
+  SchedulePauseInfo pause_info = 2;
+}
+
+// BackfillInfo tracks the progress of an ongoing backfill operation.
+message BackfillInfo {
+  // Backfill identifier, as provided in BackfillScheduleRequest.
+  string backfill_id = 1;
+  // Start of the backfill time range.
+  google.protobuf.Timestamp start_time = 2;
+  // End of the backfill time range.
+  google.protobuf.Timestamp end_time = 3;
+  // Number of runs completed so far.
+  int32 runs_completed = 4;
+  // Total number of runs in this backfill range.
+  int32 runs_total = 5;
+}
+
+// ScheduleInfo provides runtime information about the schedule.
+message ScheduleInfo {
+  // When the last run was triggered.
+  google.protobuf.Timestamp last_run_time = 1;
+  // When the next run will be triggered.
+  google.protobuf.Timestamp next_run_time = 2;
+  // Total number of workflows started by this schedule (includes regular, catch-up, and backfill runs).
+  int64 total_runs = 3;
+  // When the schedule was created.
+  google.protobuf.Timestamp create_time = 4;
+  // When the schedule was last updated.
+  google.protobuf.Timestamp last_update_time = 5;
+  // Currently active backfill operations. Removed when complete.
+  repeated BackfillInfo ongoing_backfills = 6;
+}
+
+// ScheduleListEntry represents a single schedule in a list response.
+// Contains only data available from the visibility store.
+message ScheduleListEntry {
+  string schedule_id = 1;
+  // Workflow type configured in the schedule action.
+  WorkflowType workflow_type = 2;
+  // Current state of the schedule.
+  ScheduleState state = 3;
+  // Cron expression for the schedule.
+  string cron_expression = 4;
+}

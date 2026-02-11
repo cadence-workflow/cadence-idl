@@ -1,0 +1,150 @@
+// Copyright (c) 2024 Uber Technologies, Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+syntax = "proto3";
+
+package uber.cadence.api.v1;
+
+option go_package = "github.com/uber/cadence-idl/go/proto/api/v1;apiv1";
+option java_multiple_files = true;
+option java_outer_classname = "ScheduleServiceProto";
+option java_package = "com.uber.cadence.api.v1";
+
+import "google/protobuf/timestamp.proto";
+import "uber/cadence/api/v1/schedule.proto";
+import "uber/cadence/api/v1/common.proto";
+
+// ScheduleAPI provides APIs for managing schedules.
+service ScheduleAPI {
+  // CreateSchedule creates a new schedule.
+  rpc CreateSchedule(CreateScheduleRequest) returns (CreateScheduleResponse);
+
+  // DescribeSchedule returns the details and current state of a schedule.
+  rpc DescribeSchedule(DescribeScheduleRequest) returns (DescribeScheduleResponse);
+
+  // ListSchedules returns a list of schedules in a domain.
+  rpc ListSchedules(ListSchedulesRequest) returns (ListSchedulesResponse);
+
+  // DeleteSchedule deletes a schedule.
+  rpc DeleteSchedule(DeleteScheduleRequest) returns (DeleteScheduleResponse);
+
+  // PauseSchedule pauses a schedule.
+  rpc PauseSchedule(PauseScheduleRequest) returns (PauseScheduleResponse);
+
+  // UnpauseSchedule resumes a paused schedule.
+  rpc UnpauseSchedule(UnpauseScheduleRequest) returns (UnpauseScheduleResponse);
+
+  // BackfillSchedule triggers runs for a historical time range.
+  rpc BackfillSchedule(BackfillScheduleRequest) returns (BackfillScheduleResponse);
+
+  // UpdateSchedule updates the configuration of an existing schedule.
+  rpc UpdateSchedule(UpdateScheduleRequest) returns (UpdateScheduleResponse);
+}
+
+message CreateScheduleRequest {
+  string domain = 1;
+  string schedule_id = 2;
+  ScheduleSpec spec = 3;
+  ScheduleAction action = 4;
+  SchedulePolicies policies = 5;
+  Memo memo = 6;
+  SearchAttributes search_attributes = 7;
+}
+
+message CreateScheduleResponse {
+}
+
+message DescribeScheduleRequest {
+  string domain = 1;
+  string schedule_id = 2;
+}
+
+message DescribeScheduleResponse {
+  ScheduleSpec spec = 1;
+  ScheduleAction action = 2;
+  SchedulePolicies policies = 3;
+  ScheduleState state = 4;
+  ScheduleInfo info = 5;
+}
+
+message ListSchedulesRequest {
+  string domain = 1;
+  int32 page_size = 2;
+  bytes next_page_token = 3;
+}
+
+message ListSchedulesResponse {
+  repeated ScheduleListEntry schedules = 1;
+  bytes next_page_token = 2;
+}
+
+message DeleteScheduleRequest {
+  string domain = 1;
+  string schedule_id = 2;
+}
+
+message DeleteScheduleResponse {
+}
+
+message PauseScheduleRequest {
+  string domain = 1;
+  string schedule_id = 2;
+  string reason = 3;
+}
+
+message PauseScheduleResponse {
+}
+
+message UnpauseScheduleRequest {
+  string domain = 1;
+  string schedule_id = 2;
+  string reason = 3;
+  // Optional: override the schedule's catch-up policy for this unpause only.
+  // If not set, uses the catch_up_policy from SchedulePolicies.
+  ScheduleCatchUpPolicy catch_up_policy = 4;
+}
+
+message UnpauseScheduleResponse {
+}
+
+message BackfillScheduleRequest {
+  string domain = 1;
+  string schedule_id = 2;
+  google.protobuf.Timestamp start_time = 3;
+  google.protobuf.Timestamp end_time = 4;
+  ScheduleOverlapPolicy overlap_policy = 5;
+  // Client-provided backfill identifier. Used for idempotency and to track progress.
+  // If not set, the server generates a UUID. Retries with the same backfill_id are deduplicated.
+  string backfill_id = 6;
+}
+
+message BackfillScheduleResponse {
+}
+
+message UpdateScheduleRequest {
+  string domain = 1;
+  string schedule_id = 2;
+  ScheduleSpec spec = 3;
+  ScheduleAction action = 4;
+  SchedulePolicies policies = 5;
+}
+
+message UpdateScheduleResponse {
+}
