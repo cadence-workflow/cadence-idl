@@ -1,0 +1,157 @@
+// Copyright (c) 2024 Uber Technologies, Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+syntax = "proto3";
+
+package uber.cadence.api.v1;
+
+option go_package = "github.com/uber/cadence-idl/go/proto/api/v1;apiv1";
+option java_multiple_files = true;
+option java_outer_classname = "ScheduleProto";
+option java_package = "com.uber.cadence.api.v1";
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "uber/cadence/api/v1/common.proto";
+
+// ScheduleOverlapPolicy defines behavior when a new run is scheduled while a previous run is still active.
+enum ScheduleOverlapPolicy {
+  SCHEDULE_OVERLAP_POLICY_INVALID = 0;
+  // Skip the new run if the previous is still running.
+  SCHEDULE_OVERLAP_POLICY_SKIP = 1;
+  // Buffer one run and skip the rest.
+  SCHEDULE_OVERLAP_POLICY_BUFFER_ONE = 2;
+  // Buffer all runs up to a limit.
+  SCHEDULE_OVERLAP_POLICY_BUFFER_ALL = 3;
+  // Cancel the previous run and start a new one.
+  SCHEDULE_OVERLAP_POLICY_CANCEL_OTHER = 4;
+  // Terminate the previous run and start a new one.
+  SCHEDULE_OVERLAP_POLICY_TERMINATE_OTHER = 5;
+  // Allow all runs concurrently.
+  SCHEDULE_OVERLAP_POLICY_ALLOW_ALL = 6;
+}
+
+// ScheduleCatchUpPolicy defines how missed runs are handled on unpause or system recovery.
+enum ScheduleCatchUpPolicy {
+  SCHEDULE_CATCH_UP_POLICY_INVALID = 0;
+  // Skip all missed runs.
+  SCHEDULE_CATCH_UP_POLICY_SKIP = 1;
+  // Run once for all missed runs.
+  SCHEDULE_CATCH_UP_POLICY_ONE = 2;
+  // Run for each missed run (up to the catch-up window).
+  SCHEDULE_CATCH_UP_POLICY_ALL = 3;
+}
+
+// ScheduleSpec defines when a schedule should trigger.
+message ScheduleSpec {
+  // Standard cron expression (e.g., "0 6 * * *").
+  // Timezone can be embedded using CRON_TZ prefix (e.g., "CRON_TZ=America/Los_Angeles 0 6 * * *").
+  // Defaults to UTC if no timezone specified.
+  string cron_expression = 1;
+  // Earliest time the schedule should trigger. If not set, starts immediately.
+  google.protobuf.Timestamp start_time = 2;
+  // Latest time the schedule should trigger. If not set, runs indefinitely.
+  google.protobuf.Timestamp end_time = 3;
+}
+
+// ScheduleAction defines the workflow to start when the schedule triggers.
+message ScheduleAction {
+  // Name of the workflow type to start.
+  string workflow_type = 1;
+  // Task list for the target workflow.
+  string task_list = 2;
+  // Input payload for the target workflow.
+  Payload input = 3;
+  // Prefix for generating the target workflow ID.
+  // Target workflow ID: {workflow_id_prefix}-{scheduled_time_unix_nanos}
+  string workflow_id_prefix = 4;
+  // Execution timeout for the target workflow.
+  google.protobuf.Duration execution_start_to_close_timeout = 5;
+  // Decision task timeout for the target workflow.
+  google.protobuf.Duration task_start_to_close_timeout = 6;
+  // Retry policy for the target workflow.
+  RetryPolicy retry_policy = 7;
+  // Additional memo data to attach to the target workflow.
+  Memo memo = 8;
+  // Search attributes to attach to the target workflow.
+  SearchAttributes search_attributes = 9;
+}
+
+// SchedulePolicies configures schedule behavior.
+message SchedulePolicies {
+  // Defines what happens when a new run is scheduled while the previous is still running.
+  ScheduleOverlapPolicy overlap_policy = 1;
+  // Defines how missed runs are handled on unpause or system recovery.
+  ScheduleCatchUpPolicy catch_up_policy = 2;
+  // Maximum time to look back for missed runs. Runs older than this window are skipped.
+  google.protobuf.Duration catch_up_window = 3;
+  // If true, pause the schedule when a triggered workflow fails.
+  bool pause_on_failure = 4;
+}
+
+// ScheduleState represents the current runtime state of a schedule.
+message ScheduleState {
+  // Whether the schedule is currently paused.
+  bool paused = 1;
+  // User-provided reason for pausing.
+  string pause_reason = 2;
+  // Time when the schedule was paused.
+  google.protobuf.Timestamp paused_at = 3;
+}
+
+// ScheduleActionResult records the result of a single triggered workflow.
+message ScheduleActionResult {
+  // The intended trigger time.
+  google.protobuf.Timestamp scheduled_time = 1;
+  // The time the workflow was actually started.
+  google.protobuf.Timestamp actual_time = 2;
+  // The target workflow ID that was started.
+  string workflow_id = 3;
+  // The run ID of the started workflow.
+  string run_id = 4;
+  // True if this was a backfill run.
+  bool is_backfill = 5;
+}
+
+// ScheduleInfo provides runtime information about the schedule.
+message ScheduleInfo {
+  // When the last run was triggered.
+  google.protobuf.Timestamp last_run_time = 1;
+  // When the next run will be triggered.
+  google.protobuf.Timestamp next_run_time = 2;
+  // Total number of triggered runs.
+  int64 total_runs = 3;
+  // Number of runs missed (during pause or downtime).
+  int64 missed_runs = 4;
+  // List of recent triggered runs (limited to last 20).
+  repeated ScheduleActionResult recent_actions = 5;
+  // List of currently running workflow IDs.
+  repeated string running_workflows = 6;
+  // When the schedule was created.
+  google.protobuf.Timestamp create_time = 7;
+}
+
+// ScheduleListEntry represents a single schedule in a list response.
+message ScheduleListEntry {
+  string schedule_id = 1;
+  ScheduleSpec spec = 2;
+  ScheduleState state = 3;
+  ScheduleInfo info = 4;
+}
