@@ -1969,6 +1969,7 @@ struct RefreshWorkflowTasksRequest {
   20: optional WorkflowExecution execution
 }
 
+// DEPRECATED: use proto definition instead
 struct FeatureFlags {
 	10: optional bool WorkflowExecutionAlreadyCompletedErrorEnabled
 }
