@@ -319,6 +319,7 @@ message GetWorkflowExecutionHistoryResponse {
 
 message FeatureFlags {
 	bool workflow_execution_already_completed_error_enabled = 1 [json_name = "WorkflowExecutionAlreadyCompletedErrorEnabled"];
+  bool autoforwarding_enabled = 2;
 }
 
 message RefreshWorkflowTasksRequest {
