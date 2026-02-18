@@ -273,6 +273,7 @@ struct TransferTaskInfo {
   30: optional i64 (js.type = "Long") version
   32: optional i64 (js.type = "Long") visibilityTimestampNanos
   34: optional set<binary> targetDomainIDs
+  36: optional string originalTaskList
 }
 
 struct TimerTaskInfo {
@@ -284,6 +285,7 @@ struct TimerTaskInfo {
   20: optional i64 (js.type = "Long") version
   22: optional i64 (js.type = "Long") scheduleAttempt
   24: optional i64 (js.type = "Long") eventID
+  26: optional string taskList
 }
 
 struct ReplicationTaskInfo {
