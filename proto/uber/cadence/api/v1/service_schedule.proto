@@ -82,6 +82,8 @@ message DescribeScheduleResponse {
   SchedulePolicies policies = 3;
   ScheduleState state = 4;
   ScheduleInfo info = 5;
+  Memo memo = 6;
+  SearchAttributes search_attributes = 7;
 }
 
 message ListSchedulesRequest {
@@ -144,6 +146,7 @@ message UpdateScheduleRequest {
   ScheduleSpec spec = 3;
   ScheduleAction action = 4;
   SchedulePolicies policies = 5;
+  SearchAttributes search_attributes = 6;
 }
 
 message UpdateScheduleResponse {
