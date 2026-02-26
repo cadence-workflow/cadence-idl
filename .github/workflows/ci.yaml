@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  proto-lint:
+    name: proto lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Proto lint
+        run: make proto-lint
+
+      - name: Ensure generated code is checked in
+        run: |
+        # Fail the job if there are any uncommitted changes (ensures generated code is checked in)
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "Error: Uncommitted changes detected. Please commit generated code."
+            git status
+            exit 1
+          fi
+
+  thrift-compile:
+    name: thrift compile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install thrift compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y thrift-compiler
+
+      - name: Thrift lint
+        run: make thriftlint
