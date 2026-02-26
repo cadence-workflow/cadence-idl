@@ -16,6 +16,7 @@ jobs:
       - name: Ensure generated code is checked in
         # Fail the job if there are any uncommitted changes (ensures generated code is checked in)
         run: |
+          make proto-go
           if [[ -n $(git status --porcelain) ]]; then
             echo "Error: Uncommitted changes detected. Please commit generated code."
             git status
