@@ -10,18 +10,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Regenerate Proto code
+        run: make proto-go
+
       - name: Proto lint
         run: make proto-lint
 
       - name: Ensure generated code is checked in
         # Fail the job if there are any uncommitted changes (ensures generated code is checked in)
         run: |
-          make proto-go
-          if [[ -n $(git status --porcelain) ]]; then
-            echo "Error: Uncommitted changes detected. Please commit generated code."
-            git status
-            exit 1
-          fi
+          [[ -z $(git status --porcelain) ]] || { echo "Error: Uncommitted changes detected. Please commit generated code."; git status; exit 1; }
 
   thrift-compile:
     name: thrift compile
