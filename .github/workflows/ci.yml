@@ -19,6 +19,7 @@ jobs:
       - name: Ensure generated code is checked in
         # Fail the job if there are any uncommitted changes (ensures generated code is checked in)
         run: |
+          git status --porcelain
           git diff --quiet || (echo "Error: Uncommitted changes detected. Please commit generated code."; git status; exit 1)
 
   thrift-compile:
