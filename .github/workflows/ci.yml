@@ -14,7 +14,6 @@ jobs:
         run: make proto-lint
 
       - name: Ensure generated code is checked in
-        run: |
         # Fail the job if there are any uncommitted changes (ensures generated code is checked in)
         run: |
           if [[ -n $(git status --porcelain) ]]; then
