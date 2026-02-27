@@ -316,3 +316,21 @@ struct AsyncRequestMessage {
   16: optional string encoding
   18: optional binary payload
 }
+
+// a substruct on the executions record which is intended to be used to track
+// timers and other records for debugging and cleanup
+struct WorkflowTimerTaskInfo {
+    10: optional list<TimerReference> references
+}
+
+struct TimerReference {
+    // Primary Keys. Always required
+    // a reference to the the execution table task_id
+    10: optional i64 taskID
+    // a reference to the execution table visibility_ts
+    11: optional i64 (js.type = "Long") visibilityTimestamp
+
+    // Reference fields:
+    // for workflow timer values, the type of timeout
+    13: optional i16 TimeoutType
+}
