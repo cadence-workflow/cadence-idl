@@ -19,8 +19,18 @@ jobs:
       - name: Ensure generated code is checked in
         # Fail the job if there are any uncommitted changes (ensures generated code is checked in)
         run: |
-          git status --porcelain
-          git diff --quiet || (echo "Error: Uncommitted changes detected. Please commit generated code."; git status; exit 1)
+          set -ex
+          make proto-go
+          make proto-lint
+          echo "Checking for uncommitted generated changes..."
+          NUM_FILES_CHANGED=$(git status --porcelain 2>&1 | wc -l)
+          if [ "${NUM_FILES_CHANGED}" -ne 0 ]; then
+              printf "Please run this command and commit the changes:\n"
+              printf "\tmake proto-go && make proto-lint\n"
+              git status --porcelain
+              git --no-pager diff
+              exit 1
+          fi
 
   thrift-compile:
     name: thrift compile
