@@ -1,0 +1,48 @@
+name: CI
+
+on: pull_request
+
+jobs:
+  proto-lint:
+    name: proto lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Regenerate Proto code
+        run: make proto-go
+
+      - name: Proto lint
+        run: make proto-lint
+
+      - name: Ensure generated code is checked in
+        # Fail the job if there are any uncommitted changes (ensures generated code is checked in)
+        run: |
+          set -ex
+          make proto-go
+          make proto-lint
+          echo "Checking for uncommitted generated changes..."
+          NUM_FILES_CHANGED=$(git status --porcelain 2>&1 | wc -l)
+          if [ "${NUM_FILES_CHANGED}" -ne 0 ]; then
+              printf "Please run this command and commit the changes:\n"
+              printf "\tmake proto-go && make proto-lint\n"
+              git status --porcelain
+              git --no-pager diff
+              exit 1
+          fi
+
+  thrift-compile:
+    name: thrift compile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install thrift compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y thrift-compiler
+
+      - name: Thrift lint
+        run: make thriftlint
