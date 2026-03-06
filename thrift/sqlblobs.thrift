@@ -274,6 +274,7 @@ struct TransferTaskInfo {
   32: optional i64 (js.type = "Long") visibilityTimestampNanos
   34: optional set<binary> targetDomainIDs
   36: optional string originalTaskList
+  38: optional shared.TaskListKind originalTaskListKind
 }
 
 struct TimerTaskInfo {
