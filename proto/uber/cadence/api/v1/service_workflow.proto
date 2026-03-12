@@ -80,8 +80,8 @@ service WorkflowAPI {
   // QueryWorkflow returns query result for a specified workflow execution.
   rpc QueryWorkflow(QueryWorkflowRequest) returns (QueryWorkflowResponse);
 
-  // DescribeTaskList returns information about the target tasklist, right now this API returns the
-  // pollers which polled this tasklist in last few minutes.
+  // DescribeTaskList returns information about the target task list, including
+  // the workers that polled it in the last few minutes.
   rpc DescribeTaskList(DescribeTaskListRequest) returns (DescribeTaskListResponse);
 
   // GetTaskListsByDomain returns all task lists for a given domain

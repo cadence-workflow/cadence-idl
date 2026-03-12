@@ -86,6 +86,8 @@ message TaskIDBlock {
   int64 end_id = 2;
 }
 
+// PollerInfo describes a single worker polling a task list.
+// Despite the name, each entry represents a worker, which may have multiple pollers.
 message PollerInfo {
   google.protobuf.Timestamp last_access_time = 1;
   string identity = 2;
