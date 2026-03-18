@@ -709,12 +709,16 @@ type RetryPolicy struct {
 	// Maximum interval between retries. Exponential backoff leads to interval increase.
 	// This value is the cap of the increase. Default is 100x of initial interval.
 	MaximumInterval *types.Duration `protobuf:"bytes,3,opt,name=maximum_interval,json=maximumInterval,proto3" json:"maximum_interval,omitempty"`
-	// Maximum number of attempts. When exceeded the retries stop even if not expired yet.
-	// Must be 1 or bigger. Default is unlimited.
+	// Maximum number of attempts.
+	// The total attempts includes the initial attempt. Setting this to 1 means 0 retries (only the initial attempt).
+	// If set to 0 the number of attempts is unlimited. This is the default.
+	// Either maximum_attempts or expiration_interval must be set.
 	MaximumAttempts int32 `protobuf:"varint,4,opt,name=maximum_attempts,json=maximumAttempts,proto3" json:"maximum_attempts,omitempty"`
 	// Non-Retryable errors. Will stop retrying if error type matches this list.
 	NonRetryableErrorReasons []string `protobuf:"bytes,5,rep,name=non_retryable_error_reasons,json=nonRetryableErrorReasons,proto3" json:"non_retryable_error_reasons,omitempty"`
 	// Expiration time for the whole retry process.
+	// Either maximum_attempts or expiration_interval must be set.
+	// Retrying will stop when either maximum_attempts is reached or expiration_interval is exceeded, whichever comes first.
 	ExpirationInterval   *types.Duration `protobuf:"bytes,6,opt,name=expiration_interval,json=expirationInterval,proto3" json:"expiration_interval,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`

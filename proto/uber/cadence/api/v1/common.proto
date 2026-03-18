@@ -100,14 +100,18 @@ message RetryPolicy {
   // This value is the cap of the increase. Default is 100x of initial interval.
   google.protobuf.Duration maximum_interval = 3;
 
-  // Maximum number of attempts. When exceeded the retries stop even if not expired yet.
-  // Must be 1 or bigger. Default is unlimited.
+  // Maximum number of attempts.
+  // The total attempts includes the initial attempt. Setting this to 1 means 0 retries (only the initial attempt).
+  // If set to 0 the number of attempts is unlimited. This is the default.
+  // Either maximum_attempts or expiration_interval must be set.
   int32 maximum_attempts = 4;
 
   // Non-Retryable errors. Will stop retrying if error type matches this list.
   repeated string non_retryable_error_reasons = 5;
 
   // Expiration time for the whole retry process.
+  // Either maximum_attempts or expiration_interval must be set.
+  // Retrying will stop when either maximum_attempts is reached or expiration_interval is exceeded, whichever comes first.
   google.protobuf.Duration expiration_interval = 6;
 }
 

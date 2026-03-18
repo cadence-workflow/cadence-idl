@@ -460,6 +460,8 @@ func (m *TaskIDBlock) GetEndId() int64 {
 	return 0
 }
 
+// PollerInfo describes a single worker polling a task list.
+// Despite the name, each entry represents a worker, which may have multiple pollers.
 type PollerInfo struct {
 	LastAccessTime       *types.Timestamp `protobuf:"bytes,1,opt,name=last_access_time,json=lastAccessTime,proto3" json:"last_access_time,omitempty"`
 	Identity             string           `protobuf:"bytes,2,opt,name=identity,proto3" json:"identity,omitempty"`
