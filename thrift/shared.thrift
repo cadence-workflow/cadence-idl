@@ -30,7 +30,7 @@ exception InternalServiceError {
 
 exception InternalDataInconsistencyError {
   1: required string message
-} (rpc.code = "INTERNAL")
+} (rpc.code = "DATA_LOSS")
 
 exception DomainAlreadyExistsError {
   1: required string message
@@ -44,7 +44,7 @@ exception WorkflowExecutionAlreadyStartedError {
 
 exception WorkflowExecutionAlreadyCompletedError {
   1: required string message
-} (rpc.code = "FAILED_PRECONDITION")
+} (rpc.code = "NOT_FOUND")
 
 exception EntityNotExistsError {
   1: required string message
@@ -56,15 +56,15 @@ exception EntityNotExistsError {
 exception ServiceBusyError {
   1: required string message
   2: optional string reason
-} (rpc.code = "UNAVAILABLE")
+} (rpc.code = "RESOURCE_EXHAUSTED")
 
 exception CancellationAlreadyRequestedError {
   1: required string message
-} (rpc.code = "FAILED_PRECONDITION")
+} (rpc.code = "ALREADY_EXISTS")
 
 exception QueryFailedError {
   1: required string message
-} (rpc.code = "FAILED_PRECONDITION")
+} (rpc.code = "INVALID_ARGUMENT")
 
 exception DomainNotActiveError {
   1: required string message
@@ -91,7 +91,7 @@ exception RetryTaskV2Error {
   6: optional i64 (js.type = "Long") startEventVersion
   7: optional i64 (js.type = "Long") endEventId
   8: optional i64 (js.type = "Long") endEventVersion
-} (rpc.code = "INTERNAL")
+} (rpc.code = "ABORTED")
 
 exception ClientVersionNotSupportedError {
   1: required string featureVersion
@@ -101,7 +101,7 @@ exception ClientVersionNotSupportedError {
 
 exception FeatureNotEnabledError {
   1: required string featureFlag
-} (rpc.code = "UNIMPLEMENTED")
+} (rpc.code = "FAILED_PRECONDITION")
 
 exception CurrentBranchChangedError {
   10: required string message
@@ -110,7 +110,7 @@ exception CurrentBranchChangedError {
 
 exception RemoteSyncMatchedError {
   10: required string message
-} (rpc.code = "INTERNAL")
+} (rpc.code = "UNAVAILABLE")
 
 exception StickyWorkerUnavailableError {
   1: required string message
@@ -120,7 +120,7 @@ exception TaskListNotOwnedByHostError {
     1: required string ownedByIdentity
     2: required string myIdentity
     3: required string tasklistName
-} (rpc.code = "FAILED_PRECONDITION")
+} (rpc.code = "ABORTED")
 
 enum WorkflowIdReusePolicy {
   /*
@@ -158,9 +158,9 @@ enum TimeoutType {
 }
 
 enum ParentClosePolicy {
-	ABANDON,
-	REQUEST_CANCEL,
-	TERMINATE,
+  ABANDON,
+  REQUEST_CANCEL,
+  TERMINATE,
 }
 
 
@@ -1971,7 +1971,7 @@ struct RefreshWorkflowTasksRequest {
 
 // DEPRECATED: use proto definition instead
 struct FeatureFlags {
-	10: optional bool WorkflowExecutionAlreadyCompletedErrorEnabled
+  10: optional bool WorkflowExecutionAlreadyCompletedErrorEnabled
   20: optional bool AutoForwardingEnabled
 }
 
