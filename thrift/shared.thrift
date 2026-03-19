@@ -22,49 +22,49 @@ namespace java com.uber.cadence
 
 exception BadRequestError {
   1: required string message
-}
+} (rpc.code = "INVALID_ARGUMENT")
 
 exception InternalServiceError {
   1: required string message
-}
+} (rpc.code = "INTERNAL")
 
 exception InternalDataInconsistencyError {
   1: required string message
-}
+} (rpc.code = "DATA_LOSS")
 
 exception DomainAlreadyExistsError {
   1: required string message
-}
+} (rpc.code = "ALREADY_EXISTS")
 
 exception WorkflowExecutionAlreadyStartedError {
   10: optional string message
   20: optional string startRequestId
   30: optional string runId
-}
+} (rpc.code = "ALREADY_EXISTS")
 
 exception WorkflowExecutionAlreadyCompletedError {
   1: required string message
-}
+} (rpc.code = "NOT_FOUND")
 
 exception EntityNotExistsError {
   1: required string message
   2: optional string currentCluster
   3: optional string activeCluster
   4: required list<string> activeClusters // todo(david.porter) remove as its disused
-}
+} (rpc.code = "NOT_FOUND")
 
 exception ServiceBusyError {
   1: required string message
   2: optional string reason
-}
+} (rpc.code = "RESOURCE_EXHAUSTED")
 
 exception CancellationAlreadyRequestedError {
   1: required string message
-}
+} (rpc.code = "ALREADY_EXISTS")
 
 exception QueryFailedError {
   1: required string message
-}
+} (rpc.code = "INVALID_ARGUMENT")
 
 exception DomainNotActiveError {
   1: required string message
@@ -72,15 +72,15 @@ exception DomainNotActiveError {
   3: required string currentCluster
   4: required string activeCluster
   5: required list<string> activeClusters // todo (david.porter) remove this field as it's disused
-}
+} (rpc.code = "FAILED_PRECONDITION")
 
 exception LimitExceededError {
   1: required string message
-}
+} (rpc.code = "RESOURCE_EXHAUSTED")
 
 exception AccessDeniedError {
   1: required string message
-}
+} (rpc.code = "PERMISSION_DENIED")
 
 exception RetryTaskV2Error {
   1: required string message
@@ -91,36 +91,36 @@ exception RetryTaskV2Error {
   6: optional i64 (js.type = "Long") startEventVersion
   7: optional i64 (js.type = "Long") endEventId
   8: optional i64 (js.type = "Long") endEventVersion
-}
+} (rpc.code = "ABORTED")
 
 exception ClientVersionNotSupportedError {
   1: required string featureVersion
   2: required string clientImpl
   3: required string supportedVersions
-}
+} (rpc.code = "FAILED_PRECONDITION")
 
 exception FeatureNotEnabledError {
   1: required string featureFlag
-}
+} (rpc.code = "FAILED_PRECONDITION")
 
 exception CurrentBranchChangedError {
   10: required string message
   20: required binary currentBranchToken
-}
+} (rpc.code = "ABORTED")
 
 exception RemoteSyncMatchedError {
   10: required string message
-}
+} (rpc.code = "UNAVAILABLE")
 
 exception StickyWorkerUnavailableError {
   1: required string message
-}
+} (rpc.code = "UNAVAILABLE")
 
 exception TaskListNotOwnedByHostError {
     1: required string ownedByIdentity
     2: required string myIdentity
     3: required string tasklistName
-}
+} (rpc.code = "ABORTED")
 
 enum WorkflowIdReusePolicy {
   /*
@@ -158,9 +158,9 @@ enum TimeoutType {
 }
 
 enum ParentClosePolicy {
-	ABANDON,
-	REQUEST_CANCEL,
-	TERMINATE,
+  ABANDON,
+  REQUEST_CANCEL,
+  TERMINATE,
 }
 
 
@@ -1971,7 +1971,7 @@ struct RefreshWorkflowTasksRequest {
 
 // DEPRECATED: use proto definition instead
 struct FeatureFlags {
-	10: optional bool WorkflowExecutionAlreadyCompletedErrorEnabled
+  10: optional bool WorkflowExecutionAlreadyCompletedErrorEnabled
   20: optional bool AutoForwardingEnabled
 }
 

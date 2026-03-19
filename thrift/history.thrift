@@ -25,12 +25,12 @@ namespace java com.uber.cadence.history
 
 exception EventAlreadyStartedError {
   1: required string message
-}
+} (rpc.code = "ALREADY_EXISTS")
 
 exception ShardOwnershipLostError {
   10: optional string message
   20: optional string owner
-}
+} (rpc.code = "ABORTED")
 
 struct ParentExecutionInfo {
   10: optional string domainUUID
