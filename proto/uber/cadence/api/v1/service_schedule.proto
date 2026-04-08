@@ -69,6 +69,8 @@ message CreateScheduleRequest {
 }
 
 message CreateScheduleResponse {
+  // The ID of the created schedule (echoed from the request).
+  string schedule_id = 1;
 }
 
 message DescribeScheduleRequest {
@@ -107,6 +109,8 @@ message PauseScheduleRequest {
   string domain = 1;
   string schedule_id = 2;
   string reason = 3;
+  // Identity of the caller (e.g., user or service name). Stored as paused_by in schedule state.
+  string identity = 4;
 }
 
 message PauseScheduleResponse {
