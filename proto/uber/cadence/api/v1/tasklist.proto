@@ -34,6 +34,17 @@ import "google/protobuf/wrappers.proto";
 message TaskList {
   string name = 1;
   TaskListKind kind = 2;
+  // base_name refers to the corresponding normal task list that this task list maps to.
+  //
+  // - For STICKY task lists, this is the associated normal task list.
+  // - For EPHEMERAL task lists, this is the associated normal task list.
+  // Ephemeral task lists are typically used for test isolation.
+  // - For NORMAL task lists, this field is usually empty, but may be set
+  // in certain cases (e.g., Go session worker activity task lists).
+  //
+  // This field is used as an identifier for rate limiting and task prioritization
+  // in the history scheduler.
+  string base_name = 3;
 }
 
 enum TaskListKind {

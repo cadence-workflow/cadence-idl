@@ -363,6 +363,7 @@ struct ActivityType {
 struct TaskList {
   10: optional string name
   20: optional TaskListKind kind
+  30: optional string baseName
 }
 
 enum EncodingType {
