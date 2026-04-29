@@ -2220,10 +2220,10 @@ struct TaskKey {
 struct ActiveClusterSelectionPolicy {
   1: optional ClusterAttribute clusterAttribute
 
-  10: optional ActiveClusterSelectionStrategy strategy // todo (david.porter) remove these as they're not used anymore
-  20: optional string stickyRegion                     // todo (david.porter) remove these as they're not used anymore
-  30: optional string externalEntityType               // todo (david.porter) remove these as they're not used anymore
-  40: optional string externalEntityKey                // todo (david.porter) remove these as they're not used anymore
+  10: optional ActiveClusterSelectionStrategy strategy (deprecated = "unused active-active field")
+  20: optional string stickyRegion                     (deprecated = "unused active-active field")
+  30: optional string externalEntityType               (deprecated = "unused active-active field")
+  40: optional string externalEntityKey                (deprecated = "unused active-active field")
 }
 
 // ClusterAttribute is used for subdividing workflows in a domain into their active
@@ -2265,12 +2265,11 @@ struct PaginationOptions {
   20: optional binary nextPageToken
 }
 
-// todo (david.porter) Remove this, as it's no longer needed
 // with the active/active configuration we have
 enum ActiveClusterSelectionStrategy {
   REGION_STICKY,
   EXTERNAL_ENTITY,
-}
+} (deprecated = "unused active-active field")
 
 enum PredicateType {
   Universal,
