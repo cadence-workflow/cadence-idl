@@ -744,4 +744,102 @@ service WorkflowService {
       4: shared.EntityNotExistsError entityNotExistError,
       5: shared.AccessDeniedError accessDeniedError,
     )
+
+  // ── Schedule API ────────────────────────────────────────────────────────────
+
+  /**
+  * CreateSchedule creates a new schedule that triggers workflow executions on a cron spec.
+  **/
+  shared.CreateScheduleResponse CreateSchedule(1: shared.CreateScheduleRequest request)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.EntityNotExistsError entityNotExistError,
+      3: shared.ServiceBusyError serviceBusyError,
+      4: shared.DomainNotActiveError domainNotActiveError,
+      5: shared.LimitExceededError limitExceededError,
+      6: shared.AccessDeniedError accessDeniedError,
+    )
+
+  /**
+  * DescribeSchedule returns the current configuration and runtime state of a schedule.
+  **/
+  shared.DescribeScheduleResponse DescribeSchedule(1: shared.DescribeScheduleRequest request)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.EntityNotExistsError entityNotExistError,
+      3: shared.ServiceBusyError serviceBusyError,
+      4: shared.AccessDeniedError accessDeniedError,
+    )
+
+  /**
+  * UpdateSchedule replaces the spec, action, and/or policies of an existing schedule.
+  **/
+  shared.UpdateScheduleResponse UpdateSchedule(1: shared.UpdateScheduleRequest request)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.EntityNotExistsError entityNotExistError,
+      3: shared.ServiceBusyError serviceBusyError,
+      4: shared.DomainNotActiveError domainNotActiveError,
+      5: shared.AccessDeniedError accessDeniedError,
+    )
+
+  /**
+  * DeleteSchedule deletes a schedule. In-flight workflow runs are not affected.
+  **/
+  shared.DeleteScheduleResponse DeleteSchedule(1: shared.DeleteScheduleRequest request)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.EntityNotExistsError entityNotExistError,
+      3: shared.ServiceBusyError serviceBusyError,
+      4: shared.DomainNotActiveError domainNotActiveError,
+      5: shared.AccessDeniedError accessDeniedError,
+    )
+
+  /**
+  * PauseSchedule pauses a running schedule. The reason is recorded in the schedule's pause info.
+  **/
+  shared.PauseScheduleResponse PauseSchedule(1: shared.PauseScheduleRequest request)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.EntityNotExistsError entityNotExistError,
+      3: shared.ServiceBusyError serviceBusyError,
+      4: shared.DomainNotActiveError domainNotActiveError,
+      5: shared.AccessDeniedError accessDeniedError,
+    )
+
+  /**
+  * UnpauseSchedule resumes a paused schedule. The reason is recorded in the schedule's pause info.
+  **/
+  shared.UnpauseScheduleResponse UnpauseSchedule(1: shared.UnpauseScheduleRequest request)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.EntityNotExistsError entityNotExistError,
+      3: shared.ServiceBusyError serviceBusyError,
+      4: shared.DomainNotActiveError domainNotActiveError,
+      5: shared.AccessDeniedError accessDeniedError,
+    )
+
+  /**
+  * BackfillSchedule triggers workflow runs for a historical time range as if the schedule
+  * had been active during that period.
+  **/
+  shared.BackfillScheduleResponse BackfillSchedule(1: shared.BackfillScheduleRequest request)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.EntityNotExistsError entityNotExistError,
+      3: shared.ServiceBusyError serviceBusyError,
+      4: shared.DomainNotActiveError domainNotActiveError,
+      5: shared.AccessDeniedError accessDeniedError,
+    )
+
+  /**
+  * ListSchedules returns all schedules in the given domain with optional pagination.
+  **/
+  shared.ListSchedulesResponse ListSchedules(1: shared.ListSchedulesRequest request)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.EntityNotExistsError entityNotExistError,
+      3: shared.ServiceBusyError serviceBusyError,
+      4: shared.AccessDeniedError accessDeniedError,
+    )
 }

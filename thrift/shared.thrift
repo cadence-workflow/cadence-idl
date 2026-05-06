@@ -2292,3 +2292,202 @@ struct Predicate {
   30: optional EmptyPredicateAttributes emptyPredicateAttributes
   40: optional DomainIDPredicateAttributes domainIDPredicateAttributes
 }
+
+// ── Schedule API ──────────────────────────────────────────────────────────────
+
+// ScheduleOverlapPolicy defines behavior when a new run is triggered while a previous run is still active.
+enum ScheduleOverlapPolicy {
+  INVALID
+  SKIP_NEW
+  BUFFER
+  CONCURRENT
+  CANCEL_PREVIOUS
+  TERMINATE_PREVIOUS
+}
+
+// ScheduleCatchUpPolicy defines how missed runs are handled when a schedule resumes.
+enum ScheduleCatchUpPolicy {
+  INVALID
+  SKIP
+  ONE
+  ALL
+}
+
+// ScheduleSpec defines when a schedule triggers.
+struct ScheduleSpec {
+  // Standard cron expression (e.g., "0 6 * * *").
+  // Prefix with CRON_TZ to set timezone (e.g., "CRON_TZ=America/Los_Angeles 0 6 * * *").
+  10: optional string cronExpression
+  // Earliest time the schedule may trigger. If not set, starts immediately.
+  20: optional i64 (js.type = "Long") startTimeNano
+  // Latest time the schedule may trigger. If not set, runs indefinitely.
+  30: optional i64 (js.type = "Long") endTimeNano
+  // Random jitter applied to each trigger time to spread load.
+  40: optional i32 jitterInSeconds
+}
+
+// ScheduleStartWorkflowAction describes the workflow to start when the schedule triggers.
+struct ScheduleStartWorkflowAction {
+  10: optional WorkflowType workflowType
+  20: optional TaskList taskList
+  30: optional binary input
+  40: optional string workflowIdPrefix
+  50: optional i32 executionStartToCloseTimeoutSeconds
+  60: optional i32 taskStartToCloseTimeoutSeconds
+  70: optional RetryPolicy retryPolicy
+  80: optional Memo memo
+  90: optional SearchAttributes searchAttributes
+}
+
+// ScheduleAction defines what the schedule does when it triggers.
+// Exactly one field must be set.
+struct ScheduleAction {
+  10: optional ScheduleStartWorkflowAction startWorkflow
+}
+
+// SchedulePolicies controls the runtime behavior of a schedule.
+struct SchedulePolicies {
+  10: optional ScheduleOverlapPolicy overlapPolicy
+  20: optional ScheduleCatchUpPolicy catchUpPolicy
+  // Maximum time to look back for missed runs on resume. Runs older than this window are skipped.
+  30: optional i32 catchUpWindowInSeconds
+  // If true, pause the schedule when a triggered workflow fails.
+  40: optional bool pauseOnFailure
+  // Maximum number of buffered runs. 0 means unlimited. Only used with BUFFER overlap policy.
+  50: optional i32 bufferLimit
+  // Maximum number of concurrent runs. 0 means unlimited. Only used with CONCURRENT overlap policy.
+  60: optional i32 concurrencyLimit
+}
+
+// SchedulePauseInfo records when and why a schedule was paused.
+struct SchedulePauseInfo {
+  10: optional string reason
+  20: optional i64 (js.type = "Long") pausedTimeNano
+  30: optional string pausedBy
+}
+
+// ScheduleState is the runtime pause/unpause state of a schedule.
+struct ScheduleState {
+  10: optional bool paused
+  20: optional SchedulePauseInfo pauseInfo
+}
+
+// BackfillInfo tracks the progress of an active or completed backfill operation.
+struct BackfillInfo {
+  10: optional string backfillId
+  20: optional i64 (js.type = "Long") startTimeNano
+  30: optional i64 (js.type = "Long") endTimeNano
+  40: optional i32 runsCompleted
+  50: optional i32 runsTotal
+}
+
+// ScheduleInfo contains runtime statistics for a schedule.
+struct ScheduleInfo {
+  10: optional i64 (js.type = "Long") lastRunTimeNano
+  20: optional i64 (js.type = "Long") nextRunTimeNano
+  // Total number of workflows started by this schedule.
+  30: optional i64 totalRuns
+  40: optional i64 (js.type = "Long") createTimeNano
+  50: optional i64 (js.type = "Long") lastUpdateTimeNano
+  // Currently active backfill operations. Removed when complete.
+  60: optional list<BackfillInfo> ongoingBackfills
+}
+
+// ScheduleListEntry is a summary of a schedule returned by ListSchedules.
+struct ScheduleListEntry {
+  10: optional string scheduleId
+  20: optional WorkflowType workflowType
+  30: optional ScheduleState state
+  40: optional string cronExpression
+}
+
+struct CreateScheduleRequest {
+  10: optional string domain
+  20: optional string scheduleId
+  30: optional ScheduleSpec spec
+  40: optional ScheduleAction action
+  50: optional SchedulePolicies policies
+  60: optional Memo memo
+  70: optional SearchAttributes searchAttributes
+}
+
+struct CreateScheduleResponse {
+  10: optional string scheduleId
+}
+
+struct DescribeScheduleRequest {
+  10: optional string domain
+  20: optional string scheduleId
+}
+
+struct DescribeScheduleResponse {
+  10: optional ScheduleSpec spec
+  20: optional ScheduleAction action
+  30: optional SchedulePolicies policies
+  40: optional ScheduleState state
+  50: optional ScheduleInfo info
+  60: optional Memo memo
+  70: optional SearchAttributes searchAttributes
+}
+
+struct ListSchedulesRequest {
+  10: optional string domain
+  20: optional i32 pageSize
+  30: optional binary nextPageToken
+}
+
+struct ListSchedulesResponse {
+  10: optional list<ScheduleListEntry> schedules
+  20: optional binary nextPageToken
+}
+
+struct DeleteScheduleRequest {
+  10: optional string domain
+  20: optional string scheduleId
+}
+
+struct DeleteScheduleResponse {}
+
+struct PauseScheduleRequest {
+  10: optional string domain
+  20: optional string scheduleId
+  30: optional string reason
+  40: optional string identity
+}
+
+struct PauseScheduleResponse {}
+
+struct UnpauseScheduleRequest {
+  10: optional string domain
+  20: optional string scheduleId
+  30: optional string reason
+  // Override the schedule's catch-up policy for this unpause only.
+  // If not set, uses the catch_up_policy from SchedulePolicies.
+  40: optional ScheduleCatchUpPolicy catchUpPolicy
+}
+
+struct UnpauseScheduleResponse {}
+
+struct BackfillScheduleRequest {
+  10: optional string domain
+  20: optional string scheduleId
+  30: optional i64 (js.type = "Long") startTimeNano
+  40: optional i64 (js.type = "Long") endTimeNano
+  50: optional ScheduleOverlapPolicy overlapPolicy
+  // Client-provided identifier for idempotency and progress tracking.
+  // If not set, the server generates a UUID. Retries with the same backfillId are deduplicated.
+  60: optional string backfillId
+}
+
+struct BackfillScheduleResponse {}
+
+struct UpdateScheduleRequest {
+  10: optional string domain
+  20: optional string scheduleId
+  30: optional ScheduleSpec spec
+  40: optional ScheduleAction action
+  50: optional SchedulePolicies policies
+  60: optional SearchAttributes searchAttributes
+}
+
+struct UpdateScheduleResponse {}
