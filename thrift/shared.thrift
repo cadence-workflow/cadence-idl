@@ -2386,7 +2386,7 @@ struct ScheduleInfo {
   10: optional i64 (js.type = "Long") lastRunTimeNano
   20: optional i64 (js.type = "Long") nextRunTimeNano
   // Total number of workflows started by this schedule.
-  30: optional i64 totalRuns
+  30: optional i64 (js.type = "Long") totalRuns
   40: optional i64 (js.type = "Long") createTimeNano
   50: optional i64 (js.type = "Long") lastUpdateTimeNano
   // Currently active backfill operations. Removed when complete.
