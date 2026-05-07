@@ -2323,6 +2323,8 @@ struct ScheduleSpec {
   // Latest time the schedule may trigger. If not set, runs indefinitely.
   30: optional i64 (js.type = "Long") endTimeNano
   // Random jitter applied to each trigger time to spread load.
+  // Thrift duration convention: whole seconds only (proto uses nanosecond-precision Duration).
+  // Sub-second jitter from proto is truncated to the nearest second.
   40: optional i32 jitterInSeconds
 }
 
@@ -2350,6 +2352,8 @@ struct SchedulePolicies {
   10: optional ScheduleOverlapPolicy overlapPolicy
   20: optional ScheduleCatchUpPolicy catchUpPolicy
   // Maximum time to look back for missed runs on resume. Runs older than this window are skipped.
+  // Thrift duration convention: whole seconds only (proto uses nanosecond-precision Duration).
+  // Sub-second windows from proto are truncated to the nearest second.
   30: optional i32 catchUpWindowInSeconds
   // If true, pause the schedule when a triggered workflow fails.
   40: optional bool pauseOnFailure

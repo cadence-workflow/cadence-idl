@@ -768,7 +768,9 @@ service WorkflowService {
       1: shared.BadRequestError badRequestError,
       2: shared.EntityNotExistsError entityNotExistError,
       3: shared.ServiceBusyError serviceBusyError,
-      4: shared.AccessDeniedError accessDeniedError,
+      4: shared.QueryFailedError queryFailedError,
+      5: shared.LimitExceededError limitExceededError,
+      6: shared.AccessDeniedError accessDeniedError,
     )
 
   /**
@@ -780,7 +782,9 @@ service WorkflowService {
       2: shared.EntityNotExistsError entityNotExistError,
       3: shared.ServiceBusyError serviceBusyError,
       4: shared.DomainNotActiveError domainNotActiveError,
-      5: shared.AccessDeniedError accessDeniedError,
+      5: shared.LimitExceededError limitExceededError,
+      6: shared.WorkflowExecutionAlreadyCompletedError workflowExecutionAlreadyCompletedError,
+      7: shared.AccessDeniedError accessDeniedError,
     )
 
   /**
@@ -792,7 +796,9 @@ service WorkflowService {
       2: shared.EntityNotExistsError entityNotExistError,
       3: shared.ServiceBusyError serviceBusyError,
       4: shared.DomainNotActiveError domainNotActiveError,
-      5: shared.AccessDeniedError accessDeniedError,
+      5: shared.LimitExceededError limitExceededError,
+      6: shared.WorkflowExecutionAlreadyCompletedError workflowExecutionAlreadyCompletedError,
+      7: shared.AccessDeniedError accessDeniedError,
     )
 
   /**
@@ -804,7 +810,9 @@ service WorkflowService {
       2: shared.EntityNotExistsError entityNotExistError,
       3: shared.ServiceBusyError serviceBusyError,
       4: shared.DomainNotActiveError domainNotActiveError,
-      5: shared.AccessDeniedError accessDeniedError,
+      5: shared.LimitExceededError limitExceededError,
+      6: shared.WorkflowExecutionAlreadyCompletedError workflowExecutionAlreadyCompletedError,
+      7: shared.AccessDeniedError accessDeniedError,
     )
 
   /**
@@ -816,7 +824,9 @@ service WorkflowService {
       2: shared.EntityNotExistsError entityNotExistError,
       3: shared.ServiceBusyError serviceBusyError,
       4: shared.DomainNotActiveError domainNotActiveError,
-      5: shared.AccessDeniedError accessDeniedError,
+      5: shared.LimitExceededError limitExceededError,
+      6: shared.WorkflowExecutionAlreadyCompletedError workflowExecutionAlreadyCompletedError,
+      7: shared.AccessDeniedError accessDeniedError,
     )
 
   /**
@@ -829,7 +839,9 @@ service WorkflowService {
       2: shared.EntityNotExistsError entityNotExistError,
       3: shared.ServiceBusyError serviceBusyError,
       4: shared.DomainNotActiveError domainNotActiveError,
-      5: shared.AccessDeniedError accessDeniedError,
+      5: shared.LimitExceededError limitExceededError,
+      6: shared.WorkflowExecutionAlreadyCompletedError workflowExecutionAlreadyCompletedError,
+      7: shared.AccessDeniedError accessDeniedError,
     )
 
   /**
