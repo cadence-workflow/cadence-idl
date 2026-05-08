@@ -1,0 +1,50 @@
+name: CI
+
+on: pull_request
+
+jobs:
+  proto-lint:
+    name: proto lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.17'
+
+      - name: Regenerate Proto code
+        run: make proto-go
+
+      - name: Proto lint
+        run: make proto-lint
+
+      - name: Ensure generated code is checked in
+        run: |
+          echo "Checking for uncommitted generated changes..."
+          NUM_FILES_CHANGED=$(git status --porcelain 2>&1 | wc -l)
+          echo "NUM_FILES_CHANGED: ${NUM_FILES_CHANGED}"
+          if [ "${NUM_FILES_CHANGED}" -ne 0 ]; then
+              printf "Please run this command and commit the changes:\n"
+              printf "\tmake proto-go && make proto-lint\n"
+              git status --porcelain
+              git --no-pager diff
+              exit 1
+          fi
+
+  thrift-can-compile:
+    name: thrift compile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install thrift compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y thrift-compiler
+
+      - name: Thrift lint
+        run: make thriftlint
