@@ -2219,11 +2219,6 @@ struct TaskKey {
 // in that domain.
 struct ActiveClusterSelectionPolicy {
   1: optional ClusterAttribute clusterAttribute
-
-  10: optional ActiveClusterSelectionStrategy strategy (deprecated = "unused active-active field")
-  20: optional string stickyRegion                     (deprecated = "unused active-active field")
-  30: optional string externalEntityType               (deprecated = "unused active-active field")
-  40: optional string externalEntityKey                (deprecated = "unused active-active field")
 }
 
 // ClusterAttribute is used for subdividing workflows in a domain into their active
@@ -2264,12 +2259,6 @@ struct PaginationOptions {
   // if empty, the first page will be returned.
   20: optional binary nextPageToken
 }
-
-// with the active/active configuration we have
-enum ActiveClusterSelectionStrategy {
-  REGION_STICKY,
-  EXTERNAL_ENTITY,
-} (deprecated = "unused active-active field")
 
 enum PredicateType {
   Universal,
