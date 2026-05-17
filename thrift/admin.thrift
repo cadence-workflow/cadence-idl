@@ -252,6 +252,29 @@ service AdminService {
       1: shared.InternalServiceError internalServiceError,
     )
 
+  GetOperationalDynamicConfigResponse GetOperationalDynamicConfig(1: GetOperationalDynamicConfigRequest request)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.InternalServiceError internalServiceError,
+    )
+
+  void UpdateOperationalDynamicConfig(1: UpdateOperationalDynamicConfigRequest request)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.InternalServiceError internalServiceError,
+    )
+
+  void RestoreOperationalDynamicConfig(1: RestoreOperationalDynamicConfigRequest request)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.InternalServiceError internalServiceError,
+    )
+
+  ListOperationalDynamicConfigResponse ListOperationalDynamicConfig(1: ListOperationalDynamicConfigRequest request)
+    throws (
+      1: shared.InternalServiceError internalServiceError,
+    )
+
   AdminDeleteWorkflowResponse DeleteWorkflow(1: AdminDeleteWorkflowRequest request)
     throws (
       1: shared.BadRequestError         badRequestError,
@@ -433,6 +456,33 @@ struct ListDynamicConfigRequest {
 }
 
 struct ListDynamicConfigResponse {
+  10: optional list<config.DynamicConfigEntry> entries
+}
+
+struct GetOperationalDynamicConfigRequest {
+  10: optional string configName
+  20: optional list<config.DynamicConfigFilter> filters
+}
+
+struct GetOperationalDynamicConfigResponse {
+  10: optional shared.DataBlob value
+}
+
+struct UpdateOperationalDynamicConfigRequest {
+  10: optional string configName
+  20: optional list<config.DynamicConfigValue> configValues
+}
+
+struct RestoreOperationalDynamicConfigRequest {
+  10: optional string configName
+  20: optional list<config.DynamicConfigFilter> filters
+}
+
+struct ListOperationalDynamicConfigRequest {
+  10: optional string configName
+}
+
+struct ListOperationalDynamicConfigResponse {
   10: optional list<config.DynamicConfigEntry> entries
 }
 
