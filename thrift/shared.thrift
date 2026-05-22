@@ -1229,6 +1229,7 @@ struct FailoverDomainRequest {
  30: optional ActiveClusters activeClusters
  // user-requested addition "reason" variable created to increase transparency around failovers
  40: optional string reason
+ 50: optional i32 failoverTimeoutInSeconds
 }
 
 struct FailoverDomainResponse {

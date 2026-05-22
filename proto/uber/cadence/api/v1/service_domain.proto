@@ -122,6 +122,7 @@ message FailoverDomainRequest {
   ActiveClusters active_clusters = 30;
   // user-requested addition "reason" variable created to increase transparency around failovers
   string reason = 40;
+  google.protobuf.Duration failover_timeout = 50;
 }
 
 message FailoverDomainResponse {
