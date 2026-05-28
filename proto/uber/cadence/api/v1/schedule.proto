@@ -29,6 +29,7 @@ option java_package = "com.uber.cadence.api.v1";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 import "uber/cadence/api/v1/common.proto";
 import "uber/cadence/api/v1/tasklist.proto";
 
@@ -119,10 +120,12 @@ message SchedulePolicies {
   bool pause_on_failure = 4;
   // Maximum number of runs to buffer when overlap_policy is BUFFER.
   // 0 means unlimited. Only used with SCHEDULE_OVERLAP_POLICY_BUFFER.
-  int32 buffer_limit = 5;
+  // Unset (nil) means "preserve existing value" on Update, or "use server default" on Create.
+  google.protobuf.Int32Value buffer_limit = 5;
   // Maximum number of runs executing concurrently when overlap_policy is CONCURRENT.
   // 0 means unlimited. Only used with SCHEDULE_OVERLAP_POLICY_CONCURRENT.
-  int32 concurrency_limit = 6;
+  // Unset (nil) means "preserve existing value" on Update, or "use server default" on Create.
+  google.protobuf.Int32Value concurrency_limit = 6;
 }
 
 // SchedulePauseInfo captures the state of a paused schedule.
