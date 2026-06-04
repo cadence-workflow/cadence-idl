@@ -119,12 +119,16 @@ message SchedulePolicies {
   // If true, pause the schedule when a triggered workflow fails.
   bool pause_on_failure = 4;
   // Maximum number of runs to buffer when overlap_policy is BUFFER.
-  // 0 means unlimited. Only used with SCHEDULE_OVERLAP_POLICY_BUFFER.
-  // Unset (nil) means "preserve existing value" on Update, or "use server default" on Create.
+  // Only used with SCHEDULE_OVERLAP_POLICY_BUFFER.                                                                                                                                                                                                                                                                                                     
+  // nil is treated the same as 0: both mean "no user limit".
+  // the server caps at its max buffered-fires limit —                                                                                                                                                                                                                                                                           
+  // buffering is never truly unlimited. A value above that max is clamped to it. 
   google.protobuf.Int32Value buffer_limit = 5;
   // Maximum number of runs executing concurrently when overlap_policy is CONCURRENT.
-  // 0 means unlimited. Only used with SCHEDULE_OVERLAP_POLICY_CONCURRENT.
-  // Unset (nil) means "preserve existing value" on Update, or "use server default" on Create.
+  // Only used with SCHEDULE_OVERLAP_POLICY_CONCURRENT.                                                                                                                                                                                                                                                                                                 
+  // nil is treated the same as 0: both mean unlimited. 
+  // A positive value bounds concurrency and is clamped to the server's                                                                                                                                                                                                                                                                      
+  // max concurrency limit.   
   google.protobuf.Int32Value concurrency_limit = 6;
 }
 
