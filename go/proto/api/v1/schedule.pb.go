@@ -31,10 +31,10 @@ const (
 	// Skip the new run if the previous is still running.
 	ScheduleOverlapPolicy_SCHEDULE_OVERLAP_POLICY_SKIP_NEW ScheduleOverlapPolicy = 1
 	// Buffer new runs and execute them sequentially.
-	// Controlled by buffer_limit in SchedulePolicies (0 = unlimited, N = max N queued).
+	// Controlled by buffer_limit in SchedulePolicies (0/nil = no user limit, server cap applies; N = max N queued).
 	ScheduleOverlapPolicy_SCHEDULE_OVERLAP_POLICY_BUFFER ScheduleOverlapPolicy = 2
 	// Allow runs to execute concurrently.
-	// Controlled by concurrency_limit in SchedulePolicies (0 = unlimited, N = max N concurrent).
+	// Controlled by concurrency_limit in SchedulePolicies (0/nil = unlimited; N = max N concurrent, clamped to server max).
 	ScheduleOverlapPolicy_SCHEDULE_OVERLAP_POLICY_CONCURRENT ScheduleOverlapPolicy = 3
 	// Cancel the previous run gracefully and start the new one.
 	ScheduleOverlapPolicy_SCHEDULE_OVERLAP_POLICY_CANCEL_PREVIOUS ScheduleOverlapPolicy = 4
