@@ -367,12 +367,16 @@ type SchedulePolicies struct {
 	// If true, pause the schedule when a triggered workflow fails.
 	PauseOnFailure bool `protobuf:"varint,4,opt,name=pause_on_failure,json=pauseOnFailure,proto3" json:"pause_on_failure,omitempty"`
 	// Maximum number of runs to buffer when overlap_policy is BUFFER.
-	// 0 means unlimited. Only used with SCHEDULE_OVERLAP_POLICY_BUFFER.
-	// Unset (nil) means "preserve existing value" on Update, or "use server default" on Create.
+	// Only used with SCHEDULE_OVERLAP_POLICY_BUFFER.
+	// nil is treated the same as 0: both mean "no user limit".
+	// the server caps at its max buffered-fires limit —
+	// buffering is never truly unlimited. A value above that max is clamped to it.
 	BufferLimit *types.Int32Value `protobuf:"bytes,5,opt,name=buffer_limit,json=bufferLimit,proto3" json:"buffer_limit,omitempty"`
 	// Maximum number of runs executing concurrently when overlap_policy is CONCURRENT.
-	// 0 means unlimited. Only used with SCHEDULE_OVERLAP_POLICY_CONCURRENT.
-	// Unset (nil) means "preserve existing value" on Update, or "use server default" on Create.
+	// Only used with SCHEDULE_OVERLAP_POLICY_CONCURRENT.
+	// nil is treated the same as 0: both mean unlimited.
+	// A positive value bounds concurrency and is clamped to the server's
+	// max concurrency limit.
 	ConcurrencyLimit     *types.Int32Value `protobuf:"bytes,6,opt,name=concurrency_limit,json=concurrencyLimit,proto3" json:"concurrency_limit,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
