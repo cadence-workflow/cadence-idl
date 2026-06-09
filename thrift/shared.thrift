@@ -2385,6 +2385,10 @@ struct ScheduleInfo {
   50: optional i64 (js.type = "Long") lastUpdateTimeNano
   // Currently active backfill operations. Removed when complete.
   60: optional list<BackfillInfo> ongoingBackfills
+  // Number of runs that were missed (e.g. due to downtime) and then skipped by catch-up policy.
+  70: optional i64 (js.type = "Long") missedRuns
+  // Number of runs that were skipped due to the overlap policy (e.g. SkipNew).
+  80: optional i64 (js.type = "Long") skippedRuns
 }
 
 // ScheduleListEntry is a summary of a schedule returned by ListSchedules.

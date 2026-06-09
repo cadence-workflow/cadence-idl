@@ -171,6 +171,10 @@ message ScheduleInfo {
   google.protobuf.Timestamp last_update_time = 5;
   // Currently active backfill operations. Removed when complete.
   repeated BackfillInfo ongoing_backfills = 6;
+  // Number of runs that were missed (e.g. due to downtime) and then skipped by catch-up policy.
+  int64 missed_runs = 7;
+  // Number of runs that were skipped due to the overlap policy (e.g. SkipNew).
+  int64 skipped_runs = 8;
 }
 
 // ScheduleListEntry represents a single schedule in a list response.
