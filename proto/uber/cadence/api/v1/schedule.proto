@@ -175,6 +175,10 @@ message ScheduleInfo {
   int64 missed_runs = 7;
   // Number of runs that were skipped due to the overlap policy (e.g. SkipNew).
   int64 skipped_runs = 8;
+  // Number of fired actions currently queued in the buffer (BUFFER overlap policy only).
+  int64 buffered_fire_count = 9;
+  // Number of target workflows currently running (CONCURRENT overlap policy only).
+  int64 running_workflow_count = 10;
 }
 
 // ScheduleListEntry represents a single schedule in a list response.

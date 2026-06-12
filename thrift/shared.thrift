@@ -2389,6 +2389,10 @@ struct ScheduleInfo {
   70: optional i64 (js.type = "Long") missedRuns
   // Number of runs that were skipped due to the overlap policy (e.g. SkipNew).
   80: optional i64 (js.type = "Long") skippedRuns
+  // Number of fired actions currently queued in the buffer (BUFFER overlap policy only).
+  90: optional i64 (js.type = "Long") bufferedFireCount
+  // Number of target workflows currently running (CONCURRENT overlap policy only).
+  100: optional i64 (js.type = "Long") runningWorkflowCount
 }
 
 // ScheduleListEntry is a summary of a schedule returned by ListSchedules.
