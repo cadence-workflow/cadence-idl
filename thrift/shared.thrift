@@ -1911,6 +1911,13 @@ struct RetryPolicy {
 
   // Expiration time for the whole retry process.
   60: optional i32 expirationIntervalInSeconds
+
+  // Proportional jitter applied to each retry delay to spread load and avoid
+  // thundering-herd retries. The actual retry delay is multiplied by
+  // (1 + uniform_random(-jitter, +jitter)) and clamped to be non-negative.
+  // Expressed as a ratio in the range [0.0, 1.0].
+  // 0.0 (the default) means no jitter, so retry behavior is unchanged.
+  70: optional double jitter
 }
 
 // HistoryBranchRange represents a piece of range for a branch.
