@@ -66,6 +66,10 @@ message CreateScheduleRequest {
   SchedulePolicies policies = 5;
   Memo memo = 6;
   SearchAttributes search_attributes = 7;
+  // Optional initial state for the schedule. If set and paused is true, the
+  // schedule starts in a paused state instead of waiting for the first
+  // reconciler tick to apply a subsequent PauseSchedule call.
+  ScheduleState initial_state = 8;
 }
 
 message CreateScheduleResponse {
