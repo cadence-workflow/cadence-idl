@@ -31,6 +31,7 @@ type CreateScheduleRequest struct {
 	Policies             *SchedulePolicies `protobuf:"bytes,5,opt,name=policies,proto3" json:"policies,omitempty"`
 	Memo                 *Memo             `protobuf:"bytes,6,opt,name=memo,proto3" json:"memo,omitempty"`
 	SearchAttributes     *SearchAttributes `protobuf:"bytes,7,opt,name=search_attributes,json=searchAttributes,proto3" json:"search_attributes,omitempty"`
+	InitialState         *ScheduleState    `protobuf:"bytes,8,opt,name=initial_state,json=initialState,proto3" json:"initial_state,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -114,6 +115,13 @@ func (m *CreateScheduleRequest) GetMemo() *Memo {
 func (m *CreateScheduleRequest) GetSearchAttributes() *SearchAttributes {
 	if m != nil {
 		return m.SearchAttributes
+	}
+	return nil
+}
+
+func (m *CreateScheduleRequest) GetInitialState() *ScheduleState {
+	if m != nil {
+		return m.InitialState
 	}
 	return nil
 }
@@ -1113,6 +1121,18 @@ func (m *CreateScheduleRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
 	}
+	if m.InitialState != nil {
+		{
+			size, err := m.InitialState.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintServiceSchedule(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x42
+	}
 	if m.SearchAttributes != nil {
 		{
 			size, err := m.SearchAttributes.MarshalToSizedBuffer(dAtA[:i])
@@ -1965,6 +1985,10 @@ func (m *CreateScheduleRequest) Size() (n int) {
 		l = m.SearchAttributes.Size()
 		n += 1 + l + sovServiceSchedule(uint64(l))
 	}
+	if m.InitialState != nil {
+		l = m.InitialState.Size()
+		n += 1 + l + sovServiceSchedule(uint64(l))
+	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -2574,6 +2598,42 @@ func (m *CreateScheduleRequest) Unmarshal(dAtA []byte) error {
 				m.SearchAttributes = &SearchAttributes{}
 			}
 			if err := m.SearchAttributes.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field InitialState", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServiceSchedule
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthServiceSchedule
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthServiceSchedule
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.InitialState == nil {
+				m.InitialState = &ScheduleState{}
+			}
+			if err := m.InitialState.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
