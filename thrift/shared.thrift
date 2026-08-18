@@ -2419,9 +2419,9 @@ struct CreateScheduleRequest {
   50: optional SchedulePolicies policies
   60: optional Memo memo
   70: optional SearchAttributes searchAttributes
-  // Optional initial state. If set and paused is true, the schedule starts
-  // paused immediately instead of waiting for a subsequent PauseSchedule call.
-  80: optional ScheduleState initialState
+  // Optional state. If set and paused is true, the schedule starts paused
+  // immediately instead of requiring a subsequent PauseSchedule call.
+  80: optional ScheduleState state
 }
 
 struct CreateScheduleResponse {
