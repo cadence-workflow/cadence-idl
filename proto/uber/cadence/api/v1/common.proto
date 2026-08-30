@@ -137,6 +137,11 @@ message RetryPolicy {
   // Either maximum_attempts or expiration_interval must be set.
   // Retrying will stop when either maximum_attempts is reached or expiration_interval is exceeded, whichever comes first.
   google.protobuf.Duration expiration_interval = 6;
+
+  // Coefficient for proportional jitter, used to spread retries out. Must be between 0 and 1.
+  // Each retry interval is multiplied by a random factor in [1 - coefficient, 1 + coefficient],
+  // never exceeding maximum_interval. Defaults to 0, meaning no jitter.
+  double jitter_coefficient = 7;
 }
 
 enum IsolationGroupState {

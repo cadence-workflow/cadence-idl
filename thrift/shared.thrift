@@ -1960,6 +1960,11 @@ struct RetryPolicy {
 
   // Expiration time for the whole retry process.
   60: optional i32 expirationIntervalInSeconds
+
+  // Coefficient for proportional jitter, used to spread retries out. Must be between 0 and 1.
+  // Each retry interval is multiplied by a random factor in [1 - coefficient, 1 + coefficient],
+  // never exceeding maximumIntervalInSeconds. Defaults to 0, meaning no jitter.
+  70: optional double jitterCoefficient
 }
 
 // HistoryBranchRange represents a piece of range for a branch.

@@ -151,6 +151,7 @@ struct WorkflowExecutionInfo {
   134: optional shared.CronOverlapPolicy cronOverlapPolicy
   137: optional binary activeClusterSelectionPolicy
   138: optional string activeClusterSelectionPolicyEncoding
+  139: optional double retryJitterCoefficient
 }
 
 struct ActivityInfo {
@@ -187,6 +188,7 @@ struct ActivityInfo {
   68: optional string retryLastWorkerIdentity
   70: optional binary retryLastFailureDetails
   72: optional shared.FailureOptions retryLastFailureOptions
+  74: optional double retryJitterCoefficient
 }
 
 struct ChildExecutionInfo {
