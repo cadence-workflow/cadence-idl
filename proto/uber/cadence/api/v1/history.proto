@@ -85,6 +85,9 @@ message HistoryEvent {
     SignalExternalWorkflowExecutionFailedEventAttributes signal_external_workflow_execution_failed_event_attributes = 44;
     ExternalWorkflowExecutionSignaledEventAttributes external_workflow_execution_signaled_event_attributes = 45;
     UpsertWorkflowSearchAttributesEventAttributes upsert_workflow_search_attributes_event_attributes = 46;
+    SemaphoreAcquireInitiatedEventAttributes semaphore_acquire_initiated_event_attributes = 47;
+    SemaphoreAcquiredEventAttributes semaphore_acquired_event_attributes = 48;
+    SemaphoreReleasedEventAttributes semaphore_released_event_attributes = 49;
   }
 }
 
@@ -375,6 +378,26 @@ message ExternalWorkflowExecutionSignaledEventAttributes {
 message UpsertWorkflowSearchAttributesEventAttributes {
   int64 decision_task_completed_event_id = 1;
   SearchAttributes search_attributes = 2;
+}
+
+message SemaphoreAcquireInitiatedEventAttributes {
+  string semaphore_name = 1;
+  // The timeout actually used, after falling back to the semaphore's default.
+  // Stored here so a later replay reads the same value even if that default
+  // has since changed.
+  google.protobuf.Duration wait_timeout = 2;
+  int64 decision_task_completed_event_id = 3;
+}
+
+message SemaphoreAcquiredEventAttributes {
+  int32 token_id = 1;
+  int64 initiated_event_id = 2;
+}
+
+message SemaphoreReleasedEventAttributes {
+  int32 token_id = 1;
+  int64 initiated_event_id = 2;
+  int64 decision_task_completed_event_id = 3;
 }
 
 message StartChildWorkflowExecutionInitiatedEventAttributes {

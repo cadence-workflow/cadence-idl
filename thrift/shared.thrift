@@ -182,6 +182,8 @@ enum DecisionType {
   StartChildWorkflowExecution,
   SignalExternalWorkflowExecution,
   UpsertWorkflowSearchAttributes,
+  AcquireSemaphore,
+  ReleaseSemaphore,
 }
 
 enum EventType {
@@ -227,6 +229,9 @@ enum EventType {
   SignalExternalWorkflowExecutionFailed,
   ExternalWorkflowExecutionSignaled,
   UpsertWorkflowSearchAttributes,
+  SemaphoreAcquireInitiated,
+  SemaphoreAcquired,
+  SemaphoreReleased,
 }
 
 enum DecisionTaskFailedCause {
@@ -521,6 +526,15 @@ struct UpsertWorkflowSearchAttributesDecisionAttributes {
   10: optional SearchAttributes searchAttributes
 }
 
+struct AcquireSemaphoreDecisionAttributes {
+  10: optional string semaphoreName
+  20: optional i32 waitTimeoutSeconds
+}
+
+struct ReleaseSemaphoreDecisionAttributes {
+  10: optional i64 (js.type = "Long") initiatedEventId
+}
+
 struct RecordMarkerDecisionAttributes {
   10: optional string markerName
   20: optional binary details
@@ -584,6 +598,8 @@ struct Decision {
   100: optional StartChildWorkflowExecutionDecisionAttributes startChildWorkflowExecutionDecisionAttributes
   110: optional SignalExternalWorkflowExecutionDecisionAttributes signalExternalWorkflowExecutionDecisionAttributes
   120: optional UpsertWorkflowSearchAttributesDecisionAttributes upsertWorkflowSearchAttributesDecisionAttributes
+  130: optional AcquireSemaphoreDecisionAttributes acquireSemaphoreDecisionAttributes
+  140: optional ReleaseSemaphoreDecisionAttributes releaseSemaphoreDecisionAttributes
 }
 
 struct WorkflowExecutionStartedEventAttributes {
@@ -906,6 +922,23 @@ struct UpsertWorkflowSearchAttributesEventAttributes {
   20: optional SearchAttributes searchAttributes
 }
 
+struct SemaphoreAcquireInitiatedEventAttributes {
+  10: optional string semaphoreName
+  20: optional i32 waitTimeoutSeconds
+  30: optional i64 (js.type = "Long") decisionTaskCompletedEventId
+}
+
+struct SemaphoreAcquiredEventAttributes {
+  10: optional i32 tokenId
+  20: optional i64 (js.type = "Long") initiatedEventId
+}
+
+struct SemaphoreReleasedEventAttributes {
+  10: optional i32 tokenId
+  20: optional i64 (js.type = "Long") initiatedEventId
+  30: optional i64 (js.type = "Long") decisionTaskCompletedEventId
+}
+
 struct StartChildWorkflowExecutionInitiatedEventAttributes {
   10:  optional string domain
   20:  optional string workflowId
@@ -1042,6 +1075,9 @@ struct HistoryEvent {
   430: optional SignalExternalWorkflowExecutionFailedEventAttributes signalExternalWorkflowExecutionFailedEventAttributes
   440: optional ExternalWorkflowExecutionSignaledEventAttributes externalWorkflowExecutionSignaledEventAttributes
   450: optional UpsertWorkflowSearchAttributesEventAttributes upsertWorkflowSearchAttributesEventAttributes
+  460: optional SemaphoreAcquireInitiatedEventAttributes semaphoreAcquireInitiatedEventAttributes
+  470: optional SemaphoreAcquiredEventAttributes semaphoreAcquiredEventAttributes
+  480: optional SemaphoreReleasedEventAttributes semaphoreReleasedEventAttributes
 }
 
 struct History {

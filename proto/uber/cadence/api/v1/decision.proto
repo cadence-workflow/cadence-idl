@@ -47,6 +47,8 @@ message Decision {
     StartChildWorkflowExecutionDecisionAttributes start_child_workflow_execution_decision_attributes = 11;
     SignalExternalWorkflowExecutionDecisionAttributes signal_external_workflow_execution_decision_attributes = 12;
     UpsertWorkflowSearchAttributesDecisionAttributes upsert_workflow_search_attributes_decision_attributes = 13;
+    AcquireSemaphoreDecisionAttributes acquire_semaphore_decision_attributes = 14;
+    ReleaseSemaphoreDecisionAttributes release_semaphore_decision_attributes = 15;
   }
 }
 
@@ -154,4 +156,14 @@ message SignalExternalWorkflowExecutionDecisionAttributes {
 
 message UpsertWorkflowSearchAttributesDecisionAttributes {
   SearchAttributes search_attributes = 1;
+}
+
+message AcquireSemaphoreDecisionAttributes {
+  string semaphore_name = 1;
+  // Unset falls back to the semaphore's default_wait_timeout, then the global default.
+  google.protobuf.Duration wait_timeout = 2;
+}
+
+message ReleaseSemaphoreDecisionAttributes {
+  int64 initiated_event_id = 1;
 }
