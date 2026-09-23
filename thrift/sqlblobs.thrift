@@ -127,6 +127,7 @@ struct WorkflowExecutionInfo {
   88: optional i32 retryMaximumAttempts
   90: optional i32 retryExpirationSeconds
   92: optional double retryBackoffCoefficient
+  93: optional double retryJitterCoefficient
   94: optional i64 (js.type = "Long") retryExpirationTimeNanos
   96: optional list<string> retryNonRetryableErrors
   98: optional bool hasRetryPolicy
@@ -151,7 +152,6 @@ struct WorkflowExecutionInfo {
   134: optional shared.CronOverlapPolicy cronOverlapPolicy
   137: optional binary activeClusterSelectionPolicy
   138: optional string activeClusterSelectionPolicyEncoding
-  139: optional double retryJitterCoefficient
 }
 
 struct ActivityInfo {

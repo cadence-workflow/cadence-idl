@@ -796,8 +796,8 @@ type RetryPolicy struct {
 	// Retrying will stop when either maximum_attempts is reached or expiration_interval is exceeded, whichever comes first.
 	ExpirationInterval *types.Duration `protobuf:"bytes,6,opt,name=expiration_interval,json=expirationInterval,proto3" json:"expiration_interval,omitempty"`
 	// Coefficient for proportional jitter, used to spread retries out. Must be between 0 and 1.
-	// Each retry interval is multiplied by a random factor in [1 - coefficient, 1 + coefficient],
-	// never exceeding maximum_interval. Defaults to 0, meaning no jitter.
+	// Each retry interval is multiplied by a random factor in [1 - coefficient, 1]. Defaults to 0,
+	// meaning no jitter. Values between 0 and 0.2 are preferred.
 	JitterCoefficient    float64  `protobuf:"fixed64,7,opt,name=jitter_coefficient,json=jitterCoefficient,proto3" json:"jitter_coefficient,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
