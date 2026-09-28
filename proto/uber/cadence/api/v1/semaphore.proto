@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package uber.cadence.api.v1;
+
+option go_package = "github.com/uber/cadence-idl/go/proto/api/v1;apiv1";
+option java_multiple_files = true;
+option java_outer_classname = "SemaphoreProto";
+option java_package = "com.uber.cadence.api.v1";
+
+import "google/protobuf/duration.proto";
+
+// Semaphore is a named, domain-scoped limit on how many workflows may hold a token at once.
+message Semaphore {
+  string semaphore_name = 1;
+  // Total number of tokens.
+  int32 size = 2;
+  // Number of tokens in each bucket. Tokens are split into buckets, and each bucket is served
+  // by one host.
+  int32 bucket_size = 3;
+  // How long an acquire waits for a token when it does not set its own timeout. Unset or zero
+  // means the server's default applies.
+  google.protobuf.Duration default_wait_timeout = 4;
+}
