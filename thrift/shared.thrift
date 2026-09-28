@@ -2551,6 +2551,35 @@ struct UpdateScheduleRequest {
 
 struct UpdateScheduleResponse {}
 
+struct Semaphore {
+  10: optional string semaphoreName
+  // Total number of tokens.
+  20: optional i32 size
+  // Number of tokens in each bucket; each bucket is served by one host.
+  30: optional i32 bucketSize
+  // How long an acquire waits for a token when it does not set its own timeout. Unset or zero
+  // means the server's default applies.
+  40: optional i32 defaultWaitTimeoutSeconds
+}
+
+struct CreateSemaphoreRequest {
+  10: optional string domain
+  20: optional string semaphoreName
+  // Total number of tokens. Must be positive.
+  30: optional i32 size
+  // Optional. Number of tokens in each bucket, the server picks a default if unset, and rejects
+  // values above its maximum.
+  40: optional i32 bucketSize
+  // Optional. How long an acquire waits for a token when it does not set its own timeout.
+  // Unset or zero means the server's default applies.
+  50: optional i32 defaultWaitTimeoutSeconds
+}
+
+struct CreateSemaphoreResponse {
+  // The semaphore as stored, with defaults filled in.
+  10: optional Semaphore semaphore
+}
+
 enum FailureCategory {
   Poll,
   Standard,
