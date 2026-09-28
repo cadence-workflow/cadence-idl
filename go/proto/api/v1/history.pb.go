@@ -3627,7 +3627,7 @@ func (m *UpsertWorkflowSearchAttributesEventAttributes) GetSearchAttributes() *S
 
 type SemaphoreAcquireInitiatedEventAttributes struct {
 	SemaphoreName string `protobuf:"bytes,1,opt,name=semaphore_name,json=semaphoreName,proto3" json:"semaphore_name,omitempty"`
-	// The timeout actually used, after falling back to the semaphore's default.
+	// The timeout actually used, after falling back to the server's default.
 	// Stored here so a later replay reads the same value even if that default
 	// has since changed.
 	WaitTimeout                  *types.Duration `protobuf:"bytes,2,opt,name=wait_timeout,json=waitTimeout,proto3" json:"wait_timeout,omitempty"`

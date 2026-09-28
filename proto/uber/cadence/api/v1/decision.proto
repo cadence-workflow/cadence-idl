@@ -160,7 +160,7 @@ message UpsertWorkflowSearchAttributesDecisionAttributes {
 
 message AcquireSemaphoreDecisionAttributes {
   string semaphore_name = 1;
-  // Unset falls back to the semaphore's default_wait_timeout, then the global default.
+  // Unset or zero means the server's default applies.
   google.protobuf.Duration wait_timeout = 2;
 }
 

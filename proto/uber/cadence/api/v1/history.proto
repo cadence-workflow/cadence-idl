@@ -382,7 +382,7 @@ message UpsertWorkflowSearchAttributesEventAttributes {
 
 message SemaphoreAcquireInitiatedEventAttributes {
   string semaphore_name = 1;
-  // The timeout actually used, after falling back to the semaphore's default.
+  // The timeout actually used, after falling back to the server's default.
   // Stored here so a later replay reads the same value even if that default
   // has since changed.
   google.protobuf.Duration wait_timeout = 2;

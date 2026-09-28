@@ -2557,9 +2557,6 @@ struct Semaphore {
   20: optional i32 size
   // Number of tokens in each bucket; each bucket is served by one host.
   30: optional i32 bucketSize
-  // How long an acquire waits for a token when it does not set its own timeout. Unset or zero
-  // means the server's default applies.
-  40: optional i32 defaultWaitTimeoutSeconds
 }
 
 struct CreateSemaphoreRequest {
@@ -2570,9 +2567,6 @@ struct CreateSemaphoreRequest {
   // Optional. Number of tokens in each bucket, the server picks a default if unset, and rejects
   // values above its maximum.
   40: optional i32 bucketSize
-  // Optional. How long an acquire waits for a token when it does not set its own timeout.
-  // Unset or zero means the server's default applies.
-  50: optional i32 defaultWaitTimeoutSeconds
 }
 
 struct CreateSemaphoreResponse {

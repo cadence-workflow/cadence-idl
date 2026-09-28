@@ -7,7 +7,6 @@ option java_multiple_files = true;
 option java_outer_classname = "SemaphoreServiceProto";
 option java_package = "com.uber.cadence.api.v1";
 
-import "google/protobuf/duration.proto";
 import "uber/cadence/api/v1/semaphore.proto";
 
 // SemaphoreAPI provides APIs for managing semaphores.
@@ -24,9 +23,6 @@ message CreateSemaphoreRequest {
   // Optional. Number of tokens in each bucket, the server picks a default if unset, and rejects values
   // above its maximum.
   int32 bucket_size = 4;
-  // Optional. How long an acquire waits for a token when it does not set its own timeout.
-  // Unset or zero means the server's default applies.
-  google.protobuf.Duration default_wait_timeout = 5;
 }
 
 message CreateSemaphoreResponse {

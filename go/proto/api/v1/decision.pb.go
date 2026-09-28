@@ -1361,7 +1361,7 @@ func (m *UpsertWorkflowSearchAttributesDecisionAttributes) GetSearchAttributes()
 
 type AcquireSemaphoreDecisionAttributes struct {
 	SemaphoreName string `protobuf:"bytes,1,opt,name=semaphore_name,json=semaphoreName,proto3" json:"semaphore_name,omitempty"`
-	// Unset falls back to the semaphore's default_wait_timeout, then the global default.
+	// Unset or zero means the server's default applies.
 	WaitTimeout          *types.Duration `protobuf:"bytes,2,opt,name=wait_timeout,json=waitTimeout,proto3" json:"wait_timeout,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
