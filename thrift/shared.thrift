@@ -2554,19 +2554,19 @@ struct UpdateScheduleResponse {}
 struct Semaphore {
   10: optional string semaphoreName
   // Total number of tokens.
-  20: optional i32 size
+  20: optional i32 capacity
   // Number of tokens in each bucket; each bucket is served by one host.
-  30: optional i32 bucketSize
+  30: optional i32 bucketCapacity
 }
 
 struct CreateSemaphoreRequest {
   10: optional string domain
   20: optional string semaphoreName
   // Total number of tokens. Must be positive.
-  30: optional i32 size
+  30: optional i32 capacity
   // Optional. Number of tokens in each bucket, the server picks a default if unset, and rejects
   // values above its maximum.
-  40: optional i32 bucketSize
+  40: optional i32 bucketCapacity
 }
 
 struct CreateSemaphoreResponse {

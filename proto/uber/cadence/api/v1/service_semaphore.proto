@@ -19,10 +19,10 @@ message CreateSemaphoreRequest {
   string domain = 1;
   string semaphore_name = 2;
   // Total number of tokens. Must be positive.
-  int32 size = 3;
+  int32 capacity = 3;
   // Optional. Number of tokens in each bucket, the server picks a default if unset, and rejects values
   // above its maximum.
-  int32 bucket_size = 4;
+  int32 bucket_capacity = 4;
 }
 
 message CreateSemaphoreResponse {
