@@ -317,6 +317,10 @@ struct AsyncRequestMessage {
   14: optional shared.Header header
   16: optional string encoding
   18: optional binary payload
+  // domain and requestId duplicate values inside payload so a queue can route and record the
+  // request without decoding the payload.
+  20: optional string domain
+  22: optional string requestId
 }
 
 // a substruct on the executions record which is intended to be used to track
