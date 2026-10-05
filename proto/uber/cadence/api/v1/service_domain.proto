@@ -123,6 +123,11 @@ message FailoverDomainRequest {
   // user-requested addition "reason" variable created to increase transparency around failovers
   string reason = 40;
   google.protobuf.Duration failover_timeout = 50;
+  // By default a failover request is only accepted by the cluster being failed over to
+  // (the destination), so an operator in an unhealthy region cannot pull a domain away
+  // from a healthy one by mistake. Set this to accept the request from any cluster,
+  // e.g. for automated rebalancing that moves attributes to several clusters at once.
+  bool skip_destination_cluster_check = 60;
 }
 
 message FailoverDomainResponse {

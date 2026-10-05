@@ -79,6 +79,8 @@ PROTO_GO_OUT := go/proto
 proto-go: $(PROTO_FILES) $(BIN)/$(PROTOC_VERSION_BIN) $(BIN)/protoc-gen-gogofast $(BIN)/protoc-gen-yarpc-go
 	@mkdir -p $(PROTO_GO_OUT)
 	@echo "protoc..."
+	@# The files are sorted because protoc-gen-gogo's output for a file depends on its position in the
+	@# argument list, and unsorted find output follows filesystem order, which differs between machines.
 	@$(foreach PROTO_DIR,$(PROTO_DIRS),$(EMULATE_X86) $(BIN)/$(PROTOC_VERSION_BIN) \
 		--plugin $(BIN)/protoc-gen-gogofast \
 		--plugin $(BIN)/protoc-gen-yarpc-go \
@@ -86,7 +88,7 @@ proto-go: $(PROTO_FILES) $(BIN)/$(PROTOC_VERSION_BIN) $(BIN)/protoc-gen-gogofast
 		-I=$(PROTOC_UNZIP_DIR)/include \
 		--gogofast_out=Mgoogle/protobuf/duration.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/field_mask.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/wrappers.proto=github.com/gogo/protobuf/types,paths=source_relative:$(PROTO_GO_OUT) \
 		--yarpc-go_out=$(PROTO_GO_OUT) \
-		$$(find $(PROTO_DIR) -name '*.proto');\
+		$$(find $(PROTO_DIR) -name '*.proto' | LC_ALL=C sort);\
 	)
 	@rm -r $(PROTO_GO_OUT)/api
 	@rm -r $(PROTO_GO_OUT)/admin

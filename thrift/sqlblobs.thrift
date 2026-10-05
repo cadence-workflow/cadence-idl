@@ -127,6 +127,7 @@ struct WorkflowExecutionInfo {
   88: optional i32 retryMaximumAttempts
   90: optional i32 retryExpirationSeconds
   92: optional double retryBackoffCoefficient
+  93: optional double retryJitterCoefficient
   94: optional i64 (js.type = "Long") retryExpirationTimeNanos
   96: optional list<string> retryNonRetryableErrors
   98: optional bool hasRetryPolicy
@@ -187,6 +188,7 @@ struct ActivityInfo {
   68: optional string retryLastWorkerIdentity
   70: optional binary retryLastFailureDetails
   72: optional shared.FailureOptions retryLastFailureOptions
+  74: optional double retryJitterCoefficient
 }
 
 struct ChildExecutionInfo {
