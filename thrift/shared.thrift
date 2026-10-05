@@ -2409,6 +2409,8 @@ struct ScheduleListEntry {
   20: optional WorkflowType workflowType
   30: optional ScheduleState state
   40: optional string cronExpression
+  50: optional Memo memo
+  60: optional SearchAttributes searchAttributes
 }
 
 struct CreateScheduleRequest {
