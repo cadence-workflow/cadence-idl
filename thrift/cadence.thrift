@@ -854,4 +854,18 @@ service WorkflowService {
       3: shared.ServiceBusyError serviceBusyError,
       4: shared.AccessDeniedError accessDeniedError,
     )
+
+  // ── Semaphore API ───────────────────────────────────────────────────────────
+
+  /**
+  * CreateSemaphore creates a semaphore.
+  **/
+  shared.CreateSemaphoreResponse CreateSemaphore(1: shared.CreateSemaphoreRequest request)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.EntityNotExistsError entityNotExistError,
+      3: shared.ServiceBusyError serviceBusyError,
+      4: shared.LimitExceededError limitExceededError,
+      5: shared.AccessDeniedError accessDeniedError,
+    )
 }

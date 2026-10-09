@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package uber.cadence.api.v1;
+
+option go_package = "github.com/uber/cadence-idl/go/proto/api/v1;apiv1";
+option java_multiple_files = true;
+option java_outer_classname = "SemaphoreServiceProto";
+option java_package = "com.uber.cadence.api.v1";
+
+import "uber/cadence/api/v1/semaphore.proto";
+
+// SemaphoreAPI provides APIs for managing semaphores.
+service SemaphoreAPI {
+  // CreateSemaphore creates a semaphore.
+  rpc CreateSemaphore(CreateSemaphoreRequest) returns (CreateSemaphoreResponse);
+}
+
+message CreateSemaphoreRequest {
+  string domain = 1;
+  string semaphore_name = 2;
+  // Total number of tokens. Must be positive.
+  int32 capacity = 3;
+  // Optional. Number of tokens in each bucket, the server picks a default if unset, and rejects values
+  // above its maximum.
+  int32 bucket_capacity = 4;
+}
+
+message CreateSemaphoreResponse {
+  // The semaphore as stored, with defaults filled in.
+  Semaphore semaphore = 1;
+}
