@@ -258,6 +258,8 @@ enum DecisionTaskFailedCause {
   BAD_BINARY,
   SCHEDULE_ACTIVITY_DUPLICATE_ID,
   BAD_SEARCH_ATTRIBUTES,
+  BAD_ACQUIRE_SEMAPHORE_ATTRIBUTES,
+  BAD_RELEASE_SEMAPHORE_ATTRIBUTES,
 }
 
 enum DecisionTaskTimedOutCause {
@@ -2455,6 +2457,8 @@ struct ScheduleListEntry {
   20: optional WorkflowType workflowType
   30: optional ScheduleState state
   40: optional string cronExpression
+  50: optional Memo memo
+  60: optional SearchAttributes searchAttributes
 }
 
 struct CreateScheduleRequest {
