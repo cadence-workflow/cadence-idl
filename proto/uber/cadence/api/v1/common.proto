@@ -97,6 +97,7 @@ enum EncodingType {
 message DataBlob {
   EncodingType encoding_type = 1;
   bytes data = 2;
+  bytes checksum = 3;
 }
 
 message WorkerVersionInfo {

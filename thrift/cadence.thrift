@@ -868,4 +868,17 @@ service WorkflowService {
       4: shared.LimitExceededError limitExceededError,
       5: shared.AccessDeniedError accessDeniedError,
     )
+
+  /**
+  * ExportWorkflowExecution exports a workflow execution's complete history
+  * as serialized event batches suitable for import into another domain or cluster.
+  **/
+  shared.ExportWorkflowExecutionResponse ExportWorkflowExecution(1: shared.ExportWorkflowExecutionRequest request)
+    throws (
+      1: shared.BadRequestError badRequestError,
+      2: shared.InternalServiceError internalServiceError,
+      3: shared.EntityNotExistsError entityNotExistError,
+      4: shared.ServiceBusyError serviceBusyError,
+      5: shared.AccessDeniedError accessDeniedError,
+    )
 }
