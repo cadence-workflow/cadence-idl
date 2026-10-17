@@ -870,8 +870,8 @@ service WorkflowService {
     )
 
   /**
-  * ExportWorkflowExecution exports a workflow execution's complete history
-  * as serialized event batches suitable for import into another domain or cluster.
+  * ExportWorkflowExecution exports the history of a workflow run as raw serialized
+  * event batches, page by page. When last_event_id is set, the export stops at that event.
   **/
   shared.ExportWorkflowExecutionResponse ExportWorkflowExecution(1: shared.ExportWorkflowExecutionRequest request)
     throws (
