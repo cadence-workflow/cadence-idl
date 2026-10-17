@@ -395,6 +395,7 @@ enum QueryConsistencyLevel {
 struct DataBlob {
   10: optional EncodingType EncodingType
   20: optional binary Data
+  30: optional binary Checksum
 }
 
 struct TaskListMetadata {
@@ -2587,4 +2588,19 @@ enum FailureCategory {
 struct FailureOptions {
   10: optional FailureCategory failureCategory
   20: optional i32 (js.type = "Long") nextRetryIntervalSeconds
+}
+
+struct ExportWorkflowExecutionRequest {
+  10: optional string domain
+  20: optional WorkflowExecution execution
+  30: optional i32 pageSize
+  40: optional binary nextPageToken
+  50: optional i64 (js.type = "Long") lastEventID
+}
+
+struct ExportWorkflowExecutionResponse {
+  10: optional WorkflowExecution execution
+  20: optional list<DataBlob> historyBatches
+  30: optional binary nextPageToken
+  40: optional i32 version
 }

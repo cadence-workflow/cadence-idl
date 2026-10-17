@@ -102,6 +102,10 @@ service WorkflowAPI {
 
   // Diagnoses a workflow execution and provides a report as response
   rpc DiagnoseWorkflowExecution(DiagnoseWorkflowExecutionRequest) returns (DiagnoseWorkflowExecutionResponse);
+
+  // ExportWorkflowExecution exports the history of a workflow run as raw serialized
+  // event batches, page by page. When last_event_id is set, the export stops at that event.
+  rpc ExportWorkflowExecution(ExportWorkflowExecutionRequest) returns (ExportWorkflowExecutionResponse);
 }
 
 message RestartWorkflowExecutionRequest {
@@ -328,4 +332,25 @@ message RefreshWorkflowTasksRequest {
 }
 
 message RefreshWorkflowTasksResponse {
+}
+
+message ExportWorkflowExecutionRequest {
+  string domain = 1;
+  WorkflowExecution workflow_execution = 2;
+  int32 page_size = 3;
+  bytes next_page_token = 4;
+  int64 last_event_id = 5;
+}
+
+message ExportWorkflowExecutionResponse {
+  WorkflowExecution execution = 1;
+  repeated DataBlob history_batches = 2;
+  bytes next_page_token = 3;
+  int32 version = 4;
+}
+
+message WorkflowExportData {
+  int32 version = 1;
+  WorkflowExecution execution = 2;
+  repeated DataBlob history_batches = 3;
 }
