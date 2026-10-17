@@ -103,8 +103,8 @@ service WorkflowAPI {
   // Diagnoses a workflow execution and provides a report as response
   rpc DiagnoseWorkflowExecution(DiagnoseWorkflowExecutionRequest) returns (DiagnoseWorkflowExecutionResponse);
 
-  // ExportWorkflowExecution exports a workflow execution's complete history
-  // as serialized event batches suitable for import into another domain or cluster.
+  // ExportWorkflowExecution exports the history of a workflow run as raw serialized
+  // event batches, page by page. When last_event_id is set, the export stops at that event.
   rpc ExportWorkflowExecution(ExportWorkflowExecutionRequest) returns (ExportWorkflowExecutionResponse);
 }
 
