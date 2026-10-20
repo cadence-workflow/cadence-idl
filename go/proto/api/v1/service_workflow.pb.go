@@ -2373,14 +2373,19 @@ func (m *RefreshWorkflowTasksResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_RefreshWorkflowTasksResponse proto.InternalMessageInfo
 
 type ExportWorkflowExecutionRequest struct {
-	Domain               string             `protobuf:"bytes,1,opt,name=domain,proto3" json:"domain,omitempty"`
-	WorkflowExecution    *WorkflowExecution `protobuf:"bytes,2,opt,name=workflow_execution,json=workflowExecution,proto3" json:"workflow_execution,omitempty"`
-	PageSize             int32              `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	NextPageToken        []byte             `protobuf:"bytes,4,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	LastEventId          int64              `protobuf:"varint,5,opt,name=last_event_id,json=lastEventId,proto3" json:"last_event_id,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
-	XXX_unrecognized     []byte             `json:"-"`
-	XXX_sizecache        int32              `json:"-"`
+	Domain string `protobuf:"bytes,1,opt,name=domain,proto3" json:"domain,omitempty"`
+	// Workflow ID, and an optional run ID. Without a run ID, the server exports the current run.
+	WorkflowExecution *WorkflowExecution `protobuf:"bytes,2,opt,name=workflow_execution,json=workflowExecution,proto3" json:"workflow_execution,omitempty"`
+	// Maximum number of history batches in a page. It does not count events or bytes.
+	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// Token from the previous response. Empty for the first page.
+	NextPageToken []byte `protobuf:"bytes,4,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	// Optional. The export stops at this event. It must be a DecisionTaskStarted,
+	// DecisionTaskTimedOut or DecisionTaskFailed event. The server reads it on the first page only.
+	LastEventId          int64    `protobuf:"varint,5,opt,name=last_event_id,json=lastEventId,proto3" json:"last_event_id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *ExportWorkflowExecutionRequest) Reset()         { *m = ExportWorkflowExecutionRequest{} }

@@ -608,12 +608,13 @@ func (m *SearchAttributes) GetIndexedFields() map[string]*Payload {
 }
 
 type DataBlob struct {
-	EncodingType         EncodingType `protobuf:"varint,1,opt,name=encoding_type,json=encodingType,proto3,enum=uber.cadence.api.v1.EncodingType" json:"encoding_type,omitempty"`
-	Data                 []byte       `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
-	Checksum             []byte       `protobuf:"bytes,3,opt,name=checksum,proto3" json:"checksum,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
+	EncodingType EncodingType `protobuf:"varint,1,opt,name=encoding_type,json=encodingType,proto3,enum=uber.cadence.api.v1.EncodingType" json:"encoding_type,omitempty"`
+	Data         []byte       `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	// CRC32 (IEEE) of data, as 4 bytes little endian. Optional: empty means that the API did not set a checksum.
+	Checksum             []byte   `protobuf:"bytes,3,opt,name=checksum,proto3" json:"checksum,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *DataBlob) Reset()         { *m = DataBlob{} }
