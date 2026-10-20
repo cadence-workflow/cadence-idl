@@ -2612,7 +2612,7 @@ struct ExportWorkflowExecutionRequest {
   // Token from the previous response. Empty for the first page.
   40: optional binary nextPageToken
   // Optional. The export stops at this event. It must be a DecisionTaskStarted,
-  // DecisionTaskTimedOut, DecisionTaskFailed or workflow close event event and the last event of its history batch.
+  // DecisionTaskTimedOut, DecisionTaskFailed or workflow close event and the last event of its history batch.
   // The server reads it on the first page only.
   50: optional i64 (js.type = "Long") lastEventID
 }
