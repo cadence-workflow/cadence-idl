@@ -29,6 +29,7 @@ option java_package = "com.uber.cadence.api.v1";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 import "uber/cadence/api/v1/common.proto";
 import "uber/cadence/api/v1/history.proto";
 import "uber/cadence/api/v1/query.proto";
@@ -344,7 +345,7 @@ message ExportWorkflowExecutionRequest {
   bytes next_page_token = 4;
   // Optional. The export stops at this event. It must be a DecisionTaskStarted,
   // DecisionTaskTimedOut or DecisionTaskFailed event. The server reads it on the first page only.
-  int64 last_event_id = 5;
+  google.protobuf.Int64Value last_event_id = 5;
 }
 
 message ExportWorkflowExecutionResponse {
