@@ -2382,7 +2382,8 @@ type ExportWorkflowExecutionRequest struct {
 	NextPageToken []byte `protobuf:"bytes,4,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	// Optional. The export stops at this event. It must be a DecisionTaskStarted,
 	// DecisionTaskTimedOut, DecisionTaskFailed or workflow close event and the last event of its history batch.
-	// The server reads it on the first page only.
+	// The server reads it on the first page only. Without last_event_id, a running workflow is exported up to its last
+	// DecisionTaskStarted, DecisionTaskTimedOut or DecisionTaskFailed event that ends a history batch.
 	LastEventId          *types.Int64Value `protobuf:"bytes,5,opt,name=last_event_id,json=lastEventId,proto3" json:"last_event_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
