@@ -401,6 +401,7 @@ enum QueryConsistencyLevel {
 struct DataBlob {
   10: optional EncodingType EncodingType
   20: optional binary Data
+  // CRC32 (IEEE) of data, as 4 bytes little endian. Optional: empty means that the API did not set a checksum.
   30: optional binary Checksum
 }
 
@@ -2604,9 +2605,14 @@ struct FailureOptions {
 
 struct ExportWorkflowExecutionRequest {
   10: optional string domain
+  // Workflow ID, and an optional run ID. Without a run ID, the server exports the current run.
   20: optional WorkflowExecution execution
+  // Maximum number of history batches in a page. It does not count events or bytes.
   30: optional i32 pageSize
+  // Token from the previous response. Empty for the first page.
   40: optional binary nextPageToken
+  // Optional. The export stops at this event. It must be a DecisionTaskStarted,
+  // DecisionTaskTimedOut or DecisionTaskFailed event. The server reads it on the first page only.
   50: optional i64 (js.type = "Long") lastEventID
 }
 

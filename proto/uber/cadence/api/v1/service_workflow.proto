@@ -336,9 +336,14 @@ message RefreshWorkflowTasksResponse {
 
 message ExportWorkflowExecutionRequest {
   string domain = 1;
+  // Workflow ID, and an optional run ID. Without a run ID, the server exports the current run.
   WorkflowExecution workflow_execution = 2;
+  // Maximum number of history batches in a page. It does not count events or bytes.
   int32 page_size = 3;
+  // Token from the previous response. Empty for the first page.
   bytes next_page_token = 4;
+  // Optional. The export stops at this event. It must be a DecisionTaskStarted,
+  // DecisionTaskTimedOut or DecisionTaskFailed event. The server reads it on the first page only.
   int64 last_event_id = 5;
 }
 
