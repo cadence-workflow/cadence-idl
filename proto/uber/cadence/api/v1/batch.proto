@@ -1,0 +1,117 @@
+// Copyright (c) 2026 Uber Technologies, Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+syntax = "proto3";
+
+package uber.cadence.api.v1;
+
+option go_package = "github.com/uber/cadence-idl/go/proto/api/v1;apiv1";
+option java_multiple_files = true;
+option java_outer_classname = "BatchProto";
+option java_package = "com.uber.cadence.api.v1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "uber/cadence/api/v1/common.proto";
+
+// BatchOperation is the action applied to every workflow matching the batch's query.
+// Exactly one operation must be set.
+message BatchOperation {
+  oneof operation {
+    TerminateBatchOperation terminate = 1;
+    CancelBatchOperation cancel = 2;
+    SignalBatchOperation signal = 3;
+    ReplicateBatchOperation replicate = 4;
+    RefreshBatchOperation refresh = 5;
+  }
+}
+
+// TerminateBatchOperation terminates each matching workflow.
+message TerminateBatchOperation {
+  // Whether to also terminate child workflows. Defaults to true if not set.
+  google.protobuf.BoolValue terminate_children = 1;
+}
+
+// CancelBatchOperation requests cancellation of each matching workflow.
+message CancelBatchOperation {
+  // Whether to also cancel child workflows. Defaults to false if not set.
+  google.protobuf.BoolValue cancel_children = 1;
+}
+
+// SignalBatchOperation sends a signal to each matching workflow.
+message SignalBatchOperation {
+  string signal_name = 1;
+  Payload input = 2;
+}
+
+// ReplicateBatchOperation re-sends replication tasks for each matching workflow.
+// The batch must run in the source cluster.
+message ReplicateBatchOperation {
+  string source_cluster = 1;
+  string target_cluster = 2;
+}
+
+// RefreshBatchOperation refreshes the tasks of each matching workflow.
+message RefreshBatchOperation {
+}
+
+// BatchOperationLimits controls how fast a batch is applied. The server
+// substitutes defaults for any field left unset.
+message BatchOperationLimits {
+  // Operations per second across the whole batch.
+  int32 rps = 1;
+  // Number of workflows processed in parallel.
+  int32 concurrency = 2;
+  // Number of workflows fetched from visibility per page.
+  int32 page_size = 3;
+}
+
+// BatchOperationProgress reports how far a batch has got.
+message BatchOperationProgress {
+  // Estimated total, taken when the batch starts. Visibility is eventually
+  // consistent, so this is not exact.
+  int64 total_estimate = 1;
+  int64 success_count = 2;
+  int64 error_count = 3;
+}
+
+// BatchOperationState is the lifecycle state of a batch.
+enum BatchOperationState {
+  BATCH_OPERATION_STATE_INVALID = 0;
+  // The batch is applying its operation.
+  BATCH_OPERATION_STATE_RUNNING = 1;
+  // The batch reached the end of its query. Individual operations may still
+  // have failed; see BatchOperationProgress.
+  BATCH_OPERATION_STATE_COMPLETED = 2;
+  // The batch stopped because of an unrecoverable error.
+  BATCH_OPERATION_STATE_FAILED = 3;
+  // The batch was stopped by a caller. Operations already applied are not undone.
+  BATCH_OPERATION_STATE_STOPPED = 4;
+}
+
+// BatchOperationListEntry is the summary of a batch returned by ListBatchOperations.
+message BatchOperationListEntry {
+  string batch_id = 1;
+  BatchOperation operation = 2;
+  BatchOperationState state = 3;
+  string started_by = 4;
+  google.protobuf.Timestamp start_time = 5;
+  google.protobuf.Timestamp close_time = 6;
+}

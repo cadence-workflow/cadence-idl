@@ -1,0 +1,150 @@
+// Copyright (c) 2026 Uber Technologies, Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+syntax = "proto3";
+
+package uber.cadence.api.v1;
+
+option go_package = "github.com/uber/cadence-idl/go/proto/api/v1;apiv1";
+option java_multiple_files = true;
+option java_outer_classname = "BatchServiceProto";
+option java_package = "com.uber.cadence.api.v1";
+
+import "google/protobuf/timestamp.proto";
+import "uber/cadence/api/v1/batch.proto";
+import "uber/cadence/api/v1/common.proto";
+
+// BatchAPI provides APIs for applying a single operation to every workflow
+// matching a query.
+//
+// Every request names the domain the operation applies to. Callers must hold
+// write access to that domain.
+service BatchAPI {
+  // StartBatchOperation starts a batch. It returns as soon as the batch is
+  // accepted; the operation is applied asynchronously.
+  rpc StartBatchOperation(StartBatchOperationRequest) returns (StartBatchOperationResponse);
+
+  // PreviewBatchOperation reports what a batch would affect without starting it.
+  rpc PreviewBatchOperation(PreviewBatchOperationRequest) returns (PreviewBatchOperationResponse);
+
+  // DescribeBatchOperation returns the details and progress of a single batch.
+  rpc DescribeBatchOperation(DescribeBatchOperationRequest) returns (DescribeBatchOperationResponse);
+
+  // ListBatchOperations returns the batches targeting a domain.
+  rpc ListBatchOperations(ListBatchOperationsRequest) returns (ListBatchOperationsResponse);
+
+  // StopBatchOperation stops a running batch. Operations already applied are
+  // not undone.
+  rpc StopBatchOperation(StopBatchOperationRequest) returns (StopBatchOperationResponse);
+
+  // UpdateBatchOperation changes the rate and concurrency of a running batch.
+  rpc UpdateBatchOperation(UpdateBatchOperationRequest) returns (UpdateBatchOperationResponse);
+}
+
+message StartBatchOperationRequest {
+  // The domain whose workflows the operation applies to.
+  string domain = 1;
+  // Client-provided batch identifier. Used for idempotency: retries with the
+  // same batch_id are deduplicated. If not set, the server generates a UUID.
+  string batch_id = 2;
+  // Visibility query selecting the workflows to operate on.
+  string query = 3;
+  BatchOperation operation = 4;
+  // Human-readable justification, recorded against the batch.
+  string reason = 5;
+  string identity = 6;
+  BatchOperationLimits limits = 7;
+}
+
+message StartBatchOperationResponse {
+  string batch_id = 1;
+}
+
+message PreviewBatchOperationRequest {
+  string domain = 1;
+  string query = 2;
+  // The operation the caller intends to run. Required: a preview is
+  // authorized as though the operation were being started.
+  BatchOperation operation = 3;
+  // Maximum number of matching workflows to return in the sample.
+  int32 sample_size = 4;
+}
+
+message PreviewBatchOperationResponse {
+  // Estimated number of workflows the query matches.
+  int64 total_estimate = 1;
+  // A bounded sample of the matching workflows, at most sample_size entries.
+  repeated WorkflowExecution sample = 2;
+}
+
+message DescribeBatchOperationRequest {
+  string domain = 1;
+  string batch_id = 2;
+}
+
+message DescribeBatchOperationResponse {
+  BatchOperation operation = 1;
+  string query = 2;
+  string reason = 3;
+  BatchOperationState state = 4;
+  BatchOperationProgress progress = 5;
+  BatchOperationLimits limits = 6;
+  string started_by = 7;
+  google.protobuf.Timestamp start_time = 8;
+  google.protobuf.Timestamp close_time = 9;
+}
+
+message ListBatchOperationsRequest {
+  string domain = 1;
+  // Optional filter. If unset, batches in any state are returned.
+  BatchOperationState state = 2;
+  int32 page_size = 3;
+  bytes next_page_token = 4;
+}
+
+message ListBatchOperationsResponse {
+  repeated BatchOperationListEntry batch_operations = 1;
+  bytes next_page_token = 2;
+}
+
+message StopBatchOperationRequest {
+  string domain = 1;
+  string batch_id = 2;
+  string reason = 3;
+  string identity = 4;
+}
+
+message StopBatchOperationResponse {
+}
+
+message UpdateBatchOperationRequest {
+  string domain = 1;
+  string batch_id = 2;
+  // New operations per second across the whole batch. Zero leaves the
+  // current value unchanged.
+  int32 rps = 3;
+  // New number of workflows processed in parallel. Zero leaves the current
+  // value unchanged.
+  int32 concurrency = 4;
+  string identity = 5;
+}
+
+message UpdateBatchOperationResponse {
+}
