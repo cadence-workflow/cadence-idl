@@ -34,8 +34,9 @@ import "uber/cadence/api/v1/common.proto";
 // BatchAPI provides APIs for applying a single operation to every workflow
 // matching a query.
 //
-// Every request names the domain the operation applies to. Callers must hold
-// write access to that domain.
+// Every request names the domain the operation applies to. Start, Preview,
+// Stop and Update require write access to that domain; Describe and List
+// require read access.
 service BatchAPI {
   // StartBatchOperation starts a batch. It returns as soon as the batch is
   // accepted; the operation is applied asynchronously.
