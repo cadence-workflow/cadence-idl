@@ -26,8 +26,8 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 type StartBatchOperationRequest struct {
 	// The domain whose workflows the operation applies to.
 	Domain string `protobuf:"bytes,1,opt,name=domain,proto3" json:"domain,omitempty"`
-	// Client-provided batch identifier. Used for idempotency: retries with the
-	// same batch_id are deduplicated. If not set, the server generates a UUID.
+	// Client-provided batch identifier. Required. Used for idempotency:
+	// retries with the same batch_id are deduplicated.
 	BatchId string `protobuf:"bytes,2,opt,name=batch_id,json=batchId,proto3" json:"batch_id,omitempty"`
 	// Visibility query selecting the workflows to operate on.
 	Query     string          `protobuf:"bytes,3,opt,name=query,proto3" json:"query,omitempty"`

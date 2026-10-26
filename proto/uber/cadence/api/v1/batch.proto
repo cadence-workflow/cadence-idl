@@ -109,7 +109,6 @@ enum BatchOperationState {
 // BatchOperationListEntry is the summary of a batch returned by ListBatchOperations.
 message BatchOperationListEntry {
   string batch_id = 1;
-  BatchOperation operation = 2;
   BatchOperationState state = 3;
   string started_by = 4;
   google.protobuf.Timestamp start_time = 5;

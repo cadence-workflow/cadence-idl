@@ -62,8 +62,8 @@ service BatchAPI {
 message StartBatchOperationRequest {
   // The domain whose workflows the operation applies to.
   string domain = 1;
-  // Client-provided batch identifier. Used for idempotency: retries with the
-  // same batch_id are deduplicated. If not set, the server generates a UUID.
+  // Client-provided batch identifier. Required. Used for idempotency:
+  // retries with the same batch_id are deduplicated.
   string batch_id = 2;
   // Visibility query selecting the workflows to operate on.
   string query = 3;
