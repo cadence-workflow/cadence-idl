@@ -232,6 +232,7 @@ enum EventType {
   SemaphoreAcquireInitiated,
   SemaphoreAcquired,
   SemaphoreReleased,
+  SemaphoreAcquireFailed,
 }
 
 enum DecisionTaskFailedCause {
@@ -279,6 +280,10 @@ enum SignalExternalWorkflowExecutionFailedCause {
 
 enum ChildWorkflowExecutionFailedCause {
   WORKFLOW_ALREADY_RUNNING,
+}
+
+enum SemaphoreAcquireFailedCause {
+  NOT_FOUND,
 }
 
 // TODO: when migrating to gRPC, add a running / none status,
@@ -941,6 +946,11 @@ struct SemaphoreReleasedEventAttributes {
   30: optional i64 (js.type = "Long") decisionTaskCompletedEventId
 }
 
+struct SemaphoreAcquireFailedEventAttributes {
+  10: optional SemaphoreAcquireFailedCause cause
+  20: optional i64 (js.type = "Long") initiatedEventId
+}
+
 struct StartChildWorkflowExecutionInitiatedEventAttributes {
   10:  optional string domain
   20:  optional string workflowId
@@ -1080,6 +1090,7 @@ struct HistoryEvent {
   460: optional SemaphoreAcquireInitiatedEventAttributes semaphoreAcquireInitiatedEventAttributes
   470: optional SemaphoreAcquiredEventAttributes semaphoreAcquiredEventAttributes
   480: optional SemaphoreReleasedEventAttributes semaphoreReleasedEventAttributes
+  490: optional SemaphoreAcquireFailedEventAttributes semaphoreAcquireFailedEventAttributes
 }
 
 struct History {
