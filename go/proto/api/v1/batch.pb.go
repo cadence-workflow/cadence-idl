@@ -347,7 +347,8 @@ func (m *SignalBatchOperation) GetInput() *Payload {
 }
 
 // ReplicateBatchOperation re-sends replication tasks for each matching workflow.
-// The batch must run in the source cluster.
+// The batch must run in the source cluster. Write access to the domain is
+// sufficient to run this in bulk, the same as it is for a single workflow.
 type ReplicateBatchOperation struct {
 	SourceCluster        string   `protobuf:"bytes,1,opt,name=source_cluster,json=sourceCluster,proto3" json:"source_cluster,omitempty"`
 	TargetCluster        string   `protobuf:"bytes,2,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`

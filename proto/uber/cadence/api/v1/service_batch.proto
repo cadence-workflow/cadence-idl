@@ -29,21 +29,17 @@ option java_package = "com.uber.cadence.api.v1";
 
 import "google/protobuf/timestamp.proto";
 import "uber/cadence/api/v1/batch.proto";
-import "uber/cadence/api/v1/common.proto";
 
 // BatchAPI provides APIs for applying a single operation to every workflow
 // matching a query.
 //
-// Every request names the domain the operation applies to. Start, Preview,
-// Stop and Update require write access to that domain; Describe and List
-// require read access.
+// Every request names the domain the operation applies to. Start, Stop and
+// Update require write access to that domain; Describe and List require
+// read access.
 service BatchAPI {
   // StartBatchOperation starts a batch. It returns as soon as the batch is
   // accepted; the operation is applied asynchronously.
   rpc StartBatchOperation(StartBatchOperationRequest) returns (StartBatchOperationResponse);
-
-  // PreviewBatchOperation reports what a batch would affect without starting it.
-  rpc PreviewBatchOperation(PreviewBatchOperationRequest) returns (PreviewBatchOperationResponse);
 
   // DescribeBatchOperation returns the details and progress of a single batch.
   rpc DescribeBatchOperation(DescribeBatchOperationRequest) returns (DescribeBatchOperationResponse);
@@ -62,8 +58,10 @@ service BatchAPI {
 message StartBatchOperationRequest {
   // The domain whose workflows the operation applies to.
   string domain = 1;
-  // Client-provided batch identifier. Required. Used for idempotency:
-  // retries with the same batch_id are deduplicated.
+  // Client-provided batch identifier. Required. Scoped to the domain:
+  // used for idempotency, retries with the same domain and batch_id are
+  // deduplicated, but the same batch_id in a different domain is a
+  // separate batch.
   string batch_id = 2;
   // Visibility query selecting the workflows to operate on.
   string query = 3;
@@ -76,23 +74,6 @@ message StartBatchOperationRequest {
 
 message StartBatchOperationResponse {
   string batch_id = 1;
-}
-
-message PreviewBatchOperationRequest {
-  string domain = 1;
-  string query = 2;
-  // The operation the caller intends to run. Required: a preview is
-  // authorized as though the operation were being started.
-  BatchOperation operation = 3;
-  // Maximum number of matching workflows to return in the sample.
-  int32 sample_size = 4;
-}
-
-message PreviewBatchOperationResponse {
-  // Estimated number of workflows the query matches.
-  int64 total_estimate = 1;
-  // A bounded sample of the matching workflows, at most sample_size entries.
-  repeated WorkflowExecution sample = 2;
 }
 
 message DescribeBatchOperationRequest {

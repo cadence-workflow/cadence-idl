@@ -62,7 +62,8 @@ message SignalBatchOperation {
 }
 
 // ReplicateBatchOperation re-sends replication tasks for each matching workflow.
-// The batch must run in the source cluster.
+// The batch must run in the source cluster. Write access to the domain is
+// sufficient to run this in bulk, the same as it is for a single workflow.
 message ReplicateBatchOperation {
   string source_cluster = 1;
   string target_cluster = 2;
