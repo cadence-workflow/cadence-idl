@@ -347,8 +347,9 @@ func (m *SignalBatchOperation) GetInput() *Payload {
 }
 
 // ReplicateBatchOperation re-sends replication tasks for each matching workflow.
-// The batch must run in the source cluster. Write access to the domain is
-// sufficient to run this in bulk, the same as it is for a single workflow.
+// The batch must run in the source cluster. Like the single-workflow
+// AdminAPI.ResendReplicationTasks, this requires admin access to the domain;
+// write access alone is not sufficient.
 type ReplicateBatchOperation struct {
 	SourceCluster        string   `protobuf:"bytes,1,opt,name=source_cluster,json=sourceCluster,proto3" json:"source_cluster,omitempty"`
 	TargetCluster        string   `protobuf:"bytes,2,opt,name=target_cluster,json=targetCluster,proto3" json:"target_cluster,omitempty"`
@@ -404,7 +405,9 @@ func (m *ReplicateBatchOperation) GetTargetCluster() string {
 	return ""
 }
 
-// RefreshBatchOperation refreshes the tasks of each matching workflow.
+// RefreshBatchOperation refreshes the tasks of each matching workflow. Like
+// the single-workflow RefreshWorkflowTasks, this requires admin access to
+// the domain; write access alone is not sufficient.
 type RefreshBatchOperation struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
