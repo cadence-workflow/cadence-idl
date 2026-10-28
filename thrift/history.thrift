@@ -51,6 +51,9 @@ struct StartWorkflowExecutionRequest {
   58: optional binary lastCompletionResult
   60: optional i32 firstDecisionTaskBackoffSeconds
   62: optional map<string, string> partitionConfig
+  // version history items of the current branch of the parent, set only for a child start, to find out if an existing
+  // child run was started by an initiated event that is not on that branch
+  70: optional list<shared.VersionHistoryItem> parentVersionHistoryItems
 }
 
 struct DescribeMutableStateRequest{
