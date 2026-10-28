@@ -1,6 +1,8 @@
 module github.com/uber/cadence-idl
 
-go 1.25.0
+go 1.26.2
+
+toolchain go1.26.10
 
 require (
 	github.com/gogo/protobuf v1.3.2
