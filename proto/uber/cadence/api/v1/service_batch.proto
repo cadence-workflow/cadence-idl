@@ -35,7 +35,8 @@ import "uber/cadence/api/v1/batch.proto";
 //
 // Every request names the domain the operation applies to. Start, Stop and
 // Update require write access to that domain; Describe and List require
-// read access.
+// read access. A Start whose operation is replicate or refresh requires
+// admin access to the domain instead of write access.
 service BatchAPI {
   // StartBatchOperation starts a batch. It returns as soon as the batch is
   // accepted; the operation is applied asynchronously.

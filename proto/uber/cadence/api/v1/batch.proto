@@ -62,14 +62,17 @@ message SignalBatchOperation {
 }
 
 // ReplicateBatchOperation re-sends replication tasks for each matching workflow.
-// The batch must run in the source cluster. Write access to the domain is
-// sufficient to run this in bulk, the same as it is for a single workflow.
+// The batch must run in the source cluster. Like the single-workflow
+// AdminAPI.ResendReplicationTasks, this requires admin access to the domain;
+// write access alone is not sufficient.
 message ReplicateBatchOperation {
   string source_cluster = 1;
   string target_cluster = 2;
 }
 
-// RefreshBatchOperation refreshes the tasks of each matching workflow.
+// RefreshBatchOperation refreshes the tasks of each matching workflow. Like
+// the single-workflow RefreshWorkflowTasks, this requires admin access to
+// the domain; write access alone is not sufficient.
 message RefreshBatchOperation {
 }
 
