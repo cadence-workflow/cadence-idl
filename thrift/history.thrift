@@ -36,6 +36,17 @@ exception ShardOwnershipLostError {
   20: optional string owner
 } (rpc.code = "ABORTED")
 
+// WorkflowTasksRefreshRequiredError is returned when the caller must refresh tasks of the run before the request can
+// succeed
+exception WorkflowTasksRefreshRequiredError {
+  10: optional string message
+  20: optional string runId
+  // the first run of the chain of the run
+  30: optional string firstExecutionRunId
+  // the scopes of the refresh that the caller must request
+  40: optional list<RefreshWorkflowTasksScope> scopes
+} (rpc.code = "FAILED_PRECONDITION")
+
 struct ParentExecutionInfo {
   10: optional string domainUUID
   15: optional string domain
@@ -512,6 +523,7 @@ service HistoryService {
       5: shared.DomainNotActiveError domainNotActiveError,
       6: shared.LimitExceededError limitExceededError,
       7: shared.ServiceBusyError serviceBusyError,
+      8: WorkflowTasksRefreshRequiredError workflowTasksRefreshRequiredError,
     )
 
   /**
