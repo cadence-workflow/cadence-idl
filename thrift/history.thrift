@@ -23,10 +23,6 @@ include "replicator.thrift"
 
 namespace java com.uber.cadence.history
 
-enum RefreshWorkflowTasksScopeType {
-  RECORD_CHILD_EXECUTION_COMPLETED,
-}
-
 exception EventAlreadyStartedError {
   1: required string message
 } (rpc.code = "ALREADY_EXISTS")
@@ -177,17 +173,9 @@ struct RespondActivityTaskCanceledRequest {
   20: optional shared.RespondActivityTaskCanceledRequest cancelRequest
 }
 
-// RefreshWorkflowTasksScope is one group of tasks to refresh. Add a new type and its attributes for a new group.
-struct RefreshWorkflowTasksScope {
-  10: optional RefreshWorkflowTasksScopeType scopeType
-}
-
 struct RefreshWorkflowTasksRequest {
   10: optional string domainUIID
   20: optional shared.RefreshWorkflowTasksRequest request
-  // scopes limits the refresh to these groups of tasks. When it is empty, all tasks are refreshed. A scope with an
-  // unknown type, or without the attributes of its type, is rejected.
-  30: optional list<RefreshWorkflowTasksScope> scopes
 }
 
 struct RecordActivityTaskStartedRequest {
