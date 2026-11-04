@@ -270,4 +270,5 @@ enum SignalExternalWorkflowExecutionFailedCause {
 enum SemaphoreAcquireFailedCause {
   SEMAPHORE_ACQUIRE_FAILED_CAUSE_INVALID = 0;
   SEMAPHORE_ACQUIRE_FAILED_CAUSE_NOT_FOUND = 1;
+  SEMAPHORE_ACQUIRE_FAILED_CAUSE_TIMED_OUT = 2;
 }

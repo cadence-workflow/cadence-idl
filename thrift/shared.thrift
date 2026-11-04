@@ -284,6 +284,7 @@ enum ChildWorkflowExecutionFailedCause {
 
 enum SemaphoreAcquireFailedCause {
   NOT_FOUND,
+  TIMED_OUT,
 }
 
 // TODO: when migrating to gRPC, add a running / none status,
