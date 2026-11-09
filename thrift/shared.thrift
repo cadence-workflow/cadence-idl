@@ -233,6 +233,7 @@ enum EventType {
   SemaphoreAcquired,
   SemaphoreReleased,
   SemaphoreAcquireFailed,
+  SemaphoreTokenLost,
 }
 
 enum DecisionTaskFailedCause {
@@ -952,6 +953,11 @@ struct SemaphoreAcquireFailedEventAttributes {
   20: optional i64 (js.type = "Long") initiatedEventId
 }
 
+struct SemaphoreTokenLostEventAttributes {
+  10: optional i32 tokenId
+  20: optional i64 (js.type = "Long") initiatedEventId
+}
+
 struct StartChildWorkflowExecutionInitiatedEventAttributes {
   10:  optional string domain
   20:  optional string workflowId
@@ -1092,6 +1098,7 @@ struct HistoryEvent {
   470: optional SemaphoreAcquiredEventAttributes semaphoreAcquiredEventAttributes
   480: optional SemaphoreReleasedEventAttributes semaphoreReleasedEventAttributes
   490: optional SemaphoreAcquireFailedEventAttributes semaphoreAcquireFailedEventAttributes
+  500: optional SemaphoreTokenLostEventAttributes semaphoreTokenLostEventAttributes
 }
 
 struct History {
