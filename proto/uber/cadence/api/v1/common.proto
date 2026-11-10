@@ -97,6 +97,8 @@ enum EncodingType {
 message DataBlob {
   EncodingType encoding_type = 1;
   bytes data = 2;
+  // CRC32 (IEEE) of data, as 4 bytes little endian. Optional: empty means that the API did not set a checksum.
+  bytes checksum = 3;
 }
 
 message WorkerVersionInfo {
