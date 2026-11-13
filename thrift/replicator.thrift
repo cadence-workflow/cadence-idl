@@ -30,6 +30,7 @@ enum ReplicationTaskType {
   HistoryMetadata
   HistoryV2
   FailoverMarker
+  SemaphoreMetadata
 }
 
 enum DomainOperation {
@@ -47,6 +48,13 @@ struct DomainTaskAttributes {
   50: optional i64 (js.type = "Long") configVersion
   60: optional i64 (js.type = "Long") failoverVersion
   70: optional i64 (js.type = "Long") previousFailoverVersion
+}
+
+struct SemaphoreMetadataTaskAttributes {
+  10: optional string domainId
+  20: optional string semaphoreName
+  30: optional i32 capacity
+  40: optional i32 bucketCapacity
 }
 
 struct SyncShardStatusTaskAttributes {
@@ -104,6 +112,7 @@ struct ReplicationTask {
   70: optional HistoryTaskV2Attributes historyTaskV2Attributes
   80: optional FailoverMarkerAttributes failoverMarkerAttributes
   90: optional i64 (js.type = "Long") creationTime
+  100: optional SemaphoreMetadataTaskAttributes semaphoreMetadataTaskAttributes
 }
 
 struct ReplicationToken {

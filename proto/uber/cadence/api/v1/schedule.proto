@@ -191,4 +191,8 @@ message ScheduleListEntry {
   ScheduleState state = 3;
   // Cron expression for the schedule.
   string cron_expression = 4;
+  // Memo attached to the schedule.
+  Memo memo = 5;
+  // Search attributes attached to the schedule.
+  SearchAttributes search_attributes = 6;
 }

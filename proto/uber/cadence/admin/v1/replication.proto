@@ -52,6 +52,7 @@ message ReplicationTask {
     SyncActivityTaskAttributes sync_activity_task_attributes = 6;
     HistoryTaskV2Attributes history_task_v2_attributes = 7;
     FailoverMarkerAttributes failover_marker_attributes = 8;
+    SemaphoreMetadataTaskAttributes semaphore_metadata_task_attributes = 9;
   }
 }
 
@@ -62,6 +63,13 @@ message DomainTaskAttributes {
   int64 config_version = 4;
   int64 failover_version = 5;
   int64 previous_failover_version = 6;
+}
+
+message SemaphoreMetadataTaskAttributes {
+  string domain_id = 1;
+  string semaphore_name = 2;
+  int32 capacity = 3;
+  int32 bucket_capacity = 4;
 }
 
 message SyncShardStatusTaskAttributes {
@@ -127,6 +135,7 @@ enum ReplicationTaskType {
   REPLICATION_TASK_TYPE_HISTORY_METADATA = 5;
   REPLICATION_TASK_TYPE_HISTORY_V2 = 6;
   REPLICATION_TASK_TYPE_FAILOVER_MARKER = 7;
+  REPLICATION_TASK_TYPE_SEMAPHORE_METADATA = 8;
 }
 
 enum DomainOperation {

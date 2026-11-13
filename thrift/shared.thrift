@@ -232,6 +232,7 @@ enum EventType {
   SemaphoreAcquireInitiated,
   SemaphoreAcquired,
   SemaphoreReleased,
+  SemaphoreAcquireFailed,
 }
 
 enum DecisionTaskFailedCause {
@@ -258,6 +259,8 @@ enum DecisionTaskFailedCause {
   BAD_BINARY,
   SCHEDULE_ACTIVITY_DUPLICATE_ID,
   BAD_SEARCH_ATTRIBUTES,
+  BAD_ACQUIRE_SEMAPHORE_ATTRIBUTES,
+  BAD_RELEASE_SEMAPHORE_ATTRIBUTES,
 }
 
 enum DecisionTaskTimedOutCause {
@@ -277,6 +280,11 @@ enum SignalExternalWorkflowExecutionFailedCause {
 
 enum ChildWorkflowExecutionFailedCause {
   WORKFLOW_ALREADY_RUNNING,
+}
+
+enum SemaphoreAcquireFailedCause {
+  NOT_FOUND,
+  TIMED_OUT,
 }
 
 // TODO: when migrating to gRPC, add a running / none status,
@@ -393,6 +401,8 @@ enum QueryConsistencyLevel {
 struct DataBlob {
   10: optional EncodingType EncodingType
   20: optional binary Data
+  // CRC32 (IEEE) of data, as 4 bytes little endian. Optional: empty means that the API did not set a checksum.
+  30: optional binary Checksum
 }
 
 struct TaskListMetadata {
@@ -939,6 +949,11 @@ struct SemaphoreReleasedEventAttributes {
   30: optional i64 (js.type = "Long") decisionTaskCompletedEventId
 }
 
+struct SemaphoreAcquireFailedEventAttributes {
+  10: optional SemaphoreAcquireFailedCause cause
+  20: optional i64 (js.type = "Long") initiatedEventId
+}
+
 struct StartChildWorkflowExecutionInitiatedEventAttributes {
   10:  optional string domain
   20:  optional string workflowId
@@ -1078,6 +1093,7 @@ struct HistoryEvent {
   460: optional SemaphoreAcquireInitiatedEventAttributes semaphoreAcquireInitiatedEventAttributes
   470: optional SemaphoreAcquiredEventAttributes semaphoreAcquiredEventAttributes
   480: optional SemaphoreReleasedEventAttributes semaphoreReleasedEventAttributes
+  490: optional SemaphoreAcquireFailedEventAttributes semaphoreAcquireFailedEventAttributes
 }
 
 struct History {
@@ -2455,6 +2471,8 @@ struct ScheduleListEntry {
   20: optional WorkflowType workflowType
   30: optional ScheduleState state
   40: optional string cronExpression
+  50: optional Memo memo
+  60: optional SearchAttributes searchAttributes
 }
 
 struct CreateScheduleRequest {
@@ -2583,4 +2601,26 @@ enum FailureCategory {
 struct FailureOptions {
   10: optional FailureCategory failureCategory
   20: optional i32 (js.type = "Long") nextRetryIntervalSeconds
+}
+
+struct ExportWorkflowExecutionRequest {
+  10: optional string domain
+  // Workflow ID, and an optional run ID. Without a run ID, the server exports the current run.
+  20: optional WorkflowExecution execution
+  // Maximum number of history batches in a page. It does not count events or bytes.
+  30: optional i32 pageSize
+  // Token from the previous response. Empty for the first page.
+  40: optional binary nextPageToken
+  // Optional. The export stops at this event. It must be a DecisionTaskStarted,
+  // DecisionTaskTimedOut, DecisionTaskFailed or workflow close event and the last event of its history batch.
+  // The server reads it on the first page only. Without last_event_id, a running workflow is exported up to its last
+  // DecisionTaskStarted, DecisionTaskTimedOut or DecisionTaskFailed event that ends a history batch.
+  50: optional i64 (js.type = "Long") lastEventID
+}
+
+struct ExportWorkflowExecutionResponse {
+  10: optional WorkflowExecution execution
+  20: optional list<DataBlob> historyBatches
+  30: optional binary nextPageToken
+  40: optional i32 version
 }

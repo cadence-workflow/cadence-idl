@@ -278,6 +278,7 @@ struct TransferTaskInfo {
   34: optional set<binary> targetDomainIDs
   36: optional string originalTaskList
   38: optional shared.TaskListKind originalTaskListKind
+  40: optional string semaphoreName
 }
 
 struct TimerTaskInfo {

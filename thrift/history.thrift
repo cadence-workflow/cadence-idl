@@ -51,6 +51,9 @@ struct StartWorkflowExecutionRequest {
   58: optional binary lastCompletionResult
   60: optional i32 firstDecisionTaskBackoffSeconds
   62: optional map<string, string> partitionConfig
+  // version history items of the current branch of the parent, set only for a child start, to find out if an existing
+  // child run was started by an initiated event that is not on that branch
+  70: optional list<shared.VersionHistoryItem> parentVersionHistoryItems
 }
 
 struct DescribeMutableStateRequest{
@@ -294,6 +297,11 @@ struct RecordChildExecutionCompletedRequest {
   40: optional shared.WorkflowExecution completedExecution
   50: optional shared.HistoryEvent completionEvent
   60: optional i64 (js.type = "Long") startedId
+  // first run of the chain of the completed child, so the parent accepts only the completion of the child run it started
+  70: optional string firstExecutionRunId
+  // version of the started event of the first run of the chain of the completed child, set only when the parent is in
+  // the same domain, so the parent can drop a completion from an initiated event that can not be on its current branch
+  80: optional i64 (js.type = "Long") childStartVersion
 }
 
 struct ReplicateEventsV2Request {
