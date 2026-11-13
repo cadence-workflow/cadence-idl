@@ -152,6 +152,9 @@ struct WorkflowExecutionInfo {
   134: optional shared.CronOverlapPolicy cronOverlapPolicy
   137: optional binary activeClusterSelectionPolicy
   138: optional string activeClusterSelectionPolicyEncoding
+  140: optional shared.WorkflowExecution importSourceExecution
+  142: optional i64 (js.type = "Long") importTimestampNanos
+  144: optional bool importInProgress
 }
 
 struct ActivityInfo {

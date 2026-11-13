@@ -309,6 +309,7 @@ enum WorkflowExecutionStatus {
   TERMINATED,
   CONTINUED_AS_NEW,
   TIMED_OUT,
+  PREPARING,
 }
 
 enum QueryTaskCompletedType {
@@ -645,6 +646,12 @@ struct WorkflowExecutionStartedEventAttributes {
   160: optional string requestId
   170: optional CronOverlapPolicy cronOverlapPolicy
   180: optional ActiveClusterSelectionPolicy activeClusterSelectionPolicy
+  // source run of an imported run
+  190: optional WorkflowExecution importSourceExecution
+  // time in nanoseconds when the import of this run started
+  200: optional i64 (js.type = "Long") importTimestamp
+  // ID of the last event of the imported history
+  210: optional i64 (js.type = "Long") importLastEventID
 }
 
 struct ResetPoints{
