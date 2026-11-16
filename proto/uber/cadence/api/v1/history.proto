@@ -123,6 +123,12 @@ message WorkflowExecutionStartedEventAttributes {
   string request_id = 25;
   CronOverlapPolicy cron_overlap_policy = 26;
   ActiveClusterSelectionPolicy active_cluster_selection_policy = 27;
+  // Source run of an imported run.
+  WorkflowExecution import_source_execution = 28;
+  // Time when the import of this run started.
+  google.protobuf.Timestamp import_time = 29;
+  // ID of the last event of the imported history.
+  int64 import_last_event_id = 30;
 }
 
 message WorkflowExecutionCompletedEventAttributes {
