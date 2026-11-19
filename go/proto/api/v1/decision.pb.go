@@ -281,24 +281,22 @@ func (*Decision) XXX_OneofWrappers() []interface{} {
 }
 
 type ScheduleActivityTaskDecisionAttributes struct {
-	ActivityId             string          `protobuf:"bytes,1,opt,name=activity_id,json=activityId,proto3" json:"activity_id,omitempty"`
-	ActivityType           *ActivityType   `protobuf:"bytes,2,opt,name=activity_type,json=activityType,proto3" json:"activity_type,omitempty"`
-	Domain                 string          `protobuf:"bytes,3,opt,name=domain,proto3" json:"domain,omitempty"`
-	TaskList               *TaskList       `protobuf:"bytes,4,opt,name=task_list,json=taskList,proto3" json:"task_list,omitempty"`
-	Input                  *Payload        `protobuf:"bytes,5,opt,name=input,proto3" json:"input,omitempty"`
-	ScheduleToCloseTimeout *types.Duration `protobuf:"bytes,6,opt,name=schedule_to_close_timeout,json=scheduleToCloseTimeout,proto3" json:"schedule_to_close_timeout,omitempty"`
-	ScheduleToStartTimeout *types.Duration `protobuf:"bytes,7,opt,name=schedule_to_start_timeout,json=scheduleToStartTimeout,proto3" json:"schedule_to_start_timeout,omitempty"`
-	StartToCloseTimeout    *types.Duration `protobuf:"bytes,8,opt,name=start_to_close_timeout,json=startToCloseTimeout,proto3" json:"start_to_close_timeout,omitempty"`
-	HeartbeatTimeout       *types.Duration `protobuf:"bytes,9,opt,name=heartbeat_timeout,json=heartbeatTimeout,proto3" json:"heartbeat_timeout,omitempty"`
-	RetryPolicy            *RetryPolicy    `protobuf:"bytes,11,opt,name=retry_policy,json=retryPolicy,proto3" json:"retry_policy,omitempty"`
-	Header                 *Header         `protobuf:"bytes,12,opt,name=header,proto3" json:"header,omitempty"`
-	RequestLocalDispatch   bool            `protobuf:"varint,13,opt,name=request_local_dispatch,json=requestLocalDispatch,proto3" json:"request_local_dispatch,omitempty"`
-	// Event ID of the SemaphoreAcquireInitiated event of the semaphore hold this
-	// work depends on. Zero means it depends on none.
-	SemaphoreInitiatedEventId int64    `protobuf:"varint,14,opt,name=semaphore_initiated_event_id,json=semaphoreInitiatedEventId,proto3" json:"semaphore_initiated_event_id,omitempty"`
-	XXX_NoUnkeyedLiteral      struct{} `json:"-"`
-	XXX_unrecognized          []byte   `json:"-"`
-	XXX_sizecache             int32    `json:"-"`
+	ActivityId                string          `protobuf:"bytes,1,opt,name=activity_id,json=activityId,proto3" json:"activity_id,omitempty"`
+	ActivityType              *ActivityType   `protobuf:"bytes,2,opt,name=activity_type,json=activityType,proto3" json:"activity_type,omitempty"`
+	Domain                    string          `protobuf:"bytes,3,opt,name=domain,proto3" json:"domain,omitempty"`
+	TaskList                  *TaskList       `protobuf:"bytes,4,opt,name=task_list,json=taskList,proto3" json:"task_list,omitempty"`
+	Input                     *Payload        `protobuf:"bytes,5,opt,name=input,proto3" json:"input,omitempty"`
+	ScheduleToCloseTimeout    *types.Duration `protobuf:"bytes,6,opt,name=schedule_to_close_timeout,json=scheduleToCloseTimeout,proto3" json:"schedule_to_close_timeout,omitempty"`
+	ScheduleToStartTimeout    *types.Duration `protobuf:"bytes,7,opt,name=schedule_to_start_timeout,json=scheduleToStartTimeout,proto3" json:"schedule_to_start_timeout,omitempty"`
+	StartToCloseTimeout       *types.Duration `protobuf:"bytes,8,opt,name=start_to_close_timeout,json=startToCloseTimeout,proto3" json:"start_to_close_timeout,omitempty"`
+	HeartbeatTimeout          *types.Duration `protobuf:"bytes,9,opt,name=heartbeat_timeout,json=heartbeatTimeout,proto3" json:"heartbeat_timeout,omitempty"`
+	RetryPolicy               *RetryPolicy    `protobuf:"bytes,11,opt,name=retry_policy,json=retryPolicy,proto3" json:"retry_policy,omitempty"`
+	Header                    *Header         `protobuf:"bytes,12,opt,name=header,proto3" json:"header,omitempty"`
+	RequestLocalDispatch      bool            `protobuf:"varint,13,opt,name=request_local_dispatch,json=requestLocalDispatch,proto3" json:"request_local_dispatch,omitempty"`
+	SemaphoreInitiatedEventId int64           `protobuf:"varint,14,opt,name=semaphore_initiated_event_id,json=semaphoreInitiatedEventId,proto3" json:"semaphore_initiated_event_id,omitempty"`
+	XXX_NoUnkeyedLiteral      struct{}        `json:"-"`
+	XXX_unrecognized          []byte          `json:"-"`
+	XXX_sizecache             int32           `json:"-"`
 }
 
 func (m *ScheduleActivityTaskDecisionAttributes) Reset() {
@@ -1066,12 +1064,10 @@ type StartChildWorkflowExecutionDecisionAttributes struct {
 	SearchAttributes             *SearchAttributes             `protobuf:"bytes,15,opt,name=search_attributes,json=searchAttributes,proto3" json:"search_attributes,omitempty"`
 	CronOverlapPolicy            CronOverlapPolicy             `protobuf:"varint,16,opt,name=cron_overlap_policy,json=cronOverlapPolicy,proto3,enum=uber.cadence.api.v1.CronOverlapPolicy" json:"cron_overlap_policy,omitempty"`
 	ActiveClusterSelectionPolicy *ActiveClusterSelectionPolicy `protobuf:"bytes,17,opt,name=active_cluster_selection_policy,json=activeClusterSelectionPolicy,proto3" json:"active_cluster_selection_policy,omitempty"`
-	// Event ID of the SemaphoreAcquireInitiated event of the semaphore hold this
-	// work depends on. Zero means it depends on none.
-	SemaphoreInitiatedEventId int64    `protobuf:"varint,18,opt,name=semaphore_initiated_event_id,json=semaphoreInitiatedEventId,proto3" json:"semaphore_initiated_event_id,omitempty"`
-	XXX_NoUnkeyedLiteral      struct{} `json:"-"`
-	XXX_unrecognized          []byte   `json:"-"`
-	XXX_sizecache             int32    `json:"-"`
+	SemaphoreInitiatedEventId    int64                         `protobuf:"varint,18,opt,name=semaphore_initiated_event_id,json=semaphoreInitiatedEventId,proto3" json:"semaphore_initiated_event_id,omitempty"`
+	XXX_NoUnkeyedLiteral         struct{}                      `json:"-"`
+	XXX_unrecognized             []byte                        `json:"-"`
+	XXX_sizecache                int32                         `json:"-"`
 }
 
 func (m *StartChildWorkflowExecutionDecisionAttributes) Reset() {

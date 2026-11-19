@@ -1710,12 +1710,10 @@ type ActivityTaskScheduledEventAttributes struct {
 	DecisionTaskCompletedEventId int64           `protobuf:"varint,11,opt,name=decision_task_completed_event_id,json=decisionTaskCompletedEventId,proto3" json:"decision_task_completed_event_id,omitempty"`
 	RetryPolicy                  *RetryPolicy    `protobuf:"bytes,12,opt,name=retry_policy,json=retryPolicy,proto3" json:"retry_policy,omitempty"`
 	Header                       *Header         `protobuf:"bytes,13,opt,name=header,proto3" json:"header,omitempty"`
-	// Event ID of the SemaphoreAcquireInitiated event of the semaphore hold this
-	// work depends on. Zero means it depends on none.
-	SemaphoreInitiatedEventId int64    `protobuf:"varint,14,opt,name=semaphore_initiated_event_id,json=semaphoreInitiatedEventId,proto3" json:"semaphore_initiated_event_id,omitempty"`
-	XXX_NoUnkeyedLiteral      struct{} `json:"-"`
-	XXX_unrecognized          []byte   `json:"-"`
-	XXX_sizecache             int32    `json:"-"`
+	SemaphoreInitiatedEventId    int64           `protobuf:"varint,14,opt,name=semaphore_initiated_event_id,json=semaphoreInitiatedEventId,proto3" json:"semaphore_initiated_event_id,omitempty"`
+	XXX_NoUnkeyedLiteral         struct{}        `json:"-"`
+	XXX_unrecognized             []byte          `json:"-"`
+	XXX_sizecache                int32           `json:"-"`
 }
 
 func (m *ActivityTaskScheduledEventAttributes) Reset()         { *m = ActivityTaskScheduledEventAttributes{} }
@@ -4006,12 +4004,10 @@ type StartChildWorkflowExecutionInitiatedEventAttributes struct {
 	FirstRunAt                   *types.Timestamp              `protobuf:"bytes,20,opt,name=first_run_at,json=firstRunAt,proto3" json:"first_run_at,omitempty"`
 	CronOverlapPolicy            CronOverlapPolicy             `protobuf:"varint,21,opt,name=cron_overlap_policy,json=cronOverlapPolicy,proto3,enum=uber.cadence.api.v1.CronOverlapPolicy" json:"cron_overlap_policy,omitempty"`
 	ActiveClusterSelectionPolicy *ActiveClusterSelectionPolicy `protobuf:"bytes,22,opt,name=active_cluster_selection_policy,json=activeClusterSelectionPolicy,proto3" json:"active_cluster_selection_policy,omitempty"`
-	// Event ID of the SemaphoreAcquireInitiated event of the semaphore hold this
-	// work depends on. Zero means it depends on none.
-	SemaphoreInitiatedEventId int64    `protobuf:"varint,23,opt,name=semaphore_initiated_event_id,json=semaphoreInitiatedEventId,proto3" json:"semaphore_initiated_event_id,omitempty"`
-	XXX_NoUnkeyedLiteral      struct{} `json:"-"`
-	XXX_unrecognized          []byte   `json:"-"`
-	XXX_sizecache             int32    `json:"-"`
+	SemaphoreInitiatedEventId    int64                         `protobuf:"varint,23,opt,name=semaphore_initiated_event_id,json=semaphoreInitiatedEventId,proto3" json:"semaphore_initiated_event_id,omitempty"`
+	XXX_NoUnkeyedLiteral         struct{}                      `json:"-"`
+	XXX_unrecognized             []byte                        `json:"-"`
+	XXX_sizecache                int32                         `json:"-"`
 }
 
 func (m *StartChildWorkflowExecutionInitiatedEventAttributes) Reset() {

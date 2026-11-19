@@ -65,8 +65,6 @@ message ScheduleActivityTaskDecisionAttributes {
   RetryPolicy retry_policy = 11;
   Header header = 12;
   bool request_local_dispatch = 13;
-  // Event ID of the SemaphoreAcquireInitiated event of the semaphore hold this
-  // work depends on. Zero means it depends on none.
   int64 semaphore_initiated_event_id = 14;
 }
 
@@ -146,8 +144,6 @@ message StartChildWorkflowExecutionDecisionAttributes {
   SearchAttributes search_attributes = 15;
   CronOverlapPolicy cron_overlap_policy = 16;
   ActiveClusterSelectionPolicy active_cluster_selection_policy = 17;
-  // Event ID of the SemaphoreAcquireInitiated event of the semaphore hold this
-  // work depends on. Zero means it depends on none.
   int64 semaphore_initiated_event_id = 18;
 }
 

@@ -205,8 +205,6 @@ message ActivityTaskScheduledEventAttributes {
   int64 decision_task_completed_event_id = 11;
   RetryPolicy retry_policy = 12;
   Header header = 13;
-  // Event ID of the SemaphoreAcquireInitiated event of the semaphore hold this
-  // work depends on. Zero means it depends on none.
   int64 semaphore_initiated_event_id = 14;
 }
 
@@ -443,8 +441,6 @@ message StartChildWorkflowExecutionInitiatedEventAttributes {
   google.protobuf.Timestamp first_run_at = 20;
   CronOverlapPolicy cron_overlap_policy = 21;
   ActiveClusterSelectionPolicy active_cluster_selection_policy = 22;
-  // Event ID of the SemaphoreAcquireInitiated event of the semaphore hold this
-  // work depends on. Zero means it depends on none.
   int64 semaphore_initiated_event_id = 23;
 }
 
