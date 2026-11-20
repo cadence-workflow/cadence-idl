@@ -65,7 +65,7 @@ message ScheduleActivityTaskDecisionAttributes {
   RetryPolicy retry_policy = 11;
   Header header = 12;
   bool request_local_dispatch = 13;
-  int64 thread_id = 14;
+  repeated int64 semaphore_initiated_event_ids = 14;
 }
 
 message StartTimerDecisionAttributes {
@@ -144,7 +144,7 @@ message StartChildWorkflowExecutionDecisionAttributes {
   SearchAttributes search_attributes = 15;
   CronOverlapPolicy cron_overlap_policy = 16;
   ActiveClusterSelectionPolicy active_cluster_selection_policy = 17;
-  int64 thread_id = 18;
+  repeated int64 semaphore_initiated_event_ids = 18;
 }
 
 message SignalExternalWorkflowExecutionDecisionAttributes {
@@ -164,7 +164,6 @@ message AcquireSemaphoreDecisionAttributes {
   string semaphore_name = 1;
   // Unset or zero means the server's default applies.
   google.protobuf.Duration wait_timeout = 2;
-  int64 thread_id = 3;
 }
 
 message ReleaseSemaphoreDecisionAttributes {
