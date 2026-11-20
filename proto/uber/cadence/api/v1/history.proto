@@ -205,6 +205,7 @@ message ActivityTaskScheduledEventAttributes {
   int64 decision_task_completed_event_id = 11;
   RetryPolicy retry_policy = 12;
   Header header = 13;
+  repeated int64 semaphore_initiated_event_ids = 14;
 }
 
 message ActivityTaskStartedEventAttributes {
@@ -440,6 +441,7 @@ message StartChildWorkflowExecutionInitiatedEventAttributes {
   google.protobuf.Timestamp first_run_at = 20;
   CronOverlapPolicy cron_overlap_policy = 21;
   ActiveClusterSelectionPolicy active_cluster_selection_policy = 22;
+  repeated int64 semaphore_initiated_event_ids = 23;
 }
 
 message StartChildWorkflowExecutionFailedEventAttributes {

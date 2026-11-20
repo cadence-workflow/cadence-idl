@@ -192,6 +192,7 @@ struct ActivityInfo {
   70: optional binary retryLastFailureDetails
   72: optional shared.FailureOptions retryLastFailureOptions
   74: optional double retryJitterCoefficient
+  76: optional list<i64> semaphoreInitiatedEventIDs
 }
 
 struct ChildExecutionInfo {
@@ -209,6 +210,7 @@ struct ChildExecutionInfo {
   30: optional string domainName // deprecated
   32: optional string workflowTypeName
   35: optional i32 parentClosePolicy
+  36: optional list<i64> semaphoreInitiatedEventIDs
 }
 
 struct SignalInfo {

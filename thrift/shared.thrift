@@ -481,6 +481,7 @@ struct ScheduleActivityTaskDecisionAttributes {
   70: optional RetryPolicy retryPolicy
   80: optional Header header
   90: optional bool requestLocalDispatch
+  100: optional list<i64> semaphoreInitiatedEventIds
 }
 
 struct ActivityLocalDispatchInfo{
@@ -593,6 +594,7 @@ struct StartChildWorkflowExecutionDecisionAttributes {
   150: optional SearchAttributes searchAttributes
   160: optional CronOverlapPolicy cronOverlapPolicy
   170: optional ActiveClusterSelectionPolicy activeClusterSelectionPolicy
+  180: optional list<i64> semaphoreInitiatedEventIds
 }
 
 struct Decision {
@@ -769,6 +771,7 @@ struct ActivityTaskScheduledEventAttributes {
   90: optional i64 (js.type = "Long") decisionTaskCompletedEventId
   110: optional RetryPolicy retryPolicy
   120: optional Header header
+  130: optional list<i64> semaphoreInitiatedEventIds
 }
 
 struct ActivityTaskStartedEventAttributes {
@@ -990,6 +993,7 @@ struct StartChildWorkflowExecutionInitiatedEventAttributes {
   190: optional i64 (js.type = "Long") firstRunAtTimestamp
   200: optional CronOverlapPolicy cronOverlapPolicy
   210: optional ActiveClusterSelectionPolicy activeClusterSelectionPolicy
+  220: optional list<i64> semaphoreInitiatedEventIds
 }
 
 struct StartChildWorkflowExecutionFailedEventAttributes {
