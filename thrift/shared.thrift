@@ -288,6 +288,11 @@ enum SemaphoreAcquireFailedCause {
   TIMED_OUT,
 }
 
+enum SemaphoreTokenLostCause {
+  NOT_HELD,
+  RESET,
+}
+
 // TODO: when migrating to gRPC, add a running / none status,
 //  currently, customer is using null / nil as an indication
 //  that workflow is still running
@@ -965,6 +970,7 @@ struct SemaphoreAcquireFailedEventAttributes {
 struct SemaphoreTokenLostEventAttributes {
   10: optional i32 tokenId
   20: optional i64 (js.type = "Long") initiatedEventId
+  30: optional SemaphoreTokenLostCause cause
 }
 
 struct StartChildWorkflowExecutionInitiatedEventAttributes {
