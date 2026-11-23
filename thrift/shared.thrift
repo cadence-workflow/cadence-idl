@@ -284,8 +284,17 @@ enum ChildWorkflowExecutionFailedCause {
 }
 
 enum SemaphoreAcquireFailedCause {
+  // The semaphore doesn't exist in the workflow's cluster.
   NOT_FOUND,
+  // No token was granted within waitTimeoutSeconds.
   TIMED_OUT,
+}
+
+enum SemaphoreTokenLostCause {
+  // The hold no longer owns its token, for example after a failover.
+  NOT_HELD,
+  // The run was reset, and the token belongs to the original run.
+  RESET,
 }
 
 // TODO: when migrating to gRPC, add a running / none status,
@@ -965,6 +974,7 @@ struct SemaphoreAcquireFailedEventAttributes {
 struct SemaphoreTokenLostEventAttributes {
   10: optional i32 tokenId
   20: optional i64 (js.type = "Long") initiatedEventId
+  30: optional SemaphoreTokenLostCause cause
 }
 
 struct StartChildWorkflowExecutionInitiatedEventAttributes {
