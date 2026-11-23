@@ -546,8 +546,10 @@ func (SignalExternalWorkflowExecutionFailedCause) EnumDescriptor() ([]byte, []in
 type SemaphoreAcquireFailedCause int32
 
 const (
-	SemaphoreAcquireFailedCause_SEMAPHORE_ACQUIRE_FAILED_CAUSE_INVALID   SemaphoreAcquireFailedCause = 0
+	SemaphoreAcquireFailedCause_SEMAPHORE_ACQUIRE_FAILED_CAUSE_INVALID SemaphoreAcquireFailedCause = 0
+	// The semaphore doesn't exist in the workflow's cluster.
 	SemaphoreAcquireFailedCause_SEMAPHORE_ACQUIRE_FAILED_CAUSE_NOT_FOUND SemaphoreAcquireFailedCause = 1
+	// No token was granted within wait_timeout.
 	SemaphoreAcquireFailedCause_SEMAPHORE_ACQUIRE_FAILED_CAUSE_TIMED_OUT SemaphoreAcquireFailedCause = 2
 )
 
@@ -574,9 +576,11 @@ func (SemaphoreAcquireFailedCause) EnumDescriptor() ([]byte, []int) {
 type SemaphoreTokenLostCause int32
 
 const (
-	SemaphoreTokenLostCause_SEMAPHORE_TOKEN_LOST_CAUSE_INVALID  SemaphoreTokenLostCause = 0
+	SemaphoreTokenLostCause_SEMAPHORE_TOKEN_LOST_CAUSE_INVALID SemaphoreTokenLostCause = 0
+	// The hold no longer owns its token, for example after a failover.
 	SemaphoreTokenLostCause_SEMAPHORE_TOKEN_LOST_CAUSE_NOT_HELD SemaphoreTokenLostCause = 1
-	SemaphoreTokenLostCause_SEMAPHORE_TOKEN_LOST_CAUSE_RESET    SemaphoreTokenLostCause = 2
+	// The run was reset, and the token belongs to the original run.
+	SemaphoreTokenLostCause_SEMAPHORE_TOKEN_LOST_CAUSE_RESET SemaphoreTokenLostCause = 2
 )
 
 var SemaphoreTokenLostCause_name = map[int32]string{

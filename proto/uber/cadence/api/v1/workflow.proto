@@ -270,12 +270,20 @@ enum SignalExternalWorkflowExecutionFailedCause {
 
 enum SemaphoreAcquireFailedCause {
   SEMAPHORE_ACQUIRE_FAILED_CAUSE_INVALID = 0;
+
+  // The semaphore doesn't exist in the workflow's cluster.
   SEMAPHORE_ACQUIRE_FAILED_CAUSE_NOT_FOUND = 1;
+
+  // No token was granted within wait_timeout.
   SEMAPHORE_ACQUIRE_FAILED_CAUSE_TIMED_OUT = 2;
 }
 
 enum SemaphoreTokenLostCause {
   SEMAPHORE_TOKEN_LOST_CAUSE_INVALID = 0;
+
+  // The hold no longer owns its token, for example after a failover.
   SEMAPHORE_TOKEN_LOST_CAUSE_NOT_HELD = 1;
+
+  // The run was reset, and the token belongs to the original run.
   SEMAPHORE_TOKEN_LOST_CAUSE_RESET = 2;
 }
