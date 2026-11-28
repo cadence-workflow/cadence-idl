@@ -321,11 +321,19 @@ message MarkerRecordedEventAttributes {
   Header header = 4;
 }
 
+// ReappliedSignalSource identifies the original history event whose signal was reapplied.
+message ReappliedSignalSource {
+  string run_id = 1;
+  int64 event_id = 2;
+  int64 version = 3;
+}
+
 message WorkflowExecutionSignaledEventAttributes {
   string signal_name = 1;
   Payload input = 2;
   string identity = 3;
   string request_id = 4;
+  ReappliedSignalSource reapplied_from = 5;
 }
 
 message WorkflowExecutionTerminatedEventAttributes {
