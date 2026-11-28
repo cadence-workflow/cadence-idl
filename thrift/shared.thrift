@@ -882,11 +882,19 @@ struct MarkerRecordedEventAttributes {
   40: optional Header header
 }
 
+// The original history event whose signal was reapplied.
+struct ReappliedSignalSource {
+  10: optional string runId
+  20: optional i64 (js.type = "Long") eventId
+  30: optional i64 (js.type = "Long") version
+}
+
 struct WorkflowExecutionSignaledEventAttributes {
   10: optional string signalName
   20: optional binary input
   30: optional string identity
   40: optional string requestId
+  50: optional ReappliedSignalSource reappliedFrom
 }
 
 struct WorkflowExecutionTerminatedEventAttributes {
